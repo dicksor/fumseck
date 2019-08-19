@@ -16,3 +16,9 @@ npm install
 ```
 npm start
 ```
+
+3. Ajouter un package
+
+```
+npm install package-name --save
+```
