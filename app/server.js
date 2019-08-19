@@ -30,6 +30,6 @@ app.get('/join_game/:id_party', function(req, res){
 //   })
 // })
 
-http.listen(8080, function(){
-  console.log('Starting server on port: 8080')
+http.listen(34335, function(){
+  console.log('Starting server on port: 34335')
 })

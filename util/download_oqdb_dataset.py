@@ -65,7 +65,7 @@ if __name__ == "__main__":
 	model_path = args.d
 
 	if ".json" not in filename:
-		print("Filename : {filename} should be of extension JSON")
+		print("Filename : {filename} should have .json as an extension")
 		sys.exit()
 		
 	json_file = download(url)
