@@ -23,8 +23,9 @@
     </script>
   </head>
   <body>
+
     <div class="uk-container">
-      <div class="uk-align-center">
+      <div class="uk-flex uk-flex-center uk-margin-top">
         <h1 class="uk-heading-large">Fumseck</h1>
       </div>
 
@@ -35,16 +36,48 @@
       </ul>
 
       <ul class="uk-switcher uk-margin">
-          <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
-          <li>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</li>
-          <li>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur, sed do eiusmod.</li>
-      </ul>
+          
+          <!-- Tab Home -->
+          <li>
+            <div class="uk-text-center">
+                <p class="uk-text-lead">Welcome to Fumseck, a game to learn while having fun !</p>
+                <p class="uk-text-meta">You have the choice !</p>
+                <p class="uk-text-meta">You can create and host your game, or choosing to join your friends.</p>
+            </div>
 
-      <p uk-margin>
-          <a class="uk-button uk-button-primary" href="#">Create a game</a>
-          <a class="uk-button uk-button-secondary" href="#">Join a game</a>
-      </p>
+            <div class="uk-flex uk-flex-center">
+              <p uk-margin>
+                  <a class="uk-button uk-button-primary" href="create_game">Create a game</a>
+                  <a class="uk-button uk-button-secondary" href="join_game">Join a game</a>
+              </p>
+            </div>
 
+            
+          </li>
+          
+          <!-- Tab Help -->
+          <li>
+            <p class="uk-text-lead">Do you need help ? No problem your are in the good place.</p>
+            <hr class="uk-divider-small">
+            <p class="uk-text-meta">You have two solutions. First, you can create your own game and invite your friend to play using a unique link. Your second option is to join an existing game, by clicking on a link or filling the id field.</p>
+          </li>
+
+          <!-- Tab About -->
+          <li>
+            <p class="uk-text-lead">About us...</p>
+            <hr class="uk-divider-small">
+            <p class="uk-text-meta">We are three beautiful students</p>
+          </li>
+      </ul>   
+
+      <!--<div class="uk-animation-toggle" tabindex="0">
+          <div class="uk-animation-shake">
+              <a class="uk-button uk-button-primary" href="create_game">Create a game</a>
+          </div>
+      </div>-->
+
+      <hr>
+      <p class="uk-text-small">© 2019 - Fumseck, develop by Romain Capocasale, Vincent Moulin and Jonas Freiburghaus</p>
 
     </div>
   </body>

@@ -10,13 +10,17 @@ app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, viewPath, '/index.html'))
 })
 
-/*app.get('/create_game', function(req, res){
+app.get('/create_game', function(req, res){
   console.log('create_game')
 })
 
-app.get('/join_game/:id_party', function(req, res){
+app.get('/join_game', function(req, res){
   console.log('join_game')
-})*/
+})
+
+app.get('/join_game/:id_party', function(req, res){
+  console.log('join_game_with_id')
+})
 
 // io.on('connection', function(socket){
 //   console.log('a user connected')
