@@ -15,5 +15,9 @@
     "quiz"
   ],
   "author": "Romain Capocasale, Vincent Moulin, Jonas Freiburghaus",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.2.0"
+  }
 }
