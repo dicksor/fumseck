@@ -3,6 +3,14 @@
   <head>
     <meta charset="utf-8">
     <title>Fumseck</title>
+
+    <!-- UIkit CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.7/css/uikit.min.css" />
+
+    <!-- UIkit JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.7/js/uikit.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.7/js/uikit-icons.min.js"></script>
+
     <script src="/socket.io/socket.io.js"></script>
     <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -15,8 +23,29 @@
     </script>
   </head>
   <body>
-    <h1>
-      Acceuil
-    </h1>
+    <div class="uk-container">
+      <div class="uk-align-center">
+        <h1 class="uk-heading-large">Fumseck</h1>
+      </div>
+
+      <ul uk-tab>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Help</a></li>
+          <li><a href="#">About</a></li>
+      </ul>
+
+      <ul class="uk-switcher uk-margin">
+          <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
+          <li>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</li>
+          <li>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur, sed do eiusmod.</li>
+      </ul>
+
+      <p uk-margin>
+          <a class="uk-button uk-button-primary" href="#">Create a game</a>
+          <a class="uk-button uk-button-secondary" href="#">Join a game</a>
+      </p>
+
+
+    </div>
   </body>
 </html>
