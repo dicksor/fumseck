@@ -1,1 +1,1 @@
-console.log("Une merde")
+console.log("Echo test")
