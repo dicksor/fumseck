@@ -2,7 +2,7 @@
 
 Fluffy renaît de ses cendres
 
-## To use
+## Utilisation
 
 1. Installer les dépendances
 
