@@ -13,11 +13,14 @@ app.use(express.static('public'))
 app.get('/', (req, res) =>{
   res.render('index')
 })
-.get('/create_game', (req, res) =>{
+.get('/create_game', (req, res) => {
   res.render('createGame', {gameId:'o9jd99'})
 })
+.get('/join_game', (req, res) => {
+  res.render('joinGame')
+})
 .get('/join_game/:id_game', (req, res) => {
-  console.log('join_game')
+  console.log('join_game_by_id')
 })
 .get('/in_game/:id_game', (req, res) => {
   let quiz = new Quiz('oqdb_breaking_bad.json')
@@ -27,7 +30,7 @@ app.get('/', (req, res) =>{
   })
 })
 .use((req, res, next) => {
-  console.log('404');
+  console.log('404')
 })
 
 // io.on('connection', function(socket){
