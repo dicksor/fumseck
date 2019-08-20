@@ -5,19 +5,22 @@ const path = require('path')
 const io = require('socket.io')(http)
 const viewPath = 'views'
 
-app.set('view engine', 'ejs');
+app.set('view engine', 'ejs')
 
 app.get('/', (req, res) =>{
   res.sendFile(path.join(__dirname, viewPath, '/index.html'))
 })
 .get('/create_game', (req, res) =>{
-  res.render('createParty', {gameId:'o9jd99'})
+  res.render('createGame', {gameId:'o9jd99'})
+})
+.get('/join_game', (req, res) =>{
+  res.render('joinGame')
 })
 .get('/join_game/:id_party', (req, res) =>{
-  console.log('join_game')
+  console.log('join_game_by_id')
 })
 .use((req, res, next) => {
-  console.log('404');
+  console.log('404')
 })
 
 // io.on('connection', function(socket){
