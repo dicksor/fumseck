@@ -5,11 +5,20 @@
   </head>
   <body>
 
-    <div class="uk-container">
+    <div class="uk-height-small uk-flex uk-flex-center uk-flex-middle uk-background-cover uk-light"
+     data-src="https://source.unsplash.com/wB8LMyEXegE/1600x900"
+     data-srcset="https://source.unsplash.com/wB8LMyEXegE/1600x900"
+     data-sizes="(min-width: 650px) 650px, 100vw" uk-img>
+
       <div class="uk-flex uk-flex-center uk-margin-top">
-        <h1 class="uk-heading-large">Fumseck</h1>
+        <h1 class="uk-heading-medium">Fumseck</h1>
       </div>
 
+    </div>
+
+    <div class="uk-container">
+
+      <br>
       <ul class="uk-subnav uk-tab" uk-switcher="animation: uk-animation-slide-left">
           <li><a href="#">Home</a></li>
           <li><a href="#">Help</a></li>
@@ -57,8 +66,7 @@
           </div>
       </div>-->
 
-      <hr>
-      <p class="uk-text-small">© 2019 - Fumseck, developed by Romain Capocasale, Vincent Moulin and Jonas Freiburghaus</p>
+      <% include partials/footer %>
 
     </div>
   </body>
