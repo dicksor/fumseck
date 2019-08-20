@@ -20,8 +20,11 @@ app.get('/', (req, res) =>{
   let idGenerator = new IdGenerator();
   res.render('createGame', {gameId:idGenerator.generate()})
 })
-.get('/join_game/:id_party', (req, res) =>{
-  console.log('join_game : ' + req.params.id_party)
+.get('/join_game/:game_id', (req, res) =>{
+  res.render('joinGame', {gameId:req.params.game_id})
+})
+.get('/join_game', (req, res) =>{
+  res.render('joinGame', {gameId:''})
 })
 .use((req, res, next) => {
   console.log('404')
