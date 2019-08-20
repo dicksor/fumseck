@@ -24,7 +24,7 @@ app.get('/', (req, res) =>{
   console.log('join_game : ' + req.params.id_party)
 })
 .use((req, res, next) => {
-  console.log('404');
+  console.log('404')
 })
 
 http.listen(34335, function(){
