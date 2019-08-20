@@ -1,7 +1,7 @@
 const fs = require("fs")
 const path = require('path')
 
-class Quiz {
+class QuizReader {
   constructor(fileName) {
     this.fileName = fileName
     this.BASE_MODEL_PATH = "app/model"
@@ -19,4 +19,4 @@ class Quiz {
   }
 }
 
-module.exports = Quiz
+module.exports = QuizReader

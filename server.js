@@ -4,13 +4,11 @@ const app = express()
 const http = require('http').createServer(app)
 const path = require('path')
 const io = require('socket.io')(http)
-const Quiz = require('./personal_modules/Quiz')
+const GameManager = require('./personal_modules/GameManager')
 const viewPath = 'views'
 
-//personal modules
-let IdGenerator = require('./personal_modules/IdGenerator')
+let gameManager = new GameManager()
 
-//configuration
 app.set('view engine', 'ejs')
 app.use('/favicon.ico', express.static('public/img/icon/favicon.ico'));
 
@@ -48,11 +46,7 @@ app.get('/', (req, res) =>{
   //if games[gameId]
 })
 .get('/in_game/:id_game', (req, res) => {
-  let quiz = new Quiz('oqdb_breaking_bad.json')
-  quiz.readQuiz().then((quizData) => {
-    console.log(quizData.quizz.expert[0].question)
-    res.render('in_game', {quiz: quizData})
-  })
+  gameManager.createGame(req.params.id_game, res)
 })
 .use((req, res, next) => {
   res.status(404).send('Page introuvable !');
