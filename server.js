@@ -3,12 +3,15 @@ const app = express()
 const http = require('http').createServer(app)
 const path = require('path')
 const io = require('socket.io')(http)
+const Quiz = require('./personal_modules/Quiz')
 const viewPath = 'views'
 
 app.set('view engine', 'ejs')
 
-app.get('/', (req, res) => {
-  res.render('index');
+app.use(express.static('public'))
+
+app.get('/', (req, res) =>{
+  res.render('index')
 })
 .get('/create_game', (req, res) => {
   res.render('createGame', {gameId:'o9jd99'})
@@ -16,8 +19,15 @@ app.get('/', (req, res) => {
 .get('/join_game', (req, res) => {
   res.render('joinGame')
 })
-.get('/join_game/:id_party', (req, res) => {
+.get('/join_game/:id_game', (req, res) => {
   console.log('join_game_by_id')
+})
+.get('/in_game/:id_game', (req, res) => {
+  let quiz = new Quiz('oqdb_breaking_bad.json')
+  quiz.readQuiz().then((quizData) => {
+    console.log(quizData.quizz.expert[0].question)
+    res.render('in_game', {quiz: quizData})
+  })
 })
 .use((req, res, next) => {
   console.log('404')
