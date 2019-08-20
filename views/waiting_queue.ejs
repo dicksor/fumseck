@@ -5,6 +5,14 @@
   </head>
   <body>
     <h1>Waiting queue</h1>
-    
+    <p>Game id : <%= gameId %>
+    <p>You are <%= pseudo %> </p>
+    <script type="text/javascript">
+      let socket = io.connect('http://localhost:34335')
+
+      socket.on('user_connection', (data) =>{
+        alert('connection : ' + data)
+      })
+    </script>
   </body>
 </html>

@@ -1,8 +1,6 @@
-const idgen = require('idgen')
-
-class IdGenerator{
+class Games{
   constructor(){
-    this.arrayGameId = [];
+    this.gameId = {}
   }
 
   generate(length = 6){
@@ -10,9 +8,10 @@ class IdGenerator{
     do {
        gameId = idgen(length)
     }while(this.arrayGameId.includes(gameId))
+    this.arrayGameId.push(gameId)
 
     return gameId;
   }
 }
 
-module.exports = IdGenerator
+module.exports = Games
