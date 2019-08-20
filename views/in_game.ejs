@@ -6,9 +6,20 @@
     document.addEventListener('DOMContentLoaded', () => {
       const socket = io()
       const obj = {gameId : 'idtest', username : 'jonas'}
+
       socket.emit('quiz_init', obj)
+
       socket.on('quiz_initialized', (msg) => {
         alert(msg)
+      })
+
+      socket.on('next_question', (data) => {
+        let question = data.question
+        document.getElementById("question").innerHTML = question.question
+        document.getElementById("responseA").innerHTML = question.propositions[0]
+        document.getElementById("responseB").innerHTML = question.propositions[1]
+        document.getElementById("responseC").innerHTML = question.propositions[2]
+        document.getElementById("responseD").innerHTML = question.propositions[3]
       })
     })
     </script>

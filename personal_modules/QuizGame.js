@@ -2,8 +2,9 @@ const QuizTimer = require('./QuizTimer')
 const QuizReader = require('./QuizReader')
 
 class QuizGame {
-  constructor(gameId) {
+  constructor(gameId, socket) {
     this.gameId = gameId
+    this.socket = socket
     this.startQuiz()
   }
 
@@ -23,8 +24,11 @@ class QuizGame {
     let rndQuestionIdx = this.getRandomQuestionIdx(this.quizData.quizz.expert)
     let question = this.quizData.quizz.expert[rndQuestionIdx].question
     let propositions = this.quizData.quizz.expert[rndQuestionIdx].propositions
+    let data = { question: question, propositions: propositions}
 
     this.quizData.quizz.expert.splice(rndQuestionIdx, 1)
+
+    this.socket.emit('next_question', { question: data })
 
     this.quizTimer = new QuizTimer(10, () => this.onTimeOver())
   }
