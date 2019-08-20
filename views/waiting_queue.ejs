@@ -5,6 +5,11 @@
   </head>
   <body>
     <h1>Waiting queue</h1>
+    <% if(host) { %>
+      <p>host</p>
+    <% }else{ %>
+      <p>client</p>
+      <% } %>
     <p>Game id : <%= gameId %>
     <p>You are <%= pseudo %> </p>
     <script type="text/javascript">

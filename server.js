@@ -23,8 +23,12 @@ app.get('/', (req, res) =>{
   let idGenerator = new IdGenerator()
   res.render('createGame', {gameId:idGenerator.generate()})
 })
-.get('/create_game_processing', (req, res) =>{
-
+.get('/create_game_processing', (req, res) => {
+  console.log("create_game_processing");
+  //res.query.gameId
+  //res.query.nbUser
+  //res.query.theme
+  res.render('waiting_queue', {host:true, gameId:res.query.gameId})
 })
 .get('/join_game/:game_id', (req, res) => {
   res.render('joinGame', {gameId:req.params.game_id})
@@ -36,6 +40,7 @@ app.get('/', (req, res) =>{
   let pseudo = res.query.pseudo
   let gameId = res.query.gameId
 
+  res.render('waiting_queue', {host:false})
   // io.sockets.on('connection', (socket) =>{
   //   socket.broadcast.emit('user_connection', {pseudo})
   // })

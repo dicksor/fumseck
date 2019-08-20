@@ -27,14 +27,14 @@
           <div class="uk-margin">
               <div class="uk-inline">
                   <span class="uk-form-icon" uk-icon="icon: link"></span>
-                  <input class="uk-input uk-form-large" type="text" placeholder="Game ID : <%= gameId %>" disabled>
+                  <input class="uk-input uk-form-large" type="text" placeholder="Game ID : <%= gameId %>" name="gameId" disabled>
               </div>
           </div>
 
           <div class="uk-margin">
             <div class="uk-inline">
               <div uk-form-custom="target: > * > span:first-child">
-                  <select>
+                  <select name="nbUser">
                       <option value="">Select number of player</option>
                       <option value="1">1</option>
                       <option value="2">2</option>
@@ -53,7 +53,7 @@
           <div class="uk-margin">
             <div class="uk-inline">
               <div uk-form-custom="target: > * > span:first-child">
-                  <select>
+                  <select name="theme">
                     <option value="">Select the game theme</option>
                       <option value="BreakingBad">Breaking Bad</option>
                   </select>
