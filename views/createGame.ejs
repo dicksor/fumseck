@@ -4,17 +4,67 @@
     <% include partials/head %>
   </head>
   <body>
-    <h1>Create a game</h1>
-    <form action="/" method="post" id="formCreateGame">
-      <label for="numberOfPeople">Number of people : </label><input type="number" name="numberOfPeople" max="5"/>
-      <p id="gameId">Game id : <%= gameId %></p>
-      <select name="theme">
-        <option value="BreakingBad">Breaking Bad</option>
-      </select>
-      <br/>
-      <br/>
-      <input type="submit" value="Create a game"/>
-      <p>Share the link to your friends : <a href="http://127.0.0.1:34335/join_game/<%= gameId %>">localhost:34335/join_game/<%= gameId %></a> !</p>
-    </form>
+
+    <div class="uk-container">
+
+      <div class="uk-flex uk-flex-center uk-margin-top">
+        <h1 class="uk-heading-large">Create a game</h1>
+      </div>
+
+      <a class="uk-link-muted" href="/"><span uk-icon="icon: chevron-left"></span>Back Home</a>
+
+      <form class="uk-form-horizontal uk-margin-large uk-text-center" method="post" action="#">
+
+          <div class="uk-margin">
+              <div class="uk-inline">
+                  <span class="uk-form-icon" uk-icon="icon: link"></span>
+                  <input class="uk-input" type="text" placeholder="Game ID : <%= gameId %>" disabled>
+              </div>
+          </div>
+
+          <div class="uk-margin">
+            <div class="uk-inline">
+              <div uk-form-custom="target: > * > span:first-child">
+                  <select>
+                      <option value="">Select number of player</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                  </select>
+                  <button class="uk-button uk-button-default" type="button" tabindex="-1">
+                      <span></span>
+                      <span uk-icon="icon: chevron-down"></span>
+                  </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="uk-margin">
+            <div class="uk-inline">
+              <div uk-form-custom="target: > * > span:first-child">
+                  <select>
+                    <option value="">Select the game theme</option>
+                      <option value="BreakingBad">Breaking Bad</option>
+                  </select>
+                  <button class="uk-button uk-button-default" type="button" tabindex="-1">
+                      <span></span>
+                      <span uk-icon="icon: chevron-down"></span>
+                  </button>
+              </div>
+            </div>
+          </div>
+
+          <input class="uk-button uk-button-primary" type="submit" value="Create the game" name="create_game"></input>
+
+          <p>Share the link to your friends : <a href="http://127.0.0.1:34335/join_game/<%= gameId %>">localhost:34335/join_game/<%= gameId %></a> !</p>
+
+      </form>
+
+      <% include partials/footer %>
+
+    </div>
+
   </body>
 </html>
