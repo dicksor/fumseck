@@ -1,6 +1,7 @@
 class QuizTimer {
-  constructor(maxTime) {
+  constructor(maxTime, onTimeOverCb) {
     this.maxTime = maxTime
+    this.onTimeOverCb = onTimeOverCb
     this.secondElapsed = 0
     this.startTimer()
   }
@@ -12,15 +13,18 @@ class QuizTimer {
   tick() {
     this.secondElapsed++
     if(this.secondElapsed >= this.maxTime) {
-      // TODO : emit and next game
+      this.stop()
+      this.onTimeOverCb()
     }
-    console.log(`second passed ${this.secondElapsed}`)
   }
 
   reset() {
-    clearInterval(this.interval)
     this.secondElapsed = 0
     this.startTimer()
+  }
+
+  stop() {
+    clearInterval(this.interval)
   }
 }
 

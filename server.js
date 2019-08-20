@@ -18,6 +18,9 @@ app.get('/', (req, res) =>{
 .get('/create_game', (req, res) => {
   res.render('createGame', {gameId:'o9jd99'})
 })
+.get('/create_game_processing', (req, res) => {
+  // TODO
+})
 .get('/join_game', (req, res) => {
   res.render('joinGame')
 })
@@ -25,19 +28,24 @@ app.get('/', (req, res) =>{
   console.log('join_game_by_id')
 })
 .get('/in_game/:id_game', (req, res) => {
-  gameManager.createGame(req.params.id_game, res)
+  res.render('in_game')
 })
 .use((req, res, next) => {
   console.log('404')
 })
 
-// io.on('connection', function(socket){
-//   console.log('a user connected')
-//
-//   socket.on('disconnect', function(){
-//     console.log('user disconnected')
-//   })
-// })
+io.on('connection', function(socket){
+  console.log('a user connected')
+
+  socket.on('disconnect', function(){
+    // TODO
+  })
+
+  socket.on('quiz_init', (data) => {
+    console.log('quiz_init')
+    gameManager.createGame(data, socket)
+  })
+})
 
 http.listen(34335, function(){
   console.log('Starting server on port: 34335')
