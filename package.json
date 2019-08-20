@@ -4,7 +4,7 @@
   "description": "Jeu de quizz en ligne et en temps réel",
   "main": "server.js",
   "scripts": {
-    "start": "node app/server.js",
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,6 +17,7 @@
   "author": "Romain Capocasale, Vincent Moulin, Jonas Freiburghaus",
   "license": "ISC",
   "dependencies": {
+    "ejs": "^2.6.2",
     "express": "^4.17.1",
     "socket.io": "^2.2.0",
     "uikit": "^3.1.7"

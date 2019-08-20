@@ -3,23 +3,21 @@ const app = express()
 const http = require('http').createServer(app)
 const path = require('path')
 const io = require('socket.io')(http)
+const viewPath = 'views'
 
-const viewPath = 'view'
+app.set('view engine', 'ejs');
 
-app.get('/', function (req, res) {
+app.get('/', (req, res) =>{
   res.sendFile(path.join(__dirname, viewPath, '/index.html'))
 })
-
-app.get('/create_game', function(req, res){
-  console.log('create_game')
+.get('/create_game', (req, res) =>{
+  res.render('createParty', {gameId:'o9jd99'})
 })
-
-app.get('/join_game', function(req, res){
+.get('/join_game/:id_party', (req, res) =>{
   console.log('join_game')
 })
-
-app.get('/join_game/:id_party', function(req, res){
-  console.log('join_game_with_id')
+.use((req, res, next) => {
+  console.log('404');
 })
 
 // io.on('connection', function(socket){
