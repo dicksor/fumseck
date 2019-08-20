@@ -8,10 +8,10 @@ const viewPath = 'views'
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) =>{
-  res.sendFile(path.join(__dirname, viewPath, '/index.html'))
+  res.render('index');
 })
 .get('/create_game', (req, res) =>{
-  res.render('createParty', {gameId:'o9jd99'})
+  res.render('createGame', {gameId:'o9jd99'})
 })
 .get('/join_game/:id_party', (req, res) =>{
   console.log('join_game')

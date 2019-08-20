@@ -1,26 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
-    <meta charset="utf-8">
-    <title>Fumseck</title>
-
-    <!-- UIkit CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.7/css/uikit.min.css" />
-
-    <!-- UIkit JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.7/js/uikit.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.7/js/uikit-icons.min.js"></script>
-
-    <script src="/socket.io/socket.io.js"></script>
-    <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const socket = io()
-      socket.emit('client_message', 'Client doc loaded')
-      socket.on('server_message', (msg) => {
-        console.log(msg)
-      })
-    })
-    </script>
+    <% include partials/head %>
   </head>
   <body>
 
@@ -36,7 +17,7 @@
       </ul>
 
       <ul class="uk-switcher uk-margin">
-          
+
           <!-- Tab Home -->
           <li>
             <div class="uk-text-center">
@@ -52,9 +33,9 @@
               </p>
             </div>
 
-            
+
           </li>
-          
+
           <!-- Tab Help -->
           <li>
             <p class="uk-text-lead">Do you need help ? No problem, your are in the right place.</p>
@@ -68,7 +49,7 @@
             <hr class="uk-divider-small">
             <p class="uk-text-meta">We are three beautiful students</p>
           </li>
-      </ul>   
+      </ul>
 
       <!--<div class="uk-animation-toggle" tabindex="0">
           <div class="uk-animation-shake">
