@@ -1,3 +1,4 @@
+//npm modules
 const express = require('express')
 const app = express()
 const http = require('http').createServer(app)
@@ -9,6 +10,7 @@ const viewPath = 'views'
 let gameManager = new GameManager()
 
 app.set('view engine', 'ejs')
+app.use('/favicon.ico', express.static('public/img/icon/favicon.ico'));
 
 app.use(express.static('public'))
 
@@ -16,22 +18,41 @@ app.get('/', (req, res) =>{
   res.render('index')
 })
 .get('/create_game', (req, res) => {
-  res.render('createGame', {gameId:'o9jd99'})
+  let idGenerator = new IdGenerator()
+  res.render('createGame', {gameId:idGenerator.generate()})
+})
+.get('/create_game_processing', (req, res) => {
+  console.log("create_game_processing");
+  //res.query.gameId
+  //res.query.nbUser
+  //res.query.theme
+  res.render('waiting_queue', {host:true, gameId:res.query.gameId})
+})
+.get('/join_game/:game_id', (req, res) => {
+  res.render('joinGame', {gameId:req.params.game_id})
 })
 .get('/create_game_processing', (req, res) => {
   // TODO
 })
 .get('/join_game', (req, res) => {
-  res.render('joinGame')
+  res.render('joinGame', {gameId:''})
 })
-.get('/join_game/:id_game', (req, res) => {
-  console.log('join_game_by_id')
+.get('/waiting_queue', (req, res) => {
+  let pseudo = res.query.pseudo
+  let gameId = res.query.gameId
+
+  res.render('waiting_queue', {host:false})
+  // io.sockets.on('connection', (socket) =>{
+  //   socket.broadcast.emit('user_connection', {pseudo})
+  // })
+
+  //if games[gameId]
 })
 .get('/in_game/:id_game', (req, res) => {
   res.render('in_game')
 })
 .use((req, res, next) => {
-  console.log('404')
+  res.status(404).send('Page introuvable !');
 })
 
 io.on('connection', function(socket){
