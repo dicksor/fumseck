@@ -4,6 +4,10 @@ const app = express()
 const http = require('http').createServer(app)
 const path = require('path')
 const io = require('socket.io')(http)
+const bodyParser = require('body-parser')
+let urlencodedParser = bodyParser.urlencoded({ extended: false })
+
+//personal_modules
 const GameManager = require('./personal_modules/GameManager')
 const viewPath = 'views'
 
@@ -14,9 +18,7 @@ let gameManager = new GameManager()
 
 app.set('view engine', 'ejs')
 app.use('/favicon.ico', express.static('public/img/icon/favicon.ico'));
-
 app.use(express.static('public'))
-
 
 
 app.get('/', (req, res) =>{
@@ -25,18 +27,16 @@ app.get('/', (req, res) =>{
 .get('/create_game', (req, res) => {
   res.render('createGame')
 })
-.get('/create_game_processing', (req, res) => {
-  console.log("create_game_processing");
-  //res.query.gameId
-  //res.query.nbUser
-  //res.query.theme
-  res.render('waiting_queue', {host:true, gameId:res.query.gameId})
+.post('/create_game_processing', urlencodedParser, (req, res) => {
+  let gameId = gameManager.generateGameId()
+  let theme = req.body.theme
+  let nbPlayer = req.body.nbPlayer
+
+  gameManager.joinGame(gameId, theme, nbPlayer)
+  res.render('waiting_queue', {host:true, gameId:'gameId'})
 })
 .get('/join_game/:game_id', (req, res) => {
   res.render('joinGame', {gameId:req.params.game_id})
-})
-.get('/create_game_processing', (req, res) => {
-  // TODO
 })
 .get('/join_game', (req, res) => {
   res.render('joinGame', {gameId:''})
@@ -66,7 +66,7 @@ io.on('connection', function(socket){
 
   socket.on('quiz_init', (data) => {
     console.log('quiz_init')
-    gameManager.createGame(data, socket)
+    gameManager.joinGame(data, socket)
   })
 })
 

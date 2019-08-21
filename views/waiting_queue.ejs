@@ -16,6 +16,16 @@
       <div id="newPlayer">
         
       </div>
+
+      <div class="uk-margin">
+        <div class="uk-inline">
+            <span class="uk-form-icon" uk-icon="icon: link"></span>
+            <input class="uk-input uk-form-large" type="text" placeholder="Game ID : <%= gameId %>" name="gameId" disabled>
+        </div>
+      </div>
+      
+      <p>Share the link to your friends : <a href="http://127.0.0.1:34335/join_game/<%= gameId %>">localhost:34335/join_game/<%= gameId %></a> !</p>
+
     </div>
     
     <script type="text/javascript">
@@ -28,6 +38,7 @@
         let divNewPlayer = document.getElementById('newPlayer')
         divNewPlayer.innerHTML += "<p>" + data.newPlayerPseudo + "</p>"
      })
+
     </script>
   </body>
 </html>
