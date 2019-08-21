@@ -2,27 +2,8 @@
 <html lang="en" dir="ltr">
   <head>
     <% include partials/head %>
-    <script type="text/javascript">
-    document.addEventListener('DOMContentLoaded', () => {
-      const socket = io()
-      const obj = {gameId : 'idtest', username : 'jonas'}
-
-      socket.emit('quiz_init', obj)
-
-      socket.on('quiz_initialized', (msg) => {
-        alert(msg)
-      })
-
-      socket.on('next_question', (data) => {
-        let question = data.question
-        document.getElementById("question").innerHTML = question.question
-        document.getElementById("responseA").innerHTML = question.propositions[0]
-        document.getElementById("responseB").innerHTML = question.propositions[1]
-        document.getElementById("responseC").innerHTML = question.propositions[2]
-        document.getElementById("responseD").innerHTML = question.propositions[3]
-      })
-    })
-    </script>
+    <link rel="stylesheet" href="/css/analogClock.css">
+    <script src="/js/game.js" charset="utf-8"></script>
   </head>
   <body>
     <div class="uk-container">
@@ -52,6 +33,12 @@
             <h3 id="responseD" class="uk-card-title"></h3>
           </div>
         </div>
+      </div>
+      <div id="countdown">
+        <div id="countdown-number"></div>
+        <svg>
+          <circle id="timer-svg" r="18" cx="20" cy="20"></circle>
+        </svg>
       </div>
     </div>
   </body>

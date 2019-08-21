@@ -12,7 +12,8 @@ class GameManager {
       // Si salle en attente
       // TODO : show error or redirect
     } else {
-      this.runningGames[data.gameId] = new QuizGame(data.gameId, socket)
+      this.runningGames[data.gameId] = new QuizGame(data.gameId)
+      this.runningGames[data.gameId].addPlayer(socket)
     }
   }
 
