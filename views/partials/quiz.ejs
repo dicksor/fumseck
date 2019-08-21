@@ -1,35 +1,41 @@
+<br>
 <div id="in_game">
-  <h1 id="question" class="uk-title"></h1>
-  <div class="uk-child-width-1-2@s uk-grid-match" uk-grid>
-    <div>
-      <div class="uk-card uk-card-default uk-card-hover uk-card-body">
-        <p>Choix A</p>
-        <h3 id="responseA" class="uk-card-title"></h3>
-      </div>
-    </div>
-    <div>
-      <div class="uk-card uk-card-default uk-card-hover uk-card-body">
-        <p>Choix B</p>
-        <h3 id="responseB" class="uk-card-title"></h3>
-      </div>
-    </div>
-    <div>
-      <div class="uk-card uk-card-default uk-card-hover uk-card-body">
-        <p>Choix C</p>
-        <h3 id="responseC" class="uk-card-title"></h3>
-      </div>
-    </div>
-    <div>
-      <div class="uk-card uk-card-default uk-card-hover uk-card-body">
-        <p>Choix D</p>
-        <h3 id="responseD" class="uk-card-title"></h3>
-      </div>
+  <div id="host">
+    <h1 id="question" class="uk-title"></h1>
+    <div id="countdown">
+      <div id="countdown-number"></div>
+      <svg>
+        <circle id="timer-svg" r="18" cx="20" cy="20"></circle>
+      </svg>
     </div>
   </div>
-  <div id="countdown">
-    <div id="countdown-number"></div>
-    <svg>
-      <circle id="timer-svg" r="18" cx="20" cy="20"></circle>
-    </svg>
+  <div id="client">
+    <h1>Please answer to the question !</h1>
+    <div class="uk-child-width-1-2@s uk-grid-match" uk-grid>
+      <div>
+        <div class="uk-card uk-card-default uk-card-hover uk-card-body">
+          <p>Choix A</p>
+          <h3 id="responseA" class="uk-card-title"></h3>
+        </div>
+      </div>
+      <div>
+        <div class="uk-card uk-card-default uk-card-hover uk-card-body">
+          <p>Choix B</p>
+          <h3 id="responseB" class="uk-card-title"></h3>
+        </div>
+      </div>
+      <div>
+        <div class="uk-card uk-card-default uk-card-hover uk-card-body">
+          <p>Choix C</p>
+          <h3 id="responseC" class="uk-card-title"></h3>
+        </div>
+      </div>
+      <div>
+        <div class="uk-card uk-card-default uk-card-hover uk-card-body">
+          <p>Choix D</p>
+          <h3 id="responseD" class="uk-card-title"></h3>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
