@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <% include partials/head %>
+  </head>
+  <body>
+    <h1>Waiting queue</h1>
+    <% if(host) { %>
+      <p>host</p>
+    <% }else{ %>
+      <p>client</p>
+      <% } %>
+    <p>Game id : <%= gameId %>
+    <p>You are <%= pseudo %> </p>
+    <script type="text/javascript">
+      let socket = io.connect('http://localhost:34335')
+
+      socket.on('user_connection', (data) =>{
+        alert('connection : ' + data)
+      })
+    </script>
+  </body>
+</html>
