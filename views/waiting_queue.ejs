@@ -7,6 +7,9 @@
         display: none;
       }
     </style>
+    <link rel="stylesheet" href="/css/analogClock.css">
+    <script src="/js/animation.js" charset="utf-8"></script>
+    <script src="/js/game.js" charset="utf-8"></script>
   </head>
   <body>
     <div class="uk-container">
@@ -69,7 +72,7 @@
         </div>
       </div>
     </div>
-
+    <input type="submit" onclick="test()" value="">
     <script type="text/javascript">
 
 
@@ -92,13 +95,11 @@
           })
 
           socket.on('game_is_ready', () =>{
-            alert('test');
-            document.getElementById('waiting_queue').parentNode.removeChild('waiting_queue')
+            document.getElementById('waiting_queue').style.display = 'none'
             document.getElementById('in_game').style.display = 'block'
+
           })
-      })
-
-
+        })
       })
 
     </script>
