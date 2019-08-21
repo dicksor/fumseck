@@ -16,6 +16,20 @@ document.addEventListener('DOMContentLoaded', () => {
   let responseCEl = document.getElementById("responseC")
   let responseDEl = document.getElementById("responseD")
 
+  let cardsEls = document.getElementsByClassName('uk-card')
+
+  function addQuestionAnimation() {
+    for (let cardEl of cardsEls) {
+      cardEl.classList.add('uk-animation-scale-up')
+    }
+  }
+
+  function removeQuestionAnimation() {
+    for (let cardEl of cardsEls) {
+      cardEl.classList.remove('uk-animation-scale-up')
+    }
+  }
+
   socket.on('next_question', (data) => {
     let question = data.question
     questionEl.innerHTML = question.question
@@ -23,6 +37,8 @@ document.addEventListener('DOMContentLoaded', () => {
     responseBEl.innerHTML = question.propositions[1]
     responseCEl.innerHTML = question.propositions[2]
     responseDEl.innerHTML = question.propositions[3]
+    addQuestionAnimation()
+    setTimeout(() => removeQuestionAnimation(), 1000)
   })
 
 
