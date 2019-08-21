@@ -62,7 +62,6 @@ class QuizGame {
   }
 
   onSync(countdown) {
-    console.log("sync : " + countdown)
     this.broadCastToAllPlayer('sync', { countdown: countdown })
   }
 }
