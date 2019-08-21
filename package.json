@@ -17,6 +17,7 @@
   "author": "Romain Capocasale, Vincent Moulin, Jonas Freiburghaus",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "ejs": "^2.6.2",
     "express": "^4.17.1",
     "idgen": "^2.1.0",

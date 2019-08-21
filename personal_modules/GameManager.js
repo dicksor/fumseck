@@ -1,24 +1,50 @@
 const QuizGame = require('./QuizGame')
+const idgen = require('idgen')
 
 class GameManager {
   constructor() {
-    this.runningGames = {}
+    this.runningGames = []
   }
 
-  createGame(data, socket) {
-    console.log(data.username)
-    if (data.gameId in this.runningGames) {
-      // Si salle pleine ciao
-      // Si salle en attente
-      // TODO : show error or redirect
+  createGame(gameId, theme, nbPlayer) {
+    if (this.gameIdExist()) {
+
     } else {
-      this.runningGames[data.gameId] = new QuizGame(data.gameId)
-      this.runningGames[data.gameId].addPlayer(socket)
+      //création de la partie
+      this.runningGames[gameId] = new Array(3)
+
+      this.runningGames[gameId]['quizz'] = new QuizGame(gameId) //passer le theme et le nombre de joueur en plus
+      this.runningGames[gameId]['nbPlayer'] = nbPlayer
+      this.runningGames[gameId]['players'] = []
     }
   }
 
   onGameOver() {
     // TODO : remove from dictionary
+  }
+
+  addPlayer(pseudo, gameId, socket){
+        //this.runningGames[gameId]['quizz']
+        this.runningGames[gameId]['players'].push(pseudo)
+  }
+
+  test() {
+    this.runningGames['1234'] = new Array(3)
+    this.runningGames['1234']['quizz'] =123
+    this.runningGames['1234']['players'] = []
+  }
+
+  gameIdExist(gameId){
+    return (gameId in this.runningGames)
+  }
+
+  generateGameId(length = 6){
+    let gameId = '';
+    do {
+       gameId = idgen(length)
+    }while(this.gameIdExist())
+
+    return gameId;
   }
 }
 
