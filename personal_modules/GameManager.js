@@ -11,9 +11,9 @@ class GameManager {
 
     } else {
       //création de la partie
-      this.runningGames[gameId] = {}
+      this.runningGames[gameId] = []
 
-      this.runningGames[gameId]['quizz'] = new QuizGame(gameId) //passer le theme et le nombre de joueur en plus
+      this.runningGames[gameId]['quiz'] = new QuizGame(gameId) //passer le theme et le nombre de joueur en plus
       this.runningGames[gameId]['nbPlayer'] = nbPlayer
       this.runningGames[gameId]['players'] = []
     }
@@ -24,17 +24,20 @@ class GameManager {
   }
 
   isRoomFull(gameId){
-    return this.runningGames[gameId]['players'].length - 1 === this.runningGames[gameId]['nbPlayer']
+    console.log('tab length : ' + this.runningGames[gameId]['players'].length);
+    console.log('nb players ' + this.runningGames[gameId]['nbPlayer']);
+    return this.runningGames[gameId]['players'].length === this.runningGames[gameId]['nbPlayer']
   }
 
   addPlayer(pseudo, gameId, socket){
         if(this.isRoomFull(gameId)){
+          console.log('game_is_ready');
           this.runningGames[gameId]['quiz'].startQuiz()
           this.runningGames[gameId]['quiz'].broadCastToAllPlayer('game_is_ready')
         } else {
+          this.runningGames[gameId]['quiz'].addPlayer(socket)
           this.runningGames[gameId]['quiz'].broadCastToAllPlayer('player_connected', {arrayPlayer: this.runningGames[gameId]['players']})
           this.runningGames[gameId]['players'].push(pseudo)
-          this.runningGames[gameId]['quiz'].addPlayer(socket)
         }
   }
 

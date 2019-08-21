@@ -89,6 +89,7 @@
           divNewPlayer.innerHTML = ''
           data.arrayPlayer.forEach((pseudo) => {
             divNewPlayer.innerHTML += "<p>" + pseudo + "</p>"
+            alert(pseudo)
           })
 
           socket.on('game_is_ready', () =>{

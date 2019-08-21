@@ -32,6 +32,7 @@ app.get('/', (req, res) =>{
 
   gameManager.createGame(gameId, theme, nbPlayer)
   res.render('waiting_queue', {host:true, gameId:gameId})
+  console.log('Game is created with id : ' + gameId);
 })
 .get('/join_game/:game_id', (req, res) => {
   res.render('joinGame', {gameId:req.params.game_id})
