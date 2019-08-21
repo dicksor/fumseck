@@ -30,8 +30,7 @@ app.get('/', (req, res) =>{
   let nbPlayer = req.body.nbPlayer
 
   gameManager.createGame(gameId, theme, nbPlayer)
-  res.render('waiting_queue', {host:true, gameId:gameId})
-  console.log('Game is created with id : ' + gameId);
+  res.render('game', {host:true, gameId:gameId})
 })
 .get('/join_game/:game_id', (req, res) => {
   res.render('joinGame', {gameId:req.params.game_id})
@@ -40,7 +39,7 @@ app.get('/', (req, res) =>{
   res.render('joinGame', {gameId:''})
 })
 .post('/waiting_queue', urlencodedParser, (req, res) => {
-  res.render('waiting_queue', {host:false, pseudo:req.body.pseudo, gameId:req.body.gameId})
+  res.render('game', {host:false, pseudo:req.body.pseudo, gameId:req.body.gameId})
 })
 .get('/in_game/:id_game', (req, res) => {
   res.render('in_game')
@@ -50,7 +49,6 @@ app.get('/', (req, res) =>{
 })
 
 io.on('connection', function(socket){
-  console.log('a user connected')
 
   socket.on('waiting_queue', (data) => {
   	gameManager.addPlayer(data.pseudo, data.gameId, socket)

@@ -11,9 +11,12 @@ class QuizReader {
     return new Promise((resolve, reject) => {
       let filePath = path.join(this.BASE_MODEL_PATH, this.fileName)
       fs.readFile(filePath, (err, data) => {
-        // TODO : manage error
-        this.jsonContent = JSON.parse(data)
-        resolve(this.jsonContent)
+        try {
+          this.jsonContent = JSON.parse(data)
+          resolve(this.jsonContent)
+        } catch (error) {
+          reject(error)
+        }
      })
     })
   }
