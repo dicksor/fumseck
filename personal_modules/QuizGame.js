@@ -9,7 +9,6 @@ class QuizGame {
                                    () => this.onTimeOver(),
                                    (countdown) => this.onTick(countdown),
                                    (countdown) => this.onSync(countdown))
-    this.startQuiz()
   }
 
   addPlayer(socket) {

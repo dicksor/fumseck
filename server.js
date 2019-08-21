@@ -54,17 +54,10 @@ io.on('connection', function(socket){
 
   socket.on('waiting_queue', (data) => {
   	gameManager.addPlayer(data.pseudo, data.gameId, socket)
-  	console.log(gameManager.runningGames[data.gameId]['players'])
-  	socket.broadcast.emit('player_connected', {arrayPlayer: gameManager.runningGames[data.gameId]['players']})
   })
 
   socket.on('disconnect', function(){
     // TODO
-  })
-
-  socket.on('quiz_init', (data) => {
-    console.log('quiz_init')
-    gameManager.joinGame(data, socket)
   })
 })
 
