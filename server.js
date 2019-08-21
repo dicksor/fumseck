@@ -7,6 +7,9 @@ const io = require('socket.io')(http)
 const GameManager = require('./personal_modules/GameManager')
 const viewPath = 'views'
 
+const bodyParser = require('body-parser')
+const urlencodedParser = bodyParser.urlencoded({extended: false})
+
 let gameManager = new GameManager()
 
 app.set('view engine', 'ejs')
@@ -14,12 +17,13 @@ app.use('/favicon.ico', express.static('public/img/icon/favicon.ico'));
 
 app.use(express.static('public'))
 
+
+
 app.get('/', (req, res) =>{
   res.render('index')
 })
 .get('/create_game', (req, res) => {
-  let idGenerator = new IdGenerator()
-  res.render('createGame', {gameId:idGenerator.generate()})
+  res.render('createGame')
 })
 .get('/create_game_processing', (req, res) => {
   console.log("create_game_processing");
@@ -37,16 +41,8 @@ app.get('/', (req, res) =>{
 .get('/join_game', (req, res) => {
   res.render('joinGame', {gameId:''})
 })
-.get('/waiting_queue', (req, res) => {
-  let pseudo = res.query.pseudo
-  let gameId = res.query.gameId
-
-  res.render('waiting_queue', {host:false})
-  // io.sockets.on('connection', (socket) =>{
-  //   socket.broadcast.emit('user_connection', {pseudo})
-  // })
-
-  //if games[gameId]
+.post('/waiting_queue', urlencodedParser, (req, res) => {
+  res.render('waiting_queue', {host:false, pseudo:req.body.pseudo, gameId:req.body.gameId})
 })
 .get('/in_game/:id_game', (req, res) => {
   res.render('in_game')
@@ -55,8 +51,14 @@ app.get('/', (req, res) =>{
   res.status(404).send('Page introuvable !');
 })
 
+let playerConnected = []
+
 io.on('connection', function(socket){
   console.log('a user connected')
+
+  socket.on('waiting_queue', (data) => {
+  	socket.broadcast.emit('player_connected', {newPlayerPseudo:data.pseudo})
+  })
 
   socket.on('disconnect', function(){
     // TODO

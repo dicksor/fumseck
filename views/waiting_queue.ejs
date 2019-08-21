@@ -4,20 +4,30 @@
     <% include partials/head %>
   </head>
   <body>
-    <h1>Waiting queue</h1>
-    <% if(host) { %>
-      <p>host</p>
-    <% }else{ %>
-      <p>client</p>
-      <% } %>
-    <p>Game id : <%= gameId %>
-    <p>You are <%= pseudo %> </p>
+    <div class="uk-container">
+      <h1>Waiting Room</h1>
+      <% if(host) { %>
+        <p><strong>You are the Host</strong></p>
+      <% }else{ %>
+        <p><strong>You are a Player</strong></p>
+        <% } %>
+      <p>Game id : <%= gameId %></p>
+      <p>You pseudo <span id="pseudo"><%= pseudo %></span></p>
+      <div id="newPlayer">
+        
+      </div>
+    </div>
+    
     <script type="text/javascript">
       let socket = io.connect('http://localhost:34335')
 
-      socket.on('user_connection', (data) =>{
-        alert('connection : ' + data)
-      })
+      socket.emit('waiting_queue', {pseudo:document.getElementById('pseudo').textContent})
+
+      socket.on('player_connected', (data) => {
+        console.log(data.newPlayerPseudo)
+        let divNewPlayer = document.getElementById('newPlayer')
+        divNewPlayer.innerHTML += "<p>" + data.newPlayerPseudo + "</p>"
+     })
     </script>
   </body>
 </html>
