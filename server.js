@@ -11,10 +11,8 @@ let urlencodedParser = bodyParser.urlencoded({ extended: false })
 const GameManager = require('./personal_modules/GameManager')
 const viewPath = 'views'
 
-const bodyParser = require('body-parser')
-const urlencodedParser = bodyParser.urlencoded({extended: false})
-
 let gameManager = new GameManager()
+gameManager.test()
 
 app.set('view engine', 'ejs')
 app.use('/favicon.ico', express.static('public/img/icon/favicon.ico'));
@@ -32,8 +30,8 @@ app.get('/', (req, res) =>{
   let theme = req.body.theme
   let nbPlayer = req.body.nbPlayer
 
-  gameManager.joinGame(gameId, theme, nbPlayer)
-  res.render('waiting_queue', {host:true, gameId:'gameId'})
+  gameManager.createGame(gameId, theme, nbPlayer)
+  res.render('waiting_queue', {host:true, gameId:gameId})
 })
 .get('/join_game/:game_id', (req, res) => {
   res.render('joinGame', {gameId:req.params.game_id})
@@ -51,13 +49,13 @@ app.get('/', (req, res) =>{
   res.status(404).send('Page introuvable !');
 })
 
-let playerConnected = []
-
 io.on('connection', function(socket){
   console.log('a user connected')
 
   socket.on('waiting_queue', (data) => {
-  	socket.broadcast.emit('player_connected', {newPlayerPseudo:data.pseudo})
+  	gameManager.addPlayer(data.pseudo, data.gameId, socket)
+  	console.log(gameManager.runningGames[data.gameId]['players'])
+  	socket.broadcast.emit('player_connected', {arrayPlayer: gameManager.runningGames[data.gameId]['players']})
   })
 
   socket.on('disconnect', function(){

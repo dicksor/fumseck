@@ -3,20 +3,35 @@ const idgen = require('idgen')
 
 class GameManager {
   constructor() {
-    this.runningGames = {}
+    this.runningGames = []
   }
 
-  joinGame(gameId, theme, nbPlayer, socket=null) {
+  createGame(gameId, theme, nbPlayer) {
     if (this.gameIdExist()) {
 
     } else {
       //création de la partie
-      this.runningGames[gameId] = new QuizGame(gameId) //passer le theme et le nombre de joueur en plus
+      this.runningGames[gameId] = new Array(3)
+
+      this.runningGames[gameId]['quizz'] = new QuizGame(gameId) //passer le theme et le nombre de joueur en plus
+      this.runningGames[gameId]['nbPlayer'] = nbPlayer
+      this.runningGames[gameId]['players'] = []
     }
   }
 
   onGameOver() {
     // TODO : remove from dictionary
+  }
+
+  addPlayer(pseudo, gameId, socket){
+        //this.runningGames[gameId]['quizz']
+        this.runningGames[gameId]['players'].push(pseudo)
+  }
+
+  test() {
+    this.runningGames['1234'] = new Array(3)
+    this.runningGames['1234']['quizz'] =123
+    this.runningGames['1234']['players'] = []
   }
 
   gameIdExist(gameId){

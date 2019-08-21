@@ -10,9 +10,10 @@
         <p><strong>You are the Host</strong></p>
       <% }else{ %>
         <p><strong>You are a Player</strong></p>
+        <p>You pseudo <span id="pseudo"><%= pseudo %></span></p>
         <% } %>
-      <p>Game id : <%= gameId %></p>
-      <p>You pseudo <span id="pseudo"><%= pseudo %></span></p>
+      <p>Game id : <span id="gameId"><%= gameId %></span></p>
+      
       <div id="newPlayer">
         
       </div>
@@ -24,20 +25,34 @@
         </div>
       </div>
       
-      <p>Share the link to your friends : <a href="http://127.0.0.1:34335/join_game/<%= gameId %>">localhost:34335/join_game/<%= gameId %></a> !</p>
+      <p>Share the link to your friends : <a href="http://127.0.0.1:34335/join_game/<%= gameId %>" target="_blank">localhost:34335/join_game/<%= gameId %></a> !</p>
 
     </div>
     
     <script type="text/javascript">
-      let socket = io.connect('http://localhost:34335')
 
-      socket.emit('waiting_queue', {pseudo:document.getElementById('pseudo').textContent})
+      
+
+      window.addEventListener('DOMContentLoaded', (event) => {
+        let socket = io.connect('http://localhost:34335')
+        let pseudo = document.getElementById('pseudo').textContent
+
+        if(pseudo){
+          socket.emit('waiting_queue', {pseudo:pseudo, gameId:document.getElementById('gameId').textContent})
+        }
+
+        
+      })
 
       socket.on('player_connected', (data) => {
-        console.log(data.newPlayerPseudo)
+        console.log(data.arrayPlayer)
         let divNewPlayer = document.getElementById('newPlayer')
-        divNewPlayer.innerHTML += "<p>" + data.newPlayerPseudo + "</p>"
-     })
+
+        divNewPlayer.innerHTML = ''
+        data.arrayPlayer.forEach((pseudo) => {
+          divNewPlayer.innerHTML += "<p>" + pseudo + "</p>"
+        })
+      })
 
     </script>
   </body>
