@@ -2,10 +2,18 @@ const QuizTimer = require('./QuizTimer')
 const QuizReader = require('./QuizReader')
 
 class QuizGame {
-  constructor(gameId, socket='') {
+  constructor(gameId) {
     this.gameId = gameId
-    this.socket = socket
+    this.sockets = []
+    this.quizTimer = new QuizTimer(10,
+                                   () => this.onTimeOver(),
+                                   (countdown) => this.onTick(countdown),
+                                   (countdown) => this.onSync(countdown))
     this.startQuiz()
+  }
+
+  addPlayer(socket) {
+    this.sockets.push(socket)
   }
 
   startQuiz() {
@@ -17,6 +25,12 @@ class QuizGame {
     .catch((err) => {
       console.log(err)
     })
+  }
+
+  broadCastToAllPlayer(channel, data) {
+    for (let socket of this.sockets) {
+      socket.emit(channel, data)
+    }
   }
 
   renderNextQuestion() {
@@ -38,8 +52,16 @@ class QuizGame {
   }
 
   onTimeOver() {
-    console.log('Time over')
+    // TODO: stop after n questions
     this.renderNextQuestion()
+  }
+
+  onTick(countdown) {
+    this.broadCastToAllPlayer('tick', { countdown: countdown })
+  }
+
+  onSync(countdown) {
+    this.broadCastToAllPlayer('sync', { countdown: countdown })
   }
 }
 
