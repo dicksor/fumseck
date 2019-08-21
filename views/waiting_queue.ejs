@@ -8,7 +8,6 @@
       }
     </style>
     <link rel="stylesheet" href="/css/analogClock.css">
-    <script src="/js/animation.js" charset="utf-8"></script>
     <script src="/js/game.js" charset="utf-8"></script>
   </head>
   <body>
@@ -73,35 +72,5 @@
       </div>
     </div>
     <input type="submit" onclick="test()" value="">
-    <script type="text/javascript">
-
-
-
-      window.addEventListener('DOMContentLoaded', (event) => {
-        let socket = io.connect('http://localhost:34335')
-        let pseudo = document.getElementById('pseudo')
-
-        if(pseudo){
-          socket.emit('waiting_queue', {pseudo:pseudo.textContent, gameId:document.getElementById('gameId').textContent})
-        }
-
-        socket.on('player_connected', (data) => {
-          console.log(data.arrayPlayer)
-          let divNewPlayer = document.getElementById('newPlayer')
-
-          divNewPlayer.innerHTML = ''
-          data.arrayPlayer.forEach((pseudo) => {
-            divNewPlayer.innerHTML += "<p>" + pseudo + "</p>"
-          })
-
-          socket.on('game_is_ready', () =>{
-            document.getElementById('waiting_queue').style.display = 'none'
-            document.getElementById('in_game').style.display = 'block'
-
-          })
-        })
-      })
-
-    </script>
   </body>
 </html>

@@ -33,6 +33,7 @@ class GameManager {
   addPlayer(pseudo, gameId, socket){
         if(this.isRoomFull(gameId)){
           console.log('game_is_ready');
+          console.log(this.runningGames)
           this.runningGames[gameId]['quiz'].startQuiz()
           this.runningGames[gameId]['quiz'].broadCastToAllPlayer('game_is_ready')
         } else {

@@ -1,14 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
   const socket = io()
-  const obj = {gameId : 'idtest', username : 'jonas'}
-
-  socket.emit('quiz_init', obj)
-
-
-  socket.on('quiz_initialized', (msg) => {
-    alert(msg)
-  })
-
 
   let questionEl = document.getElementById("question")
   let responseAEl = document.getElementById("responseA")
@@ -31,6 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   socket.on('next_question', (data) => {
+    console.log('next_question')
+    console.log(data)
     let question = data.question
     questionEl.innerHTML = question.question
     responseAEl.innerHTML = question.propositions[0]
@@ -45,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let countdownNumberEl = document.getElementById('countdown-number')
 
   socket.on('tick', (data) => {
+    console.log('tick')
     countdownNumberEl.textContent = data.countdown
   })
 
@@ -53,6 +47,27 @@ document.addEventListener('DOMContentLoaded', () => {
   socket.on('sync', (data) => {
     countdownNumberEl.textContent = data.countdown
     countdownSvgEl.style.animation = 'animation: countdown' + data.countdown + 's linear infinite forwards';
+  })
+
+  let pseudo = document.getElementById('pseudo')
+
+  if(pseudo){
+    socket.emit('waiting_queue', {pseudo:pseudo.textContent, gameId:document.getElementById('gameId').textContent})
+  }
+
+  socket.on('player_connected', (data) => {
+    console.log(data.arrayPlayer)
+    let divNewPlayer = document.getElementById('newPlayer')
+
+    divNewPlayer.innerHTML = ''
+    data.arrayPlayer.forEach((pseudo) => {
+      divNewPlayer.innerHTML += "<p>" + pseudo + "</p>"
+    })
+
+    socket.on('game_is_ready', () => {
+      document.getElementById('waiting_queue').style.display = 'none'
+      document.getElementById('in_game').style.display = 'block'
+    })
   })
 
 })

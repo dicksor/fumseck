@@ -9,7 +9,6 @@ class QuizGame {
                                    () => this.onTimeOver(),
                                    (countdown) => this.onTick(countdown),
                                    (countdown) => this.onSync(countdown))
-    this.startQuiz()
   }
 
   addPlayer(socket) {
@@ -20,7 +19,6 @@ class QuizGame {
     let quiz = new QuizReader('oqdb_breaking_bad.json')
     quiz.readQuiz().then((quizData) => {
       this.quizData = quizData
-      console.log(quizData);
       this.renderNextQuestion()
     })
     .catch((err) => {
@@ -28,7 +26,7 @@ class QuizGame {
     })
   }
 
-  broadCastToAllPlayer(channel, data=null) {
+  broadCastToAllPlayer(channel, data = null) {
     for (let socket of this.sockets) {
       socket.emit(channel, data)
     }
