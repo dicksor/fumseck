@@ -22,14 +22,7 @@
       <br>
       <a class="uk-link-muted" href="/"><span uk-icon="icon: chevron-left"></span>Back Home</a>
 
-      <form class="uk-form-horizontal uk-margin-large uk-text-center" method="post" action="create_game_processing">
-
-          <div class="uk-margin">
-              <div class="uk-inline">
-                  <span class="uk-form-icon" uk-icon="icon: link"></span>
-                  <input class="uk-input uk-form-large" type="text" placeholder="Game ID : <%= gameId %>" name="gameId" disabled>
-              </div>
-          </div>
+      <form class="uk-form-horizontal uk-margin-large uk-text-center" method="post" action="/create_game_processing">
 
           <div class="uk-margin">
             <div class="uk-inline">
@@ -66,8 +59,6 @@
           </div>
 
           <input class="uk-button uk-button-primary" type="submit" value="Create the game" name="create_game"></input>
-
-          <p>Share the link to your friends : <a href="http://127.0.0.1:34335/join_game/<%= gameId %>">localhost:34335/join_game/<%= gameId %></a> !</p>
 
       </form>
 

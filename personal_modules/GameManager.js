@@ -1,18 +1,17 @@
 const QuizGame = require('./QuizGame')
+const idgen = require('idgen')
 
 class GameManager {
   constructor() {
     this.runningGames = {}
   }
 
-  createGame(data, socket) {
-    console.log(data.username)
-    if (data.gameId in this.runningGames) {
-      // Si salle pleine ciao
-      // Si salle en attente
-      // TODO : show error or redirect
+  joinGame(gameId, theme, nbPlayer, socket=null) {
+    if (this.gameIdExist()) {
+
     } else {
-      this.runningGames[data.gameId] = new QuizGame(data.gameId, socket)
+      //création de la partie
+      this.runningGames[gameId] = new QuizGame(gameId) //passer le theme et le nombre de joueur en plus
     }
   }
 
@@ -20,11 +19,15 @@ class GameManager {
     // TODO : remove from dictionary
   }
 
+  gameIdExist(gameId){
+    return (gameId in this.runningGames)
+  }
+
   generateGameId(length = 6){
     let gameId = '';
     do {
        gameId = idgen(length)
-    }while(this.arrayGameId.includes(gameId))
+    }while(this.gameIdExist())
 
     return gameId;
   }

@@ -5,19 +5,17 @@
   </head>
   <body>
     <h1>Waiting queue</h1>
-    <% if(host) { %>
-      <p>host</p>
-    <% }else{ %>
-      <p>client</p>
-      <% } %>
-    <p>Game id : <%= gameId %>
-    <p>You are <%= pseudo %> </p>
+    <div class="uk-margin">
+        <div class="uk-inline">
+            <span class="uk-form-icon" uk-icon="icon: link"></span>
+            <input class="uk-input uk-form-large" type="text" placeholder="Game ID : <%= gameId %>" name="gameId" disabled>
+        </div>
+    </div>
+    <p>Share the link to your friends : <a href="http://127.0.0.1:34335/join_game/<%= gameId %>">localhost:34335/join_game/<%= gameId %></a> !</p>
     <script type="text/javascript">
       let socket = io.connect('http://localhost:34335')
 
-      socket.on('user_connection', (data) =>{
-        alert('connection : ' + data)
-      })
+
     </script>
   </body>
 </html>

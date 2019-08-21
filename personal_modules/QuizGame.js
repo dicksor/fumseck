@@ -2,7 +2,7 @@ const QuizTimer = require('./QuizTimer')
 const QuizReader = require('./QuizReader')
 
 class QuizGame {
-  constructor(gameId, socket) {
+  constructor(gameId, socket='') {
     this.gameId = gameId
     this.socket = socket
     this.startQuiz()
