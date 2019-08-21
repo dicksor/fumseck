@@ -14,7 +14,7 @@ class GameManager {
       this.runningGames[gameId] = []
 
       this.runningGames[gameId]['quiz'] = new QuizGame(gameId) //passer le theme et le nombre de joueur en plus
-      this.runningGames[gameId]['nbPlayer'] = nbPlayer
+      this.runningGames[gameId]['nbPlayer'] = parseInt(nbPlayer)
       this.runningGames[gameId]['players'] = []
     }
   }
@@ -26,6 +26,7 @@ class GameManager {
   isRoomFull(gameId){
     console.log('tab length : ' + this.runningGames[gameId]['players'].length);
     console.log('nb players ' + this.runningGames[gameId]['nbPlayer']);
+    console.log(this.runningGames[gameId]['players'].length === this.runningGames[gameId]['nbPlayer']);
     return this.runningGames[gameId]['players'].length === this.runningGames[gameId]['nbPlayer']
   }
 
@@ -39,12 +40,6 @@ class GameManager {
           this.runningGames[gameId]['quiz'].broadCastToAllPlayer('player_connected', {arrayPlayer: this.runningGames[gameId]['players']})
           this.runningGames[gameId]['players'].push(pseudo)
         }
-  }
-
-  test() {
-    this.runningGames['1234'] = new Array(3)
-    this.runningGames['1234']['quizz'] =123
-    this.runningGames['1234']['players'] = []
   }
 
   gameIdExist(gameId){

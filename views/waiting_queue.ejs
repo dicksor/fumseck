@@ -89,10 +89,10 @@
           divNewPlayer.innerHTML = ''
           data.arrayPlayer.forEach((pseudo) => {
             divNewPlayer.innerHTML += "<p>" + pseudo + "</p>"
-            alert(pseudo)
           })
 
           socket.on('game_is_ready', () =>{
+            alert('test');
             document.getElementById('waiting_queue').parentNode.removeChild('waiting_queue')
             document.getElementById('in_game').style.display = 'block'
           })

@@ -12,7 +12,6 @@ const GameManager = require('./personal_modules/GameManager')
 const viewPath = 'views'
 
 let gameManager = new GameManager()
-gameManager.test()
 
 app.set('view engine', 'ejs')
 app.use('/favicon.ico', express.static('public/img/icon/favicon.ico'));
