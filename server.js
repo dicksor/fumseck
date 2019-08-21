@@ -29,6 +29,9 @@ app.get('/', (req, res) =>{
 .get('/join_game/:game_id', (req, res) => {
   res.render('joinGame', {gameId:req.params.game_id})
 })
+.get('/create_game_processing', (req, res) => {
+  // TODO
+})
 .get('/join_game', (req, res) => {
   res.render('joinGame', {gameId:''})
 })
@@ -39,20 +42,25 @@ app.get('/', (req, res) =>{
   res.render('waiting_queue', {host:false})
 })
 .get('/in_game/:id_game', (req, res) => {
-  gameManager.createGame(req.params.id_game, res)
+  res.render('in_game')
 })
 .use((req, res, next) => {
   res.status(404).send('Page introuvable !');
 })
 
-io.sockets.on('connection', (socket) =>{
-   socket.on('quiz_init', () => {
-     socket.emit(gameManager.sendNext
-   })
- })
+io.on('connection', function(socket){
+  console.log('a user connected')
 
-//if games[gameId]
+  socket.on('disconnect', function(){
+    // TODO
+  })
 
-http.listen(34335, ()=> {
+  socket.on('quiz_init', (data) => {
+    console.log('quiz_init')
+    gameManager.createGame(data, socket)
+  })
+})
+
+http.listen(34335, function(){
   console.log('Starting server on port: 34335')
 })

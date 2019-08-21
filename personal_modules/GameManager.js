@@ -5,13 +5,14 @@ class GameManager {
     this.runningGames = {}
   }
 
-  createGame(gameId, nbPlayer, theme, res) {
-    if (gameId in this.runningGames) {
+  createGame(data, socket) {
+    console.log(data.username)
+    if (data.gameId in this.runningGames) {
+      // Si salle pleine ciao
+      // Si salle en attente
       // TODO : show error or redirect
     } else {
-      this.runningGames[gameId]['quiz'] = new QuizGame(gameId, res)
-      this.runningGames[gameId]['nbPlayer'] = nbPlayer
-      this.runningGames[gameId]['players'] = []
+      this.runningGames[data.gameId] = new QuizGame(data.gameId, socket)
     }
   }
 

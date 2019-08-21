@@ -2,33 +2,54 @@
 <html lang="en" dir="ltr">
   <head>
     <% include partials/head %>
+    <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', () => {
+      const socket = io()
+      const obj = {gameId : 'idtest', username : 'jonas'}
+
+      socket.emit('quiz_init', obj)
+
+      socket.on('quiz_initialized', (msg) => {
+        alert(msg)
+      })
+
+      socket.on('next_question', (data) => {
+        let question = data.question
+        document.getElementById("question").innerHTML = question.question
+        document.getElementById("responseA").innerHTML = question.propositions[0]
+        document.getElementById("responseB").innerHTML = question.propositions[1]
+        document.getElementById("responseC").innerHTML = question.propositions[2]
+        document.getElementById("responseD").innerHTML = question.propositions[3]
+      })
+    })
+    </script>
   </head>
   <body>
     <div class="uk-container">
-      <h1 class="uk-title"><%= question %></h1>
+      <h1 id="question" class="uk-title"></h1>
       <div class="uk-child-width-1-2@s uk-grid-match" uk-grid>
         <div>
           <div class="uk-card uk-card-default uk-card-hover uk-card-body">
             <p>Choix A</p>
-            <h3 class="uk-card-title"><%= propositions[0] %></h3>
+            <h3 id="responseA" class="uk-card-title"></h3>
           </div>
         </div>
         <div>
           <div class="uk-card uk-card-default uk-card-hover uk-card-body">
             <p>Choix B</p>
-            <h3 class="uk-card-title"><%= propositions[1] %></h3>
+            <h3 id="responseB" class="uk-card-title"></h3>
           </div>
         </div>
         <div>
           <div class="uk-card uk-card-default uk-card-hover uk-card-body">
             <p>Choix C</p>
-            <h3 class="uk-card-title"><%= propositions[2] %></h3>
+            <h3 id="responseC" class="uk-card-title"></h3>
           </div>
         </div>
         <div>
           <div class="uk-card uk-card-default uk-card-hover uk-card-body">
             <p>Choix D</p>
-            <h3 class="uk-card-title"><%= propositions[3] %></h3>
+            <h3 id="responseD" class="uk-card-title"></h3>
           </div>
         </div>
       </div>

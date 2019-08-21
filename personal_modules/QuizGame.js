@@ -2,9 +2,9 @@ const QuizTimer = require('./QuizTimer')
 const QuizReader = require('./QuizReader')
 
 class QuizGame {
-  constructor(gameId, res) {
+  constructor(gameId, socket) {
     this.gameId = gameId
-    this.res = res
+    this.socket = socket
     this.startQuiz()
   }
 
@@ -24,13 +24,22 @@ class QuizGame {
     let rndQuestionIdx = this.getRandomQuestionIdx(this.quizData.quizz.expert)
     let question = this.quizData.quizz.expert[rndQuestionIdx].question
     let propositions = this.quizData.quizz.expert[rndQuestionIdx].propositions
-    // TODO : remove question from set
-    this.res.render('in_game', { question: question, propositions: propositions })
-    this.quizTimer = new QuizTimer()
+    let data = { question: question, propositions: propositions}
+
+    this.quizData.quizz.expert.splice(rndQuestionIdx, 1)
+
+    this.socket.emit('next_question', { question: data })
+
+    this.quizTimer = new QuizTimer(10, () => this.onTimeOver())
   }
 
   getRandomQuestionIdx(allQuestions) {
     return Math.floor(Math.random() * allQuestions.length)
+  }
+
+  onTimeOver() {
+    console.log('Time over')
+    this.renderNextQuestion()
   }
 }
 
