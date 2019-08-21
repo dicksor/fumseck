@@ -1,9 +1,15 @@
 class QuizTimer {
-  constructor(maxTime, onTimeOverCb) {
+  constructor(maxTime, onTimeOverCb, onTickCb, onSyncCb) {
     this.maxTime = maxTime
     this.onTimeOverCb = onTimeOverCb
-    this.secondElapsed = 0
-    this.startTimer()
+    this.onTickCb = onTickCb
+    this.onSyncCb = onSyncCb
+    this.countdown = this.maxTime
+  }
+
+  sync() {
+    this.countdown = this.maxTime
+    this.onSyncCb(this.countdown)
   }
 
   startTimer() {
@@ -11,15 +17,16 @@ class QuizTimer {
   }
 
   tick() {
-    this.secondElapsed++
-    if(this.secondElapsed >= this.maxTime) {
+    this.countdown--
+    this.onTickCb(this.countdown)
+    if(this.countdown <= 0) {
       this.stop()
       this.onTimeOverCb()
     }
   }
 
   reset() {
-    this.secondElapsed = 0
+    this.countdown = this.maxTime
     this.startTimer()
   }
 

@@ -2,10 +2,18 @@ const QuizTimer = require('./QuizTimer')
 const QuizReader = require('./QuizReader')
 
 class QuizGame {
-  constructor(gameId, socket) {
+  constructor(gameId) {
     this.gameId = gameId
-    this.socket = socket
+    this.sockets = []
+    this.quizTimer = new QuizTimer(10,
+                                   () => this.onTimeOver(),
+                                   (countdown) => this.onTick(countdown),
+                                   (countdown) => this.onSync(countdown))
     this.startQuiz()
+  }
+
+  addPlayer(socket) {
+    this.sockets.push(socket)
   }
 
   startQuiz() {
@@ -19,6 +27,12 @@ class QuizGame {
     })
   }
 
+  broadCastToAllPlayer(channel, data) {
+    for (let socket of this.sockets) {
+      socket.emit(channel, data)
+    }
+  }
+
   renderNextQuestion() {
     // TODO : get random level
     let rndQuestionIdx = this.getRandomQuestionIdx(this.quizData.quizz.expert)
@@ -28,9 +42,10 @@ class QuizGame {
 
     this.quizData.quizz.expert.splice(rndQuestionIdx, 1)
 
-    this.socket.emit('next_question', { question: data })
+    this.broadCastToAllPlayer('next_question', { question: data })
 
-    this.quizTimer = new QuizTimer(10, () => this.onTimeOver())
+    this.quizTimer.sync()
+    this.quizTimer.startTimer()
   }
 
   getRandomQuestionIdx(allQuestions) {
@@ -38,8 +53,16 @@ class QuizGame {
   }
 
   onTimeOver() {
-    console.log('Time over')
+    // TODO: stop after n questions
     this.renderNextQuestion()
+  }
+
+  onTick(countdown) {
+    this.broadCastToAllPlayer('tick', { countdown: countdown })
+  }
+
+  onSync(countdown) {
+    this.broadCastToAllPlayer('sync', { countdown: countdown })
   }
 }
 
