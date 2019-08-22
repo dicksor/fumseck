@@ -30,16 +30,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   socket.on('next_question', (data) => {
 
-    for(let i = 0; i < 4; i++) {
-      if(data.count > 0) {
-        document.getElementById(i).classList.remove('uk-card-primary')
-        document.getElementById(i).classList.add('uk-card-hover')
-        document.getElementById("" + i + i).style.cursor = 'pointer';
-      }
-
-      document.getElementById("" + i + i).addEventListener('click', function() {
-          sendResponse(i)
-      });
+    if(data.count > 0) {
+        for(let i = 0; i < 4; i++) {
+            document.getElementById(i).classList.remove('uk-card-primary')
+            document.getElementById(i).classList.add('uk-card-hover')
+            document.getElementById("" + i + i).style.cursor = 'pointer';
+            document.getElementById("" + i + i).onclick = function() {
+                sendResponse(i)
+            };
+        }
     }
 
     questionManager.displayNext(data.question)
