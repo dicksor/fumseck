@@ -1,12 +1,13 @@
-<div id="waiting_queue">
+<div id="waitingQueue">
   <h1>Waiting Room</h1>
   <% if(host) { %>
     <p><strong>You are the Host</strong></p>
-  <% }else{ %>
-    <p><strong>You are a Player</strong></p>
-    <p>You pseudo <span id="pseudo"><%= pseudo %></span></p>
-    <% } %>
-  <p>Game id : <span id="gameId"><%= gameId %></span></p>
+  <% } else { %>
+    <input type="hidden" id="pseudo" value="<%= pseudo %>">
+  <% } %>
+  <input type="hidden" id="gameId" value="<%= gameId %>">
+  <p>Game id : <%= gameId %></p>
+
 
   <div id="newPlayer">
 

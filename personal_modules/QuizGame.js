@@ -4,7 +4,8 @@ const QuizReader = require('./QuizReader')
 class QuizGame {
   constructor(gameId) {
     this.gameId = gameId
-    this.sockets = []
+    this.playerSockets = []
+    this.hostSocket = new Object()
     this.quizTimer = new QuizTimer(10,
                                    () => this.onTimeOver(),
                                    (countdown) => this.onTick(countdown),
@@ -13,7 +14,11 @@ class QuizGame {
   }
 
   addPlayer(socket) {
-    this.sockets.push(socket)
+    this.playerSockets.push(socket)
+  }
+
+  addHost(socket) {
+    this.hostSocket = socket
   }
 
   startQuiz() {
@@ -28,9 +33,13 @@ class QuizGame {
   }
 
   broadCastToAllPlayer(channel, data = null) {
-    for (let socket of this.sockets) {
+    for (let socket of this.playerSockets) {
       socket.emit(channel, data)
     }
+  }
+
+  emitToHost(channel, data = null){
+    this.hostSocket.emit(channel, data)
   }
 
   renderNextQuestion() {

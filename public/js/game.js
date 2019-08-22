@@ -45,12 +45,16 @@ document.addEventListener('DOMContentLoaded', () => {
     countdownNumberEl.textContent = data.countdown
     countdownSvgEl.style.animation = 'animation: countdown' + data.countdown + 's linear infinite forwards';
   })
-
+  //Waiting queue
   let pseudo = document.getElementById('pseudo')
+  let gameId = document.getElementById('gameId')
 
   if(pseudo){
-    socket.emit('waiting_queue', {pseudo:pseudo.textContent, gameId:document.getElementById('gameId').textContent})
+    socket.emit('player_in_waiting_queue', {pseudo:pseudo.value,  gameId:gameId.value})
+  } else {
+    socket.emit('host_in_waiting_queue', {gameId:gameId.value})
   }
+
 
   socket.on('player_connected', (data) => {
     let divNewPlayer = document.getElementById('newPlayer')
@@ -60,8 +64,13 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     socket.on('game_is_ready', () => {
-      document.getElementById('waiting_queue').style.display = 'none'
-      document.getElementById('in_game').style.display = 'block'
+      document.getElementById('waitingQueue').style.display = 'none'
+      document.getElementById('inGame').style.display = 'block'
+    })
+
+    //redirect user if a error with the room occur
+    socket.on('room_error', () => {
+      window.location.href = 'http://127.0.0.1/:34335'
     })
   })
 
