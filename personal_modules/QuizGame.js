@@ -2,10 +2,13 @@ const QuizTimer = require('./QuizTimer')
 const QuizReader = require('./QuizReader')
 
 class QuizGame {
-  constructor(gameId) {
+  constructor(gameId, nbQuestion, theme) {
     this.gameId = gameId
     this.playerSockets = []
     this.hostSocket = new Object()
+    this.nbQuestion = nbQuestion
+    this.theme = theme
+    this.sockets = []
     this.quizTimer = new QuizTimer(10,
                                    () => this.onTimeOver(),
                                    (countdown) => this.onTick(countdown),
@@ -67,8 +70,11 @@ class QuizGame {
   }
 
   onTimeOver() {
-    // TODO: stop after n questions
-    this.renderNextQuestion()
+    if(this.count < this.nbQuestion) {
+      this.renderNextQuestion()
+    } else {
+      this.broadCastToAllPlayer('game_is_over')
+    }
   }
 
   onTick(countdown) {
