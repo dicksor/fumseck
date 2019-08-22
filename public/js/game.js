@@ -66,4 +66,10 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   })
 
+  // envoie réponse
+
+  function sendRep() {
+    
+  }
+
 })
