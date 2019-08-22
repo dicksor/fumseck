@@ -22,12 +22,26 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   socket.on('next_question', (data) => {
+
     let question = data.question
     questionEl.innerHTML = question.question
     responseAEl.innerHTML = question.propositions[0]
     responseBEl.innerHTML = question.propositions[1]
     responseCEl.innerHTML = question.propositions[2]
     responseDEl.innerHTML = question.propositions[3]
+
+    for(let i = 0; i < 4; i++) {
+      if(data.count > 0) {
+        document.getElementById(i).classList.remove('uk-card-primary')
+        document.getElementById(i).classList.add('uk-card-hover')
+        document.getElementById("" + i + i).style.cursor = 'pointer';
+      }
+
+      document.getElementById("" + i + i).addEventListener('click', function() {
+          sendResponse(i)
+      });
+    }
+
     addQuestionAnimation()
     setTimeout(() => removeQuestionAnimation(), 1000)
   })
@@ -65,10 +79,17 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   })
 
-  // envoie réponse
 
-  function sendRep() {
-
-  }
 
 })
+
+// Send rep from the user
+function sendResponse(rep) {
+  document.getElementById(rep).classList.add('uk-card-primary')
+
+  for(let i = 0; i < 4; i++) {
+    document.getElementById(i).classList.remove('uk-card-hover')
+    document.getElementById("" + i + i).style.cursor = 'default';
+    document.getElementById("" + i + i).removeEventListener('click', sendResponse(i));
+  }
+}
