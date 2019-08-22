@@ -7,57 +7,45 @@ document.addEventListener('DOMContentLoaded', () => {
   let responseCEl = document.getElementById("responseC")
   let responseDEl = document.getElementById("responseD")
 
+  let questionManager = new QuestionManager(questionEl,
+                                            responseAEl,
+                                            responseBEl,
+                                            responseCEl,
+                                            responseDEl)
+
   let cardsEls = document.getElementsByClassName('uk-card')
-
-  function addQuestionAnimation() {
-    for (let cardEl of cardsEls) {
-      cardEl.classList.add('uk-animation-scale-up')
-    }
-  }
-
-  function removeQuestionAnimation() {
-    for (let cardEl of cardsEls) {
-      cardEl.classList.remove('uk-animation-scale-up')
-    }
-  }
-
-  socket.on('next_question', (data) => {
-    let question = data.question
-    questionEl.innerHTML = question.question
-    responseAEl.innerHTML = question.propositions[0]
-    responseBEl.innerHTML = question.propositions[1]
-    responseCEl.innerHTML = question.propositions[2]
-    responseDEl.innerHTML = question.propositions[3]
-    addQuestionAnimation()
-    setTimeout(() => removeQuestionAnimation(), 1000)
-  })
-
-
   let countdownNumberEl = document.getElementById('countdown-number')
   let countdownSvgCircleEl = document.getElementById('timer-svg--circle')
   let countdownEl = document.getElementById('countdown')
 
+  let gameAnimation = new GameAnimation(cardsEls,
+                                        countdownNumberEl,
+                                        countdownSvgCircleEl,
+                                        countdownEl)
+
+  socket.on('next_question', (data) => {
+    questionManager.displayNext(data.question)
+    gameAnimation.addQuestionAnimation()
+  })
+
+
+
+
   socket.on('tick', (data) => {
     countdownNumberEl.textContent = data.countdown
     if (data.countdown <= 5) {
-      countdownEl.classList.add('uk-animation-shake')
-      setTimeout(() => {countdownEl.classList.remove('uk-animation-shake')}, 100)
-      countdownNumberEl.style.color = "#e74c3c"
-      countdownSvgCircleEl.style.stroke = "#e74c3c"
+      gameAnimation.addStressMotion()
     }
   })
 
   socket.on('sync', (data) => {
-    countdownNumberEl.textContent = data.countdown
-    countdownSvgCircleEl.style.animation = 'animation: countdown' + data.countdown + 's linear infinite forwards'
-    countdownNumberEl.style.color = "#333"
-    countdownSvgCircleEl.style.stroke = "#333"
+    gameAnimation.onSync(data.countdown)
   })
 
   let pseudo = document.getElementById('pseudo')
 
   if(pseudo){
-    socket.emit('waiting_queue', {pseudo:pseudo.textContent, gameId:document.getElementById('gameId').textContent})
+    socket.emit('waiting_queue', { pseudo:pseudo.textContent, gameId:document.getElementById('gameId').textContent })
   }
 
   socket.on('player_connected', (data) => {

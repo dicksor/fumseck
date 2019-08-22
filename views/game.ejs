@@ -7,7 +7,7 @@
         display: none;
       }
 
-      <% if(!host) { %>
+      <% if(host) { %>
         #client{
           display: none;
         }
@@ -18,6 +18,8 @@
       <% } %>
     </style>
     <link rel="stylesheet" href="/css/analogClock.css">
+    <script src="/js/GameAnimation.js" charset="utf-8"></script>
+    <script src="/js/QuestionManager.js" charset="utf-8"></script>
     <script src="/js/game.js" charset="utf-8"></script>
   </head>
   <body>
