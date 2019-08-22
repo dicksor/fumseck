@@ -2,19 +2,27 @@ const QuizTimer = require('./QuizTimer')
 const QuizReader = require('./QuizReader')
 
 class QuizGame {
-  constructor(gameId) {
+  constructor(gameId, nbQuestion, theme) {
     this.gameId = gameId
+    this.playerSockets = []
+    this.hostSocket = new Object()
+    this.nbQuestion = nbQuestion
+    this.theme = theme
     this.sockets = []
     this.quizTimer = new QuizTimer(10,
                                    () => this.onTimeOver(),
                                    (countdown) => this.onTick(countdown),
                                    (countdown) => this.onSync(countdown))
     this.count = 0
-    this.sync(10)
+
   }
 
   addPlayer(socket) {
-    this.sockets.push(socket)
+    this.playerSockets.push(socket)
+  }
+
+  addHost(socket) {
+    this.hostSocket = socket
   }
 
   startQuiz() {
@@ -29,9 +37,13 @@ class QuizGame {
   }
 
   broadCastToAllPlayer(channel, data = null) {
-    for (let socket of this.sockets) {
+    for (let socket of this.playerSockets) {
       socket.emit(channel, data)
     }
+  }
+
+  emitToHost(channel, data = null){
+    this.hostSocket.emit(channel, data)
   }
 
   renderNextQuestion() {
@@ -47,6 +59,7 @@ class QuizGame {
     this.sync(10)
 
     this.broadCastToAllPlayer('next_question', { question: data, count: this.count })
+    this.emitToHost('next_question', { question: data, count: this.count })
     this.count++
 
     this.quizTimer.startTimer()
@@ -57,16 +70,21 @@ class QuizGame {
   }
 
   onTimeOver() {
-    // TODO: stop after n questions
-    this.renderNextQuestion()
+    if(this.count < this.nbQuestion) {
+      this.renderNextQuestion()
+    } else {
+      this.broadCastToAllPlayer('game_is_over')
+    }
   }
 
   onTick(countdown) {
-    this.broadCastToAllPlayer('tick', { countdown: countdown })
+    this.broadCastToAllPlayer('tick', {countdown: countdown})
+    this.emitToHost('tick', {countdown: countdown})
   }
 
   sync(countdown) {
-    this.broadCastToAllPlayer('sync', { countdown: countdown })
+    this.emitToHost('sync', {countdown: countdown})
+    this.broadCastToAllPlayer('sync', {countdown: countdown})
   }
 }
 

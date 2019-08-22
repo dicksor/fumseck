@@ -23,17 +23,23 @@ document.addEventListener('DOMContentLoaded', () => {
                                         countdownSvgCircleEl,
                                         countdownEl)
 
+  let endGameEl = document.getElementById('endGame')
+  let newPlayerEl = document.getElementById('newPlayer')
+  let waitingQueueEl = document.getElementById('waitingQueue')
+  let inGameEl = document.getElementById('inGame')
+
   socket.on('next_question', (data) => {
 
-    if(data.count > 0) {
-        for(let i = 0; i < 4; i++) {
-            document.getElementById(i).classList.remove('uk-card-primary')
-            document.getElementById(i).classList.add('uk-card-hover')
-            document.getElementById("" + i + i).style.cursor = 'pointer';
-            document.getElementById("" + i + i).onclick = function() {
-                sendResponse(i)
-            };
-        }
+    for(let i = 0; i < 4; i++) {
+      if(data.count > 0) {
+        document.getElementById(i).classList.remove('uk-card-primary')
+        document.getElementById(i).classList.add('uk-card-hover')
+        document.getElementById("" + i + i).style.cursor = 'pointer';
+      }
+
+      document.getElementById("" + i + i).addEventListener('click', function() {
+          sendResponse(i)
+      });
     }
 
     questionManager.displayNext(data.question)
@@ -48,28 +54,38 @@ document.addEventListener('DOMContentLoaded', () => {
   socket.on('sync', (data) => {
     gameAnimation.onSync(data.countdown)
   })
-
+  //Waiting queue
   let pseudo = document.getElementById('pseudo')
+  let gameId = document.getElementById('gameId')
 
   if(pseudo){
-    socket.emit('waiting_queue', { pseudo: pseudo.textContent, gameId: document.getElementById('gameId').textContent })
+    socket.emit('player_in_waiting_queue', {pseudo:pseudo.value,  gameId:gameId.value})
+  } else {
+    socket.emit('host_in_waiting_queue', {gameId:gameId.value})
   }
 
+
   socket.on('player_connected', (data) => {
-    let divNewPlayer = document.getElementById('newPlayer')
-    divNewPlayer.innerHTML = ''
+    newPlayerEl.innerHTML = ''
     data.arrayPlayer.forEach((pseudo) => {
-      divNewPlayer.innerHTML += "<p>" + pseudo + "</p>"
+      newPlayerEl.innerHTML += "<p>" + pseudo + "</p>"
     })
 
-    socket.on('game_is_ready', () => {
-      document.getElementById('waitingQueue').style.display = 'none'
-      document.getElementById('inGame').style.display = 'block'
-    })
+  socket.on('game_is_ready', () => {
+    waitingQueueEl .style.display = 'none'
+    inGameEl.style.display = 'block'
   })
 
+  socket.on('game_is_over', () => {
+    inGameEl.style.display = 'none'
+    endGameEl.style.display = 'block'
+  })
 
-
+    //redirect user if a error with the room occur
+    socket.on('room_error', () => {
+      window.location.href = 'http://127.0.0.1/:34335'
+    })
+  })
 })
 
 // Send rep from the user

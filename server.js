@@ -9,7 +9,6 @@ let urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 //personal_modules
 const GameManager = require('./personal_modules/GameManager')
-const viewPath = 'views'
 
 let gameManager = new GameManager()
 
@@ -26,10 +25,7 @@ app.get('/', (req, res) =>{
 })
 .post('/create_game_processing', urlencodedParser, (req, res) => {
   let gameId = gameManager.generateGameId()
-  let theme = req.body.theme
-  let nbPlayer = req.body.nbPlayer
-
-  gameManager.createGame(gameId, theme, nbPlayer)
+  gameManager.createGame(gameId, req.body)
   res.render('game', {host:true, gameId:gameId})
 })
 .get('/join_game/:game_id', (req, res) => {
@@ -41,21 +37,18 @@ app.get('/', (req, res) =>{
 .post('/waiting_queue', urlencodedParser, (req, res) => {
   res.render('game', {host:false, pseudo:req.body.pseudo, gameId:req.body.gameId})
 })
-.get('/in_game/:id_game', (req, res) => {
-  res.render('in_game')
-})
 .use((req, res, next) => {
   res.status(404).send('Page introuvable !');
 })
 
 io.on('connection', function(socket){
 
-  socket.on('waiting_queue', (data) => {
-  	gameManager.addPlayer(data.pseudo, data.gameId, socket)
+  socket.on('player_in_waiting_queue', (data) => {
+  	gameManager.addPlayer(data, socket)
   })
 
-  socket.on('disconnect', function(){
-    // TODO
+  socket.on('host_in_waiting_queue', (data) => {
+    gameManager.addHost(data, socket)
   })
 })
 
