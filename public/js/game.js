@@ -22,8 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   socket.on('next_question', (data) => {
-    console.log('next_question')
-    console.log(data)
     let question = data.question
     questionEl.innerHTML = question.question
     responseAEl.innerHTML = question.propositions[0]
@@ -38,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let countdownNumberEl = document.getElementById('countdown-number')
 
   socket.on('tick', (data) => {
-    console.log('tick')
     countdownNumberEl.textContent = data.countdown
   })
 

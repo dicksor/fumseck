@@ -9,6 +9,7 @@ class QuizGame {
                                    () => this.onTimeOver(),
                                    (countdown) => this.onTick(countdown),
                                    (countdown) => this.onSync(countdown))
+    this.sync(10)
   }
 
   addPlayer(socket) {
@@ -41,9 +42,11 @@ class QuizGame {
 
     this.quizData.quizz.expert.splice(rndQuestionIdx, 1)
 
+    this.quizTimer.sync()
+    this.sync(10)
+
     this.broadCastToAllPlayer('next_question', { question: data })
 
-    this.quizTimer.sync()
     this.quizTimer.startTimer()
   }
 
@@ -60,7 +63,7 @@ class QuizGame {
     this.broadCastToAllPlayer('tick', { countdown: countdown })
   }
 
-  onSync(countdown) {
+  sync(countdown) {
     this.broadCastToAllPlayer('sync', { countdown: countdown })
   }
 }

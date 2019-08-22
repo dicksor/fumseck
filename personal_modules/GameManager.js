@@ -13,7 +13,7 @@ class GameManager {
       //création de la partie
       this.runningGames[gameId] = []
 
-      this.runningGames[gameId]['quiz'] = new QuizGame(gameId) //passer le theme et le nombre de joueur en plus
+      this.runningGames[gameId]['quiz'] = new QuizGame(gameId) // TODO : passer le theme et le nombre de joueur en plus
       this.runningGames[gameId]['nbPlayer'] = parseInt(nbPlayer)
       this.runningGames[gameId]['roomOpen'] = true
       this.runningGames[gameId]['players'] = []
@@ -24,6 +24,7 @@ class GameManager {
     // TODO : remove from dictionary
   }
 
+<<<<<<< HEAD
   getNbPlaceAvailable(gameId){
     return this.runningGames[gameId]['nbPlayer'] - this.runningGames[gameId]['players'].length
   }
@@ -43,17 +44,32 @@ class GameManager {
       this.runningGames[gameId]['quiz'].broadCastToAllPlayer('player_connected', {arrayPlayer: this.runningGames[gameId]['players']})
       socket.emit('player_connected', {arrayPlayer: this.runningGames[gameId]['players']})
     }
+=======
+  isRoomFull(gameId){
+    return this.runningGames[gameId]['players'].length === this.runningGames[gameId]['nbPlayer']
+  }
+
+  addPlayer(pseudo, gameId, socket){
+        if(this.isRoomFull(gameId)){
+          this.runningGames[gameId]['quiz'].startQuiz()
+          this.runningGames[gameId]['quiz'].broadCastToAllPlayer('game_is_ready')
+        } else {
+          this.runningGames[gameId]['quiz'].addPlayer(socket)
+          this.runningGames[gameId]['quiz'].broadCastToAllPlayer('player_connected', {arrayPlayer: this.runningGames[gameId]['players']})
+          this.runningGames[gameId]['players'].push(pseudo)
+        }
+>>>>>>> 8e881132700bcba4212f396a3f7bff9b04e2e6a1
   }
 
   gameIdExist(gameId){
-    return (gameId in this.runningGames)
+    return gameId in this.runningGames
   }
 
   generateGameId(length = 6){
     let gameId = '';
     do {
        gameId = idgen(length)
-    }while(this.gameIdExist())
+    } while(this.gameIdExist())
 
     return gameId;
   }
