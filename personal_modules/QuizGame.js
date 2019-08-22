@@ -1,5 +1,6 @@
 const QuizTimer = require('./QuizTimer')
 const QuizReader = require('./QuizReader')
+const flatten = require('./util')
 
 class QuizGame {
   constructor(gameId, nbQuestion, theme) {
@@ -28,7 +29,7 @@ class QuizGame {
   startQuiz() {
     let quiz = new QuizReader()
     quiz.readQuiz(this.theme).then((quizData) => {
-      this.quizData = quizData
+      this.quizData = flatten(Object.values(quizData.quizz))
       this.renderNextQuestion()
     })
     .catch((err) => {
@@ -47,13 +48,14 @@ class QuizGame {
   }
 
   renderNextQuestion() {
-    // TODO : get random level
-    let rndQuestionIdx = this.getRandomQuestionIdx(this.quizData.quizz.expert)
-    let question = this.quizData.quizz.expert[rndQuestionIdx].question
-    let propositions = this.quizData.quizz.expert[rndQuestionIdx].propositions
+    let rndQuestionIdx = this.getRandomQuestionIdx(this.quizData)
+    console.log(rndQuestionIdx)
+    console.log(this.quizData[rndQuestionIdx])
+    let question = this.quizData[rndQuestionIdx].question
+    let propositions = this.quizData[rndQuestionIdx].propositions
     let data = { question: question, propositions: propositions}
 
-    this.quizData.quizz.expert.splice(rndQuestionIdx, 1)
+    this.quizData.splice(rndQuestionIdx, 1)
 
     this.quizTimer.sync()
     this.sync(10)
