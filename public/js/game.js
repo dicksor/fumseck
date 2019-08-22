@@ -84,8 +84,8 @@ function sendResponse(rep) {
   document.getElementById(rep).classList.add('uk-card-primary')
 
   for(let i = 0; i < 4; i++) {
+    document.getElementById("" + i + i).onclick = null
     document.getElementById(i).classList.remove('uk-card-hover')
-    document.getElementById("" + i + i).style.cursor = 'default';
-    document.getElementById("" + i + i).removeEventListener('click', sendResponse(i));
+    document.getElementById("" + i + i).style.cursor = 'default'
   }
 }
