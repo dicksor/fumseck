@@ -26,8 +26,8 @@ class QuizGame {
   }
 
   startQuiz() {
-    let quiz = new QuizReader('oqdb_breaking_bad.json')
-    quiz.readQuiz().then((quizData) => {
+    let quiz = new QuizReader()
+    quiz.readQuiz(this.theme).then((quizData) => {
       this.quizData = quizData
       this.renderNextQuestion()
     })

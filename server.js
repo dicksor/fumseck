@@ -9,6 +9,9 @@ let urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 //personal_modules
 const GameManager = require('./personal_modules/GameManager')
+const QuizReader = require('./personal_modules/QuizReader')
+
+const quizReader = new QuizReader()
 
 let gameManager = new GameManager()
 
@@ -21,12 +24,20 @@ app.get('/', (req, res) =>{
   res.render('index')
 })
 .get('/create_game', (req, res) => {
-  res.render('createGame')
+  quizReader.readTopics()
+  .then(topics => {
+    res.render('createGame', { topics: topics })
+  })
+  .catch(error => {
+    // TODO : tell user
+    console.log(error)
+  })
+
 })
 .post('/create_game_processing', urlencodedParser, (req, res) => {
   let gameId = gameManager.generateGameId()
   gameManager.createGame(gameId, req.body)
-  res.render('game', {host:true, gameId:gameId})
+  res.render('game', { host: true, gameId: gameId })
 })
 .get('/join_game/:game_id', (req, res) => {
   res.render('joinGame', {gameId:req.params.game_id})
@@ -35,7 +46,7 @@ app.get('/', (req, res) =>{
   res.render('joinGame', {gameId:''})
 })
 .post('/waiting_queue', urlencodedParser, (req, res) => {
-  res.render('game', {host:false, pseudo:req.body.pseudo, gameId:req.body.gameId})
+  res.render('game', { host: false, pseudo: req.body.pseudo, gameId: req.body.gameId })
 })
 .use((req, res, next) => {
   res.status(404).send('Page introuvable !');
