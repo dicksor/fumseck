@@ -1,14 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
   const socket = io()
-  const obj = {gameId : 'idtest', username : 'jonas'}
-
-  socket.emit('quiz_init', obj)
-
-
-  socket.on('quiz_initialized', (msg) => {
-    alert(msg)
-  })
-
 
   let questionEl = document.getElementById("question")
   let responseAEl = document.getElementById("responseA")
@@ -54,5 +45,31 @@ document.addEventListener('DOMContentLoaded', () => {
     countdownNumberEl.textContent = data.countdown
     countdownSvgEl.style.animation = 'animation: countdown' + data.countdown + 's linear infinite forwards';
   })
+
+  let pseudo = document.getElementById('pseudo')
+
+  if(pseudo){
+    socket.emit('waiting_queue', {pseudo:pseudo.textContent, gameId:document.getElementById('gameId').textContent})
+  }
+
+  socket.on('player_connected', (data) => {
+    let divNewPlayer = document.getElementById('newPlayer')
+    console.log(arrayPlayer);
+    divNewPlayer.innerHTML = ''
+    data.arrayPlayer.forEach((pseudo) => {
+      divNewPlayer.innerHTML += "<p>" + pseudo + "</p>"
+    })
+
+    socket.on('game_is_ready', () => {
+      document.getElementById('waiting_queue').style.display = 'none'
+      document.getElementById('in_game').style.display = 'block'
+    })
+  })
+
+  // envoie réponse
+
+  function sendRep() {
+    
+  }
 
 })

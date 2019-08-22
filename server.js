@@ -12,7 +12,6 @@ const GameManager = require('./personal_modules/GameManager')
 const viewPath = 'views'
 
 let gameManager = new GameManager()
-gameManager.test()
 
 app.set('view engine', 'ejs')
 app.use('/favicon.ico', express.static('public/img/icon/favicon.ico'));
@@ -31,7 +30,7 @@ app.get('/', (req, res) =>{
   let nbPlayer = req.body.nbPlayer
 
   gameManager.createGame(gameId, theme, nbPlayer)
-  res.render('waiting_queue', {host:true, gameId:gameId})
+  res.render('game', {host:true, gameId:gameId})
 })
 .get('/join_game/:game_id', (req, res) => {
   res.render('joinGame', {gameId:req.params.game_id})
@@ -40,7 +39,7 @@ app.get('/', (req, res) =>{
   res.render('joinGame', {gameId:''})
 })
 .post('/waiting_queue', urlencodedParser, (req, res) => {
-  res.render('waiting_queue', {host:false, pseudo:req.body.pseudo, gameId:req.body.gameId})
+  res.render('game', {host:false, pseudo:req.body.pseudo, gameId:req.body.gameId})
 })
 .get('/in_game/:id_game', (req, res) => {
   res.render('in_game')
@@ -50,21 +49,13 @@ app.get('/', (req, res) =>{
 })
 
 io.on('connection', function(socket){
-  console.log('a user connected')
 
   socket.on('waiting_queue', (data) => {
   	gameManager.addPlayer(data.pseudo, data.gameId, socket)
-  	console.log(gameManager.runningGames[data.gameId]['players'])
-  	socket.broadcast.emit('player_connected', {arrayPlayer: gameManager.runningGames[data.gameId]['players']})
   })
 
   socket.on('disconnect', function(){
     // TODO
-  })
-
-  socket.on('quiz_init', (data) => {
-    console.log('quiz_init')
-    gameManager.joinGame(data, socket)
   })
 })
 

@@ -9,7 +9,7 @@ class QuizGame {
                                    () => this.onTimeOver(),
                                    (countdown) => this.onTick(countdown),
                                    (countdown) => this.onSync(countdown))
-    this.startQuiz()
+    this.sync(10)
   }
 
   addPlayer(socket) {
@@ -27,7 +27,7 @@ class QuizGame {
     })
   }
 
-  broadCastToAllPlayer(channel, data) {
+  broadCastToAllPlayer(channel, data = null) {
     for (let socket of this.sockets) {
       socket.emit(channel, data)
     }
@@ -35,16 +35,19 @@ class QuizGame {
 
   renderNextQuestion() {
     // TODO : get random level
-    /*let rndQuestionIdx = this.getRandomQuestionIdx(this.quizData.quizz.expert)
+    let rndQuestionIdx = this.getRandomQuestionIdx(this.quizData.quizz.expert)
     let question = this.quizData.quizz.expert[rndQuestionIdx].question
     let propositions = this.quizData.quizz.expert[rndQuestionIdx].propositions
     let data = { question: question, propositions: propositions}
 
     this.quizData.quizz.expert.splice(rndQuestionIdx, 1)
 
-    //this.socket.emit('next_question', { question: data })
+    this.quizTimer.sync()
+    this.sync(10)
 
-    this.quizTimer = new QuizTimer(10, () => this.onTimeOver())*/
+    this.broadCastToAllPlayer('next_question', { question: data })
+
+    this.quizTimer.startTimer()
   }
 
   getRandomQuestionIdx(allQuestions) {
@@ -60,7 +63,7 @@ class QuizGame {
     this.broadCastToAllPlayer('tick', { countdown: countdown })
   }
 
-  onSync(countdown) {
+  sync(countdown) {
     this.broadCastToAllPlayer('sync', { countdown: countdown })
   }
 }
