@@ -1,0 +1,23 @@
+<div id="endQuiz">
+  <h1>End of the game</h1>
+  <% if(host) { %>
+    <p><strong>You are the Host</strong></p>
+  <% }else{ %>
+    <p><strong>You are a Player</strong></p>
+    <p>You pseudo <span id="pseudo"><%= pseudo %></span></p>
+    <% } %>
+  <p>Game id : <span id="gameId"><%= gameId %></span></p>
+
+  <div id="newPlayer">
+
+  </div>
+
+  <div class="uk-margin">
+    <div class="uk-inline">
+        <span class="uk-form-icon" uk-icon="icon: link"></span>
+        <input class="uk-input uk-form-large" type="text" placeholder="Game ID : <%= gameId %>" name="gameId" disabled>
+    </div>
+  </div>
+
+  <p>Share the link to your friends : <a href="http://127.0.0.1:34335/join_game/<%= gameId %>" target="_blank">localhost:34335/join_game/<%= gameId %></a> !</p>
+</div>

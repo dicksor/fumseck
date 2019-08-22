@@ -7,43 +7,46 @@ document.addEventListener('DOMContentLoaded', () => {
   let responseCEl = document.getElementById("responseC")
   let responseDEl = document.getElementById("responseD")
 
+  let questionManager = new QuestionManager(questionEl,
+                                            responseAEl,
+                                            responseBEl,
+                                            responseCEl,
+                                            responseDEl)
+
   let cardsEls = document.getElementsByClassName('uk-card')
+  let countdownNumberEl = document.getElementById('countdown-number')
+  let countdownSvgCircleEl = document.getElementById('timer-svg--circle')
+  let countdownEl = document.getElementById('countdown')
 
-  function addQuestionAnimation() {
-    for (let cardEl of cardsEls) {
-      cardEl.classList.add('uk-animation-scale-up')
-    }
-  }
-
-  function removeQuestionAnimation() {
-    for (let cardEl of cardsEls) {
-      cardEl.classList.remove('uk-animation-scale-up')
-    }
-  }
+  let gameAnimation = new GameAnimation(cardsEls,
+                                        countdownNumberEl,
+                                        countdownSvgCircleEl,
+                                        countdownEl)
 
   socket.on('next_question', (data) => {
-    let question = data.question
-    questionEl.innerHTML = question.question
-    responseAEl.innerHTML = question.propositions[0]
-    responseBEl.innerHTML = question.propositions[1]
-    responseCEl.innerHTML = question.propositions[2]
-    responseDEl.innerHTML = question.propositions[3]
-    addQuestionAnimation()
-    setTimeout(() => removeQuestionAnimation(), 1000)
+
+    if(data.count > 0) {
+        for(let i = 0; i < 4; i++) {
+            document.getElementById(i).classList.remove('uk-card-primary')
+            document.getElementById(i).classList.add('uk-card-hover')
+            document.getElementById("" + i + i).style.cursor = 'pointer';
+            document.getElementById("" + i + i).onclick = function() {
+                sendResponse(i)
+            };
+        }
+    }
+
+    questionManager.displayNext(data.question)
+    gameAnimation.addQuestionAnimation()
+
   })
-
-
-  let countdownNumberEl = document.getElementById('countdown-number')
 
   socket.on('tick', (data) => {
-    countdownNumberEl.textContent = data.countdown
+    gameAnimation.onTick(data.countdown)
   })
 
-  let countdownSvgEl = document.getElementById('timer-svg')
-
   socket.on('sync', (data) => {
-    countdownNumberEl.textContent = data.countdown
-    countdownSvgEl.style.animation = 'animation: countdown' + data.countdown + 's linear infinite forwards';
+    gameAnimation.onSync(data.countdown)
   })
   //Waiting queue
   let pseudo = document.getElementById('pseudo')
@@ -68,16 +71,26 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('inGame').style.display = 'block'
     })
 
+    /*socket.on('game_is_ready_for_host', () =>{
+
+    })*/
+
     //redirect user if a error with the room occur
     socket.on('room_error', () => {
       window.location.href = 'http://127.0.0.1/:34335'
     })
   })
+})
 
-  // envoie réponse
+// Send rep from the user
+function sendResponse(rep) {
+  document.getElementById(rep).classList.add('uk-card-primary')
 
-  function sendRep() {
-
+  for(let i = 0; i < 4; i++) {
+    document.getElementById("" + i + i).onclick = null
+    document.getElementById(i).classList.remove('uk-card-hover')
+    document.getElementById("" + i + i).style.cursor = 'default'
   }
 
-})
+  //socket.emit('answer_question', { pseudo: pseudo.textContent, gameId: document.getElementById('gameId').textContent, response: rep })
+}

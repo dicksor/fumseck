@@ -10,7 +10,8 @@ class QuizGame {
                                    () => this.onTimeOver(),
                                    (countdown) => this.onTick(countdown),
                                    (countdown) => this.onSync(countdown))
-    this.sync(10)
+    this.count = 0
+
   }
 
   addPlayer(socket) {
@@ -54,7 +55,9 @@ class QuizGame {
     this.quizTimer.sync()
     this.sync(10)
 
-    this.broadCastToAllPlayer('next_question', { question: data })
+    this.broadCastToAllPlayer('next_question', { question: data, count: this.count })
+    this.emitToHost('next_question', { question: data, count: this.count })
+    this.count++
 
     this.quizTimer.startTimer()
   }
@@ -69,11 +72,13 @@ class QuizGame {
   }
 
   onTick(countdown) {
-    this.broadCastToAllPlayer('tick', { countdown: countdown })
+    this.broadCastToAllPlayer('tick', {countdown: countdown})
+    this.emitToHost('tick', {countdown: countdown})
   }
 
   sync(countdown) {
-    this.broadCastToAllPlayer('sync', { countdown: countdown })
+    this.emitToHost('sync', {countdown: countdown})
+    this.broadCastToAllPlayer('sync', {countdown: countdown})
   }
 }
 
