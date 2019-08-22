@@ -81,4 +81,6 @@ function sendResponse(rep) {
     document.getElementById(i).classList.remove('uk-card-hover')
     document.getElementById("" + i + i).style.cursor = 'default'
   }
+
+  //socket.emit('answer_question', { pseudo: pseudo.textContent, gameId: document.getElementById('gameId').textContent, response: rep })
 }
