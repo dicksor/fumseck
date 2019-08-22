@@ -6,14 +6,17 @@ class GameManager {
     this.runningGames = [] //all game info are stored in this array
   }
 
-  createGame(gameId, theme, nbPlayer) {
-      //creation of the game
-      this.runningGames[gameId] = []
+  createGame(gameId, reqBody) {
+    let theme = reqBody.theme
+    let nbPlayer = reqBody.nbPlayer
+    let nbQuestion = reqBody.nbQuestion
 
-      this.runningGames[gameId]['quiz'] = new QuizGame(gameId) // TODO : passer le theme en plus
-      this.runningGames[gameId]['nbPlayer'] = parseInt(nbPlayer)
-      this.runningGames[gameId]['roomOpen'] = true//indicate if player can join the room or not
-      this.runningGames[gameId]['players'] = []
+    this.runningGames[gameId] = []
+
+    this.runningGames[gameId]['quiz'] = new QuizGame(gameId, nbQuestion, theme) // TODO : passer le theme et le nombre de joueur en plus
+    this.runningGames[gameId]['nbPlayer'] = parseInt(nbPlayer)
+    this.runningGames[gameId]['roomOpen'] = true
+    this.runningGames[gameId]['players'] = []
   }
 
   onGameOver() {
