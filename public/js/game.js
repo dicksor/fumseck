@@ -54,7 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   socket.on('player_connected', (data) => {
     let divNewPlayer = document.getElementById('newPlayer')
-    console.log(arrayPlayer);
     divNewPlayer.innerHTML = ''
     data.arrayPlayer.forEach((pseudo) => {
       divNewPlayer.innerHTML += "<p>" + pseudo + "</p>"
@@ -69,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // envoie réponse
 
   function sendRep() {
-    
+
   }
 
 })
