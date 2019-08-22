@@ -25,7 +25,8 @@ app.get('/', (req, res) =>{
   res.render('createGame')
 })
 .post('/create_game_processing', urlencodedParser, (req, res) => {
-  gameManager.createGame(req.body)
+  let gameId = gameManager.generateGameId()
+  gameManager.createGame(gameId, req.body)
   res.render('game', {host:true, gameId:gameId})
 })
 .get('/join_game/:game_id', (req, res) => {

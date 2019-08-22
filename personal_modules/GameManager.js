@@ -6,8 +6,7 @@ class GameManager {
     this.runningGames = []
   }
 
-  createGame(reqBody) {
-    let gameId = this.generateGameId()
+  createGame(gameId, reqBody) {
     let theme = reqBody.theme
     let nbPlayer = reqBody.nbPlayer
     let nbQuestion = reqBody.nbQuestion

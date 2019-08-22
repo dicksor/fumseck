@@ -23,8 +23,17 @@ document.addEventListener('DOMContentLoaded', () => {
                                         countdownSvgCircleEl,
                                         countdownEl)
 
-  socket.on('next_question', (data) => {
+  let endGameEl = document.getElementById('endGame')
+  let newPlayerEl = document.getElementById('newPlayer')
+  let waitingQueueEl = document.getElementById('waitingQueue')
+  let inGameEl = document.getElementById('inGame')
+  let pseudo = document.getElementById('pseudo')
 
+  if(pseudo){
+    socket.emit('waiting_queue', { pseudo: pseudo.textContent, gameId: document.getElementById('gameId').textContent })
+  }
+
+  socket.on('next_question', (data) => {
 
     for(let i = 0; i < 4; i++) {
       if(data.count > 0) {
@@ -52,23 +61,21 @@ document.addEventListener('DOMContentLoaded', () => {
   })
 
   socket.on('player_connected', (data) => {
-    let divNewPlayer = document.getElementById('newPlayer')
-    divNewPlayer.innerHTML = ''
+    newPlayerEl.innerHTML = ''
     data.arrayPlayer.forEach((pseudo) => {
-      divNewPlayer.innerHTML += "<p>" + pseudo + "</p>"
+      newPlayerEl.innerHTML += "<p>" + pseudo + "</p>"
     })
   })
 
   socket.on('game_is_ready', () => {
-    document.getElementById('waitingQueue').style.display = 'none'
-    document.getElementById('inGame').style.display = 'block'
+    waitingQueueEl .style.display = 'none'
+    inGameEl.style.display = 'block'
   })
 
-  let pseudo = document.getElementById('pseudo')
-
-  if(pseudo){
-    socket.emit('waiting_queue', { pseudo: pseudo.textContent, gameId: document.getElementById('gameId').textContent })
-  }
+  socket.on('game_is_over', () => {
+    inGameEl.style.display = 'none'
+    endGameEl.style.display = 'block'
+  })
 
 })
 

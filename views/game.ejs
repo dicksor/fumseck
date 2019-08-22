@@ -6,6 +6,9 @@
       #inGame{
         display: none;
       }
+      #endGame{
+        display: none;
+      }
 
       <% if(host) { %>
         #client{
@@ -26,6 +29,7 @@
     <div class="uk-container">
     <% include partials/waitingQueue %>
     <% include partials/quiz %>
+    <% include partials/endQuiz %>
     </div>
   </body>
 </html>

@@ -59,12 +59,10 @@ class QuizGame {
   }
 
   onTimeOver() {
-    // TODO: stop after n questions
-    if(this.cout <= this.nbQuestion) {
+    if(this.count < this.nbQuestion) {
       this.renderNextQuestion()
     } else {
-      // TODO : send game stat
-      this.broadCastToAllPlayer('endGame')
+      this.broadCastToAllPlayer('game_is_over')
     }
   }
 
