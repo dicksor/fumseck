@@ -34,16 +34,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   let countdownNumberEl = document.getElementById('countdown-number')
+  let countdownSvgCircleEl = document.getElementById('timer-svg--circle')
+  let countdownEl = document.getElementById('countdown')
 
   socket.on('tick', (data) => {
     countdownNumberEl.textContent = data.countdown
+    if (data.countdown <= 5) {
+      countdownEl.classList.add('uk-animation-shake')
+      setTimeout(() => {countdownEl.classList.remove('uk-animation-shake')}, 100)
+      countdownNumberEl.style.color = "#e74c3c"
+      countdownSvgCircleEl.style.stroke = "#e74c3c"
+    }
   })
-
-  let countdownSvgEl = document.getElementById('timer-svg')
 
   socket.on('sync', (data) => {
     countdownNumberEl.textContent = data.countdown
-    countdownSvgEl.style.animation = 'animation: countdown' + data.countdown + 's linear infinite forwards';
+    countdownSvgCircleEl.style.animation = 'animation: countdown' + data.countdown + 's linear infinite forwards'
+    countdownNumberEl.style.color = "#333"
+    countdownSvgCircleEl.style.stroke = "#333"
   })
 
   let pseudo = document.getElementById('pseudo')
