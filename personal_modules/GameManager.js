@@ -6,18 +6,18 @@ class GameManager {
     this.runningGames = []
   }
 
-  createGame(gameId, theme, nbPlayer) {
-    if (this.gameIdExist()) {
+  createGame(reqBody) {
+    let gameId = this.generateGameId()
+    let theme = reqBody.theme
+    let nbPlayer = reqBody.nbPlayer
+    let nbQuestion = reqBody.nbQuestion
 
-    } else {
-      //création de la partie
-      this.runningGames[gameId] = []
+    this.runningGames[gameId] = []
 
-      this.runningGames[gameId]['quiz'] = new QuizGame(gameId) // TODO : passer le theme et le nombre de joueur en plus
-      this.runningGames[gameId]['nbPlayer'] = parseInt(nbPlayer)
-      this.runningGames[gameId]['roomOpen'] = true
-      this.runningGames[gameId]['players'] = []
-    }
+    this.runningGames[gameId]['quiz'] = new QuizGame(gameId, nbQuestion, theme) // TODO : passer le theme et le nombre de joueur en plus
+    this.runningGames[gameId]['nbPlayer'] = parseInt(nbPlayer)
+    this.runningGames[gameId]['roomOpen'] = true
+    this.runningGames[gameId]['players'] = []
   }
 
   onGameOver() {

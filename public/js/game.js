@@ -51,26 +51,24 @@ document.addEventListener('DOMContentLoaded', () => {
     gameAnimation.onSync(data.countdown)
   })
 
-  let pseudo = document.getElementById('pseudo')
-
-  if(pseudo){
-    socket.emit('waiting_queue', { pseudo: pseudo.textContent, gameId: document.getElementById('gameId').textContent })
-  }
-
   socket.on('player_connected', (data) => {
     let divNewPlayer = document.getElementById('newPlayer')
     divNewPlayer.innerHTML = ''
     data.arrayPlayer.forEach((pseudo) => {
       divNewPlayer.innerHTML += "<p>" + pseudo + "</p>"
     })
-
-    socket.on('game_is_ready', () => {
-      document.getElementById('waitingQueue').style.display = 'none'
-      document.getElementById('inGame').style.display = 'block'
-    })
   })
 
+  socket.on('game_is_ready', () => {
+    document.getElementById('waitingQueue').style.display = 'none'
+    document.getElementById('inGame').style.display = 'block'
+  })
 
+  let pseudo = document.getElementById('pseudo')
+
+  if(pseudo){
+    socket.emit('waiting_queue', { pseudo: pseudo.textContent, gameId: document.getElementById('gameId').textContent })
+  }
 
 })
 
