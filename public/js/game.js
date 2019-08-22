@@ -64,12 +64,15 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.emit('host_in_waiting_queue', {gameId:gameId.value})
   }
 
-
   socket.on('player_connected', (data) => {
     newPlayerEl.innerHTML = ''
     data.arrayPlayer.forEach((pseudo) => {
-      newPlayerEl.innerHTML += "<p>" + pseudo + "</p>"
+      newPlayerEl.innerHTML += '<div style="width: 300px;" class="uk-tile uk-tile-primary uk-padding-small"><p class="uk-h4">'+pseudo+'</p></div><br/>'
     })
+
+    /*function forceStartGame(){
+      socket.emit('host_start_game', {gameId:gameId.value})
+    }*/
 
   socket.on('game_is_ready', () => {
     waitingQueueEl .style.display = 'none'
@@ -97,6 +100,5 @@ function sendResponse(rep) {
     document.getElementById(i).classList.remove('uk-card-hover')
     document.getElementById("" + i + i).style.cursor = 'default'
   }
-
   //socket.emit('answer_question', { pseudo: pseudo.textContent, gameId: document.getElementById('gameId').textContent, response: rep })
 }

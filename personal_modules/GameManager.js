@@ -92,6 +92,17 @@ class GameManager {
     }
   }
 
+  forceStartGame(data){
+    if(this.isGameIdExist(data.gameId)){
+      this.runningGames[data.gameId]['roomOpen'] = false
+      this.runningGames[data.gameId]['quiz'].startQuiz()
+      this.runningGames[data.gameId]['quiz'].broadCastToAllPlayer('game_is_ready')
+      this.runningGames[data.gameId]['quiz'].emitToHost('game_is_ready')
+    } else {
+      socket.emit('room_error')
+    }
+  }
+
   /**
    * generate a game id for a game, check also if the id is alredy use
    * @param  {Integer} [length=6] length of the id generate
