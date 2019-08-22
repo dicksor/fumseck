@@ -7,28 +7,24 @@ document.addEventListener('DOMContentLoaded', () => {
   let responseCEl = document.getElementById("responseC")
   let responseDEl = document.getElementById("responseD")
 
+  let questionManager = new QuestionManager(questionEl,
+                                            responseAEl,
+                                            responseBEl,
+                                            responseCEl,
+                                            responseDEl)
+
   let cardsEls = document.getElementsByClassName('uk-card')
+  let countdownNumberEl = document.getElementById('countdown-number')
+  let countdownSvgCircleEl = document.getElementById('timer-svg--circle')
+  let countdownEl = document.getElementById('countdown')
 
-  function addQuestionAnimation() {
-    for (let cardEl of cardsEls) {
-      cardEl.classList.add('uk-animation-scale-up')
-    }
-  }
-
-  function removeQuestionAnimation() {
-    for (let cardEl of cardsEls) {
-      cardEl.classList.remove('uk-animation-scale-up')
-    }
-  }
+  let gameAnimation = new GameAnimation(cardsEls,
+                                        countdownNumberEl,
+                                        countdownSvgCircleEl,
+                                        countdownEl)
 
   socket.on('next_question', (data) => {
 
-    let question = data.question
-    questionEl.innerHTML = question.question
-    responseAEl.innerHTML = question.propositions[0]
-    responseBEl.innerHTML = question.propositions[1]
-    responseCEl.innerHTML = question.propositions[2]
-    responseDEl.innerHTML = question.propositions[3]
 
     for(let i = 0; i < 4; i++) {
       if(data.count > 0) {
@@ -42,28 +38,23 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    addQuestionAnimation()
-    setTimeout(() => removeQuestionAnimation(), 1000)
+    questionManager.displayNext(data.question)
+    gameAnimation.addQuestionAnimation()
+
   })
-
-
-  let countdownNumberEl = document.getElementById('countdown-number')
 
   socket.on('tick', (data) => {
-    countdownNumberEl.textContent = data.countdown
+    gameAnimation.onTick(data.countdown)
   })
 
-  let countdownSvgEl = document.getElementById('timer-svg')
-
   socket.on('sync', (data) => {
-    countdownNumberEl.textContent = data.countdown
-    countdownSvgEl.style.animation = 'animation: countdown' + data.countdown + 's linear infinite forwards';
+    gameAnimation.onSync(data.countdown)
   })
 
   let pseudo = document.getElementById('pseudo')
 
   if(pseudo){
-    socket.emit('waiting_queue', {pseudo:pseudo.textContent, gameId:document.getElementById('gameId').textContent})
+    socket.emit('waiting_queue', { pseudo: pseudo.textContent, gameId: document.getElementById('gameId').textContent })
   }
 
   socket.on('player_connected', (data) => {
@@ -74,8 +65,8 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     socket.on('game_is_ready', () => {
-      document.getElementById('waiting_queue').style.display = 'none'
-      document.getElementById('in_game').style.display = 'block'
+      document.getElementById('waitingQueue').style.display = 'none'
+      document.getElementById('inGame').style.display = 'block'
     })
   })
 
