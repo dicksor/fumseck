@@ -19,6 +19,13 @@ class GameAnimation {
     }
   }
 
+  onTick(count) {
+    this.countdownNumberEl.textContent = count
+    if(count <= 5) {
+      this.addStressMotion()
+    }
+  }
+
   addStressMotion() {
     this.countdownEl.classList.add('uk-animation-shake')
     setTimeout(() => { this.countdownEl.classList.remove('uk-animation-shake') }, 100)

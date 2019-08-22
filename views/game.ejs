@@ -3,11 +3,11 @@
   <head>
     <% include partials/head %>
     <style media="screen">
-      #in_game{
+      #inGame{
         display: none;
       }
 
-      <% if(host) { %>
+      <% if(!host) { %>
         #client{
           display: none;
         }

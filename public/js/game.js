@@ -28,14 +28,8 @@ document.addEventListener('DOMContentLoaded', () => {
     gameAnimation.addQuestionAnimation()
   })
 
-
-
-
   socket.on('tick', (data) => {
-    countdownNumberEl.textContent = data.countdown
-    if (data.countdown <= 5) {
-      gameAnimation.addStressMotion()
-    }
+    gameAnimation.onTick(data.countdown)
   })
 
   socket.on('sync', (data) => {
@@ -45,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let pseudo = document.getElementById('pseudo')
 
   if(pseudo){
-    socket.emit('waiting_queue', { pseudo:pseudo.textContent, gameId:document.getElementById('gameId').textContent })
+    socket.emit('waiting_queue', { pseudo: pseudo.textContent, gameId: document.getElementById('gameId').textContent })
   }
 
   socket.on('player_connected', (data) => {
@@ -56,8 +50,8 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     socket.on('game_is_ready', () => {
-      document.getElementById('waiting_queue').style.display = 'none'
-      document.getElementById('in_game').style.display = 'block'
+      document.getElementById('waitingQueue').style.display = 'none'
+      document.getElementById('inGame').style.display = 'block'
     })
   })
 
