@@ -52,9 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.emit('waiting_queue', {pseudo:pseudo.textContent, gameId:document.getElementById('gameId').textContent})
   }
 
-  alert('yes')
   socket.on('player_connected', (data) => {
-    alert('player_connected')
     let divNewPlayer = document.getElementById('newPlayer')
     divNewPlayer.innerHTML = ''
     data.arrayPlayer.forEach((pseudo) => {
@@ -62,7 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     socket.on('game_is_ready', () => {
-      alert('test')
       document.getElementById('waiting_queue').style.display = 'none'
       document.getElementById('in_game').style.display = 'block'
     })
