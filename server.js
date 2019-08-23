@@ -10,6 +10,7 @@ let urlencodedParser = bodyParser.urlencoded({ extended: false })
 //personal_modules
 const GameManager = require('./personal_modules/GameManager')
 const QuizReader = require('./personal_modules/QuizReader')
+const CreateQuizParsing = require('./personal_modules/CreateQuizParsing')
 
 const quizReader = new QuizReader()
 
@@ -48,9 +49,17 @@ app.get('/', (req, res) =>{
 .post('/waiting_queue', urlencodedParser, (req, res) => {
   res.render('game', { host: false, pseudo: req.body.pseudo, gameId: req.body.gameId })
 })
+.post('/create_quiz_processing', urlencodedParser, (req, res) => {
+  //console.log(req.body)
+  //res.redirect('/')
+  const createQuizParsing = new CreateQuizParsing(req.body)
+  createQuizParsing.saveData()
+  res.render('index')
+})
 .use((req, res, next) => {
   res.status(404).send('Page introuvable !');
 })
+
 
 io.on('connection', function(socket){
 
