@@ -1,8 +1,11 @@
 class QuizResponse {
 
-  constructor(socket, gameId, pseudo) {
+  constructor(socket, gameId) {
     this.socket = socket
     this.gameId = gameId
+  }
+
+  setPseudo(pseudo) {
     this.pseudo = pseudo
   }
 

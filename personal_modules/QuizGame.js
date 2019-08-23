@@ -80,8 +80,8 @@ class QuizGame {
       this.renderNextQuestion()
     } else {
       let stats = this.quizStat.getStatisitiques()
-      this.emitToHost('display_stat', { stats: stats })
-      this.broadCastToAllPlayer('game_is_over')
+      this.emitToHost('game_is_over', { stats: stats })
+      this.broadCastToAllPlayer('game_is_over', { stats: null })
     }
   }
 

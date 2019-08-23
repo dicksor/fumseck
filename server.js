@@ -65,6 +65,7 @@ io.on('connection', function(socket){
   socket.on('answer_question', (data) => {
     gameManager.handleResponse(data)
   })
+
 })
 
 http.listen(34335, function(){

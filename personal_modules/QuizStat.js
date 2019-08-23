@@ -37,7 +37,7 @@ class QuizStat {
 
   getStatisitiques() {
     let stats = []
-    for(let i = 0; i < this.currentQuestionIdx; i++) {
+    for(let i = 0; i < this.currentQuestionIdx + 1; i++) {
       stats.push({
         question: this.correctAnswer[i].question,
         scores: this.getPlayersCorrectAnswer(i)

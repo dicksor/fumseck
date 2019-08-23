@@ -31,13 +31,15 @@ document.addEventListener('DOMContentLoaded', () => {
   let pseudo = document.getElementById('pseudo')
   let gameId = document.getElementById('gameId')
 
+  let scoreDisplayer = new ScoreDisplayer()
+  let quizResponse = new QuizResponse(socket, gameId.value)
+
   if(pseudo){
     socket.emit('player_in_waiting_queue', {pseudo:pseudo.value,  gameId:gameId.value})
+    quizResponse.setPseudo(pseudo.value)
   } else {
     socket.emit('host_in_waiting_queue', {gameId:gameId.value})
   }
-
-  let quizResponse = new QuizResponse(socket, gameId.value, pseudo.value)
 
   socket.on('next_question', (data) => {
     questionDisplayer.displayNext(data.question)
@@ -65,13 +67,16 @@ document.addEventListener('DOMContentLoaded', () => {
     inGameEl.style.display = 'block'
   })
 
-  socket.on('game_is_over', () => {
-    inGameEl.style.display = 'none'
-    endGameEl.style.display = 'block'
-  })
+  socket.on('game_is_over', (data) => {
+    let stats = data.stats
+    if(stats === null) {
+      // TODO : end game screen for remote
+    } else {
+      inGameEl.style.display = 'none'
+      endGameEl.style.display = 'block'
+      scoreDisplayer.displayStatTable(stats)
+    }
 
-  socket.on('display_stat', (stat) => {
-    console.log(stat)
   })
 
   //redirect user if a error with the room occur
