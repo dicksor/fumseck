@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let responseCEl = document.getElementById("responseC")
   let responseDEl = document.getElementById("responseD")
 
-  let questionManager = new QuestionManager(questionEl,
+  let questionDisplayer = new QuestionDisplayer(questionEl,
                                             responseAEl,
                                             responseBEl,
                                             responseCEl,
@@ -27,23 +27,20 @@ document.addEventListener('DOMContentLoaded', () => {
   let waitingQueueEl = document.getElementById('waitingQueue')
   let inGameEl = document.getElementById('inGame')
 
+  let pseudo = document.getElementById('pseudo')
+  let gameId = document.getElementById('gameId')
+
+  let scoreDisplayer = new ScoreDisplayer()
+  let quizResponse = new QuizResponse(socket, gameId.value)
+
+  if(pseudo){
+    quizResponse.setPseudo(pseudo.value)
+  }
+
   socket.on('next_question', (data) => {
-
-    for(let i = 0; i < 4; i++) {
-      if(data.count > 0) {
-        document.getElementById(i).classList.remove('uk-card-primary')
-        document.getElementById(i).classList.add('uk-card-hover')
-        document.getElementById("" + i + i).style.cursor = 'pointer';
-      }
-
-      document.getElementById("" + i + i).addEventListener('click', function() {
-          sendResponse(i)
-      });
-    }
-
-    questionManager.displayNext(data.question)
+    questionDisplayer.displayNext(data.question)
     gameAnimation.addQuestionAnimation()
-
+    quizResponse.resetCards()
   })
 
   socket.on('tick', (data) => {
@@ -55,8 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
   })
 
   //Waiting queue
-  let pseudo = document.getElementById('pseudo')
-  let gameId = document.getElementById('gameId')
 
   let waitingQueueManager = new WaitingQueueManager(pseudo, gameId, socket)
   waitingQueueManager.emitClientInfo()
@@ -64,26 +59,21 @@ document.addEventListener('DOMContentLoaded', () => {
   waitingQueueManager.listenWaitingQueueTimer()
   waitingQueueManager.roomError()
 
-  socket.on('game_is_over', () => {
-    inGameEl.style.display = 'none'
-    endGameEl.style.display = 'block'
-  })
-
   socket.on('game_is_ready', () => {
-    console.log('test');
     waitingQueueEl .style.display = 'none'
     inGameEl.style.display = 'block'
   })
+
+
+
+  socket.on('game_is_over', (data) => {
+    let stats = data.stats
+    if(stats === null) {
+      // TODO : end game screen for remote
+    } else {
+      inGameEl.style.display = 'none'
+      endGameEl.style.display = 'block'
+      scoreDisplayer.displayStatTable(stats)
+    }
+  })
 })
-
-// Send rep from the user
-function sendResponse(rep) {
-  document.getElementById(rep).classList.add('uk-card-primary')
-
-  for(let i = 0; i < 4; i++) {
-    document.getElementById("" + i + i).onclick = null
-    document.getElementById(i).classList.remove('uk-card-hover')
-    document.getElementById("" + i + i).style.cursor = 'default'
-  }
-  //socket.emit('answer_question', { pseudo: pseudo.textContent, gameId: document.getElementById('gameId').textContent, response: rep })
-}

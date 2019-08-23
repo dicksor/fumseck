@@ -1,5 +1,7 @@
 const QuizTimer = require('./QuizTimer')
 const QuizReader = require('./QuizReader')
+const flatten = require('./util')
+const QuizStat = require('./QuizStat')
 
 class QuizGame {
   constructor(gameId, nbQuestion, theme) {
@@ -14,7 +16,7 @@ class QuizGame {
                                    (countdown) => this.onTick(countdown),
                                    (countdown) => this.onSync(countdown))
     this.count = 0
-
+    this.quizStat = new QuizStat()
   }
 
   addPlayer(socket) {
@@ -26,9 +28,9 @@ class QuizGame {
   }
 
   startQuiz() {
-    let quiz = new QuizReader('oqdb_breaking_bad.json')
-    quiz.readQuiz().then((quizData) => {
-      this.quizData = quizData
+    let quiz = new QuizReader()
+    quiz.readQuiz(this.theme).then((quizData) => {
+      this.quizData = flatten(Object.values(quizData.quizz))
       this.renderNextQuestion()
     })
     .catch((err) => {
@@ -42,7 +44,7 @@ class QuizGame {
     }
   }
 
-  emitToHost(channel, data = null){
+  emitToHost(channel, data = null) {
     this.hostSocket.emit(channel, data)
   }
 
@@ -52,13 +54,16 @@ class QuizGame {
   }
 
   renderNextQuestion() {
-    // TODO : get random level
-    let rndQuestionIdx = this.getRandomQuestionIdx(this.quizData.quizz.expert)
-    let question = this.quizData.quizz.expert[rndQuestionIdx].question
-    let propositions = this.quizData.quizz.expert[rndQuestionIdx].propositions
+    let rndQuestionIdx = this.getRandomQuestionIdx(this.quizData)
+    let question = this.quizData[rndQuestionIdx].question
+    let propositions = this.quizData[rndQuestionIdx].propositions
+    let response = this.quizData[rndQuestionIdx].reponse
+    let responseIdx = propositions.indexOf(response)
     let data = { question: question, propositions: propositions}
 
-    this.quizData.quizz.expert.splice(rndQuestionIdx, 1)
+    this.quizStat.addQuestionAnswer(question, responseIdx)
+
+    this.quizData.splice(rndQuestionIdx, 1)
 
     this.quizTimer.sync()
     this.sync(10)
@@ -75,9 +80,12 @@ class QuizGame {
 
   onTimeOver() {
     if(this.count < this.nbQuestion) {
+      this.quizStat.nextQuestion()
       this.renderNextQuestion()
     } else {
-      this.broadCastToAllPlayer('game_is_over')
+      let stats = this.quizStat.getStatisitiques()
+      this.emitToHost('game_is_over', { stats: stats })
+      this.broadCastToAllPlayer('game_is_over', { stats: null })
     }
   }
 

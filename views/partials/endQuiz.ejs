@@ -1,3 +1,42 @@
 <div id="endGame">
-  <h1>End of the game</h1>
+  <h1 class="uk-heading-line uk-text-center uk-text-2xlarge"><span>End of the Game</span></h1>
+
+  <h3 class="uk-text-center">Here is the ranking</h3>
+
+  <table class="uk-table uk-table-striped">
+    <thead>
+      <tr id="participants">
+        <th>Question</th>
+      </tr>
+    </thead>
+    <tbody id="scores">
+      <tr>
+        <td>Qui a ...</td>
+        <td class="correct">V</td>
+        <td class="wrong">F</td>
+      </tr>
+      <tr>
+        <td>Qui tata ...</td>
+        <td class="wrong">F</td>
+        <td class="correct">V</td>
+      </tr>
+      <tr>
+        <td>Qui est-ce</td>
+        <td class="wrong">F</td>
+        <td class="wrong">F</td>
+      </tr>
+      <tr>
+        <td class="score">Score</td>
+        <td class="score">2</td>
+        <td class="score">2</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="uk-flex uk-flex-center">
+    <p uk-margin>
+        <a class="uk-button uk-button-primary uk-button-large" href="/play_again">Play again</a>
+        <a class="uk-button uk-button-secondary uk-button-large" href="/quit_game">Quit game</a>
+    </p>
+  </div>
 </div>
