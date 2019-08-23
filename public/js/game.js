@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let responseCEl = document.getElementById("responseC")
   let responseDEl = document.getElementById("responseD")
 
-  let questionManager = new QuestionManager(questionEl,
+  let questionDisplayer = new QuestionDisplayer(questionEl,
                                             responseAEl,
                                             responseBEl,
                                             responseCEl,
@@ -28,32 +28,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let waitingQueueEl = document.getElementById('waitingQueue')
   let inGameEl = document.getElementById('inGame')
 
-  socket.on('next_question', (data) => {
-
-    if(data.count > 0) {
-        for(let i = 0; i < 4; i++) {
-            document.getElementById(i).classList.remove('uk-card-primary')
-            document.getElementById(i).classList.add('uk-card-hover')
-            document.getElementById("" + i + i).style.cursor = 'pointer';
-            document.getElementById("" + i + i).onclick = function() {
-                sendResponse(i)
-            };
-        }
-    }
-
-    questionManager.displayNext(data.question)
-    gameAnimation.addQuestionAnimation()
-
-  })
-
-  socket.on('tick', (data) => {
-    gameAnimation.onTick(data.countdown)
-  })
-
-  socket.on('sync', (data) => {
-    gameAnimation.onSync(data.countdown)
-  })
-  //Waiting queue
   let pseudo = document.getElementById('pseudo')
   let gameId = document.getElementById('gameId')
 
@@ -63,12 +37,28 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.emit('host_in_waiting_queue', {gameId:gameId.value})
   }
 
+  let quizResponse = new QuizResponse(socket, gameId.value, pseudo.value)
+
+  socket.on('next_question', (data) => {
+    questionDisplayer.displayNext(data.question)
+    gameAnimation.addQuestionAnimation()
+    quizResponse.resetCards()
+  })
+
+  socket.on('tick', (data) => {
+    gameAnimation.onTick(data.countdown)
+  })
+
+  socket.on('sync', (data) => {
+    gameAnimation.onSync(data.countdown)
+  })
 
   socket.on('player_connected', (data) => {
     newPlayerEl.innerHTML = ''
     data.arrayPlayer.forEach((pseudo) => {
       newPlayerEl.innerHTML += "<p>" + pseudo + "</p>"
     })
+  })
 
   socket.on('game_is_ready', () => {
     waitingQueueEl .style.display = 'none'
@@ -80,22 +70,13 @@ document.addEventListener('DOMContentLoaded', () => {
     endGameEl.style.display = 'block'
   })
 
-    //redirect user if a error with the room occur
-    socket.on('room_error', () => {
-      window.location.href = 'http://127.0.0.1/:34335'
-    })
+  socket.on('display_stat', (stat) => {
+    console.log(stat)
   })
+
+  //redirect user if a error with the room occur
+  socket.on('room_error', () => {
+    window.location.href = 'http://127.0.0.1/:34335'
+  })
+
 })
-
-// Send rep from the user
-function sendResponse(rep) {
-  document.getElementById(rep).classList.add('uk-card-primary')
-
-  for(let i = 0; i < 4; i++) {
-    document.getElementById("" + i + i).onclick = null
-    document.getElementById(i).classList.remove('uk-card-hover')
-    document.getElementById("" + i + i).style.cursor = 'default'
-  }
-
-  //socket.emit('answer_question', { pseudo: pseudo.textContent, gameId: document.getElementById('gameId').textContent, response: rep })
-}

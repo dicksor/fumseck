@@ -61,6 +61,10 @@ io.on('connection', function(socket){
   socket.on('host_in_waiting_queue', (data) => {
     gameManager.addHost(data, socket)
   })
+
+  socket.on('answer_question', (data) => {
+    gameManager.handleResponse(data)
+  })
 })
 
 http.listen(34335, function(){

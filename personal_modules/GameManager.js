@@ -16,7 +16,6 @@ class GameManager {
     this.runningGames[gameId]['quiz'] = new QuizGame(gameId, nbQuestion, theme) // TODO : passer le theme et le nombre de joueur en plus
     this.runningGames[gameId]['nbPlayer'] = parseInt(nbPlayer)
     this.runningGames[gameId]['roomOpen'] = true
-    this.runningGames[gameId]['players'] = []
   }
 
   onGameOver() {
@@ -29,7 +28,7 @@ class GameManager {
    * @return {Integer}        number of place available
    */
   getNbPlaceAvailable(gameId){
-    return this.runningGames[gameId]['nbPlayer'] - this.runningGames[gameId]['players'].length
+    return this.runningGames[gameId]['nbPlayer'] - this.runningGames[gameId]['quiz'].quizStat.getPlayers().length
   }
 
   /**
@@ -37,7 +36,7 @@ class GameManager {
    * @param  {String}  gameId game id
    * @return {Boolean}        true if game id exist, false otherwise
    */
-  isGameIdExist(gameId){
+  isGameIdInRunningGame(gameId){
     return gameId in this.runningGames
   }
 
@@ -48,7 +47,7 @@ class GameManager {
    */
   addHost(data, socket){
     //if the game id doesn't exist, the user is redirected to the website index
-    if(this.isGameIdExist(data.gameId)){
+    if(this.isGameIdInRunningGame(data.gameId)){
       if(this.runningGames[data.gameId]['roomOpen']){
           this.runningGames[data.gameId]['quiz'].addHost(socket)
       }
@@ -64,7 +63,7 @@ class GameManager {
  */
   addPlayer(data, socket){
     //if the game id doesn't exist, the user is redirected to the website index
-    if(this.isGameIdExist(data.gameId)){
+    if(this.isGameIdInRunningGame(data.gameId)){
       //if the room is full, the user is redirected to the website index
       if(!this.runningGames[data.gameId]['roomOpen']){
         console.log('room is close')
@@ -73,10 +72,10 @@ class GameManager {
         //we add the user in the game, and send the user connection to all user and the host
         console.log('player added');
         this.runningGames[data.gameId]['quiz'].addPlayer(socket)
-        this.runningGames[data.gameId]['players'].push(data.pseudo)
+        this.runningGames[data.gameId]['quiz'].quizStat.addPlayer(data.pseudo)
 
-        this.runningGames[data.gameId]['quiz'].broadCastToAllPlayer('player_connected', {arrayPlayer: this.runningGames[data.gameId]['players']})
-        this.runningGames[data.gameId]['quiz'].emitToHost('player_connected', {arrayPlayer: this.runningGames[data.gameId]['players']})
+        this.runningGames[data.gameId]['quiz'].broadCastToAllPlayer('player_connected', {arrayPlayer: this.runningGames[data.gameId]['quiz'].quizStat.getPlayers()})
+        this.runningGames[data.gameId]['quiz'].emitToHost('player_connected', {arrayPlayer: this.runningGames[data.gameId]['quiz'].quizStat.getPlayers()})
 
         //if after player adding, the room is full, the game is started
         if(this.getNbPlaceAvailable(data.gameId) == 0){
@@ -101,9 +100,15 @@ class GameManager {
     let gameId = '';
     do {
        gameId = idgen(length)
-    } while(this.isGameIdExist(gameId))
+    } while(this.isGameIdInRunningGame(gameId))
 
     return gameId;
+  }
+
+  handleResponse(data) {
+    if (this.isGameIdInRunningGame(data.gameId)) {
+      this.runningGames[data.gameId]['quiz'].quizStat.addPlayersResponse(data.pseudo, data.response)
+    }
   }
 }
 

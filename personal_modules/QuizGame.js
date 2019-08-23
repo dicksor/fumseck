@@ -1,6 +1,7 @@
 const QuizTimer = require('./QuizTimer')
 const QuizReader = require('./QuizReader')
 const flatten = require('./util')
+const QuizStat = require('./QuizStat')
 
 class QuizGame {
   constructor(gameId, nbQuestion, theme) {
@@ -15,7 +16,7 @@ class QuizGame {
                                    (countdown) => this.onTick(countdown),
                                    (countdown) => this.onSync(countdown))
     this.count = 0
-
+    this.quizStat = new QuizStat()
   }
 
   addPlayer(socket) {
@@ -43,17 +44,19 @@ class QuizGame {
     }
   }
 
-  emitToHost(channel, data = null){
+  emitToHost(channel, data = null) {
     this.hostSocket.emit(channel, data)
   }
 
   renderNextQuestion() {
     let rndQuestionIdx = this.getRandomQuestionIdx(this.quizData)
-    console.log(rndQuestionIdx)
-    console.log(this.quizData[rndQuestionIdx])
     let question = this.quizData[rndQuestionIdx].question
     let propositions = this.quizData[rndQuestionIdx].propositions
+    let response = this.quizData[rndQuestionIdx].reponse
+    let responseIdx = propositions.indexOf(response)
     let data = { question: question, propositions: propositions}
+
+    this.quizStat.addQuestionAnswer(question, responseIdx)
 
     this.quizData.splice(rndQuestionIdx, 1)
 
@@ -73,8 +76,11 @@ class QuizGame {
 
   onTimeOver() {
     if(this.count < this.nbQuestion) {
+      this.quizStat.nextQuestion()
       this.renderNextQuestion()
     } else {
+      let stats = this.quizStat.getStatisitiques()
+      this.emitToHost('display_stat', { stats: stats })
       this.broadCastToAllPlayer('game_is_over')
     }
   }
