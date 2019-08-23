@@ -51,8 +51,12 @@ document.addEventListener('DOMContentLoaded', () => {
     gameAnimation.onSync(data.countdown)
   })
 
-  //Waiting queue
+  //display player answered
+  let quizLivePlayerAnswered = new QuizLivePlayerAnswered(pseudo, gameId, socket)
+  quizLivePlayerAnswered.emiterPlayerAnswered()
+  quizLivePlayerAnswered.listenPlayerAnswered()
 
+  //Waiting queue
   let waitingQueueManager = new WaitingQueueManager(pseudo, gameId, socket)
   waitingQueueManager.emitClientInfo()
   waitingQueueManager.listenConnectedPlayer()
@@ -63,8 +67,6 @@ document.addEventListener('DOMContentLoaded', () => {
     waitingQueueEl .style.display = 'none'
     inGameEl.style.display = 'block'
   })
-
-
 
   socket.on('game_is_over', (data) => {
     let stats = data.stats

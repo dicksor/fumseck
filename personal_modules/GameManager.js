@@ -96,6 +96,11 @@ class GameManager {
     }
   }
 
+  displayPlayerAnswered(data){
+    this.runningGames[data.gameId]['quiz'].playerAnsweredQuestion.push(data.pseudo)
+    this.runningGames[data.gameId]['quiz'].emitToHost('display_player_answered', {arrayPlayer: this.runningGames[data.gameId]['quiz'].playerAnsweredQuestion})
+  }
+
   /**
    * Allow the host to start the game without all the player
    * @param  {Object} data data form the host

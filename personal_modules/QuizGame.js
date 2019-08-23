@@ -17,6 +17,7 @@ class QuizGame {
                                    (countdown) => this.onSync(countdown))
     this.count = 0
     this.quizStat = new QuizStat()
+    this.playerAnsweredQuestion = []
   }
 
   addPlayer(socket) {
@@ -67,6 +68,8 @@ class QuizGame {
 
     this.quizTimer.sync()
     this.sync(10)
+
+    this.playerAnsweredQuestion = []
 
     this.broadcastToAll('next_question', { question: data, count: this.count })
     this.count++
