@@ -24,7 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
                                         countdownEl)
 
   let endGameEl = document.getElementById('endGame')
-  let newPlayerEl = document.getElementById('newPlayer')
   let waitingQueueEl = document.getElementById('waitingQueue')
   let inGameEl = document.getElementById('inGame')
 
@@ -54,40 +53,26 @@ document.addEventListener('DOMContentLoaded', () => {
   socket.on('sync', (data) => {
     gameAnimation.onSync(data.countdown)
   })
+
   //Waiting queue
   let pseudo = document.getElementById('pseudo')
   let gameId = document.getElementById('gameId')
 
-  if(pseudo){
-    socket.emit('player_in_waiting_queue', {pseudo:pseudo.value,  gameId:gameId.value})
-  } else {
-    socket.emit('host_in_waiting_queue', {gameId:gameId.value})
-  }
-
-  socket.on('player_connected', (data) => {
-    newPlayerEl.innerHTML = ''
-    data.arrayPlayer.forEach((pseudo) => {
-      newPlayerEl.innerHTML += '<div style="width: 300px;" class="uk-tile uk-tile-primary uk-padding-small"><p class="uk-h4">'+pseudo+'</p></div><br/>'
-    })
-
-    /*function forceStartGame(){
-      socket.emit('host_start_game', {gameId:gameId.value})
-    }*/
-
-  socket.on('game_is_ready', () => {
-    waitingQueueEl .style.display = 'none'
-    inGameEl.style.display = 'block'
-  })
+  let waitingQueueManager = new WaitingQueueManager(pseudo, gameId, socket)
+  waitingQueueManager.emitClientInfo()
+  waitingQueueManager.listenConnectedPlayer()
+  waitingQueueManager.listenWaitingQueueTimer()
+  waitingQueueManager.roomError()
 
   socket.on('game_is_over', () => {
     inGameEl.style.display = 'none'
     endGameEl.style.display = 'block'
   })
 
-    //redirect user if a error with the room occur
-    socket.on('room_error', () => {
-      window.location.href = 'http://127.0.0.1/:34335'
-    })
+  socket.on('game_is_ready', () => {
+    console.log('test');
+    waitingQueueEl .style.display = 'none'
+    inGameEl.style.display = 'block'
   })
 })
 

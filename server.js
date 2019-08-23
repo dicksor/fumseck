@@ -10,13 +10,15 @@ let urlencodedParser = bodyParser.urlencoded({ extended: false })
 //personal_modules
 const GameManager = require('./personal_modules/GameManager')
 
+//global variable
 let gameManager = new GameManager()
 
+//config
 app.set('view engine', 'ejs')
 app.use('/favicon.ico', express.static('public/img/icon/favicon.ico'));
 app.use(express.static('public'))
 
-
+//router
 app.get('/', (req, res) =>{
   res.render('index')
 })
@@ -47,6 +49,7 @@ app.get('/', (req, res) =>{
   res.status(404).send('Page introuvable !');
 })
 
+//socket.io
 io.on('connection', function(socket){
 
   socket.on('player_in_waiting_queue', (data) => {
@@ -58,7 +61,6 @@ io.on('connection', function(socket){
   })
 
   socket.on('host_start_game', (data) => {
-    console.log('testetst');
     gameManager.forceStartGame(data)
   })
 })

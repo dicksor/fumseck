@@ -1,0 +1,20 @@
+#startGame{
+  display: table;
+  margin: 0 auto;
+  width: 500px;
+  }
+
+#newPlayer {
+  display: table;
+  margin: 0 auto;
+}
+
+.displayPlayer {
+  animation-name: displayPlayerAnimation;
+  animation-duration: 2s;
+}
+
+@keyframes displayPlayerAnimation {
+  0%   {left: 100px; opacity: 0;}
+  100% {left:0px; opacity: 1;}
+}

@@ -1,4 +1,5 @@
 const QuizGame = require('./QuizGame')
+const WaitingQueueTimer = require('./WaitingQueueTimer')
 const idgen = require('idgen')
 
 class GameManager {
@@ -14,8 +15,8 @@ class GameManager {
     this.runningGames[gameId] = []
 
     this.runningGames[gameId]['quiz'] = new QuizGame(gameId, nbQuestion, theme) // TODO : passer le theme et le nombre de joueur en plus
+    this.runningGames[gameId]['waitingQueueTimer'] = new WaitingQueueTimer(150, this.runningGames[gameId]['quiz'])
     this.runningGames[gameId]['nbPlayer'] = parseInt(nbPlayer)
-    this.runningGames[gameId]['roomOpen'] = true
     this.runningGames[gameId]['players'] = []
   }
 
@@ -49,8 +50,10 @@ class GameManager {
   addHost(data, socket){
     //if the game id doesn't exist, the user is redirected to the website index
     if(this.isGameIdExist(data.gameId)){
-      if(this.runningGames[data.gameId]['roomOpen']){
+      if(this.runningGames[data.gameId]['quiz'].roomOpen){
           this.runningGames[data.gameId]['quiz'].addHost(socket)
+
+          this.runningGames[data.gameId]['waitingQueueTimer'].tick()
       }
     } else {
       socket.emit('room_error')
@@ -66,8 +69,7 @@ class GameManager {
     //if the game id doesn't exist, the user is redirected to the website index
     if(this.isGameIdExist(data.gameId)){
       //if the room is full, the user is redirected to the website index
-      if(!this.runningGames[data.gameId]['roomOpen']){
-        console.log('room is close')
+      if(!this.runningGames[data.gameId]['quiz'].roomOpen){
         socket.emit('room_error')
       } else {
         //we add the user in the game, and send the user connection to all user and the host
@@ -75,16 +77,15 @@ class GameManager {
         this.runningGames[data.gameId]['quiz'].addPlayer(socket)
         this.runningGames[data.gameId]['players'].push(data.pseudo)
 
-        this.runningGames[data.gameId]['quiz'].broadCastToAllPlayer('player_connected', {arrayPlayer: this.runningGames[data.gameId]['players']})
-        this.runningGames[data.gameId]['quiz'].emitToHost('player_connected', {arrayPlayer: this.runningGames[data.gameId]['players']})
+        this.runningGames[data.gameId]['quiz'].broadcastToAll('player_connected', {arrayPlayer: this.runningGames[data.gameId]['players']})
 
         //if after player adding, the room is full, the game is started
         if(this.getNbPlaceAvailable(data.gameId) == 0){
           console.log('game_is_ready');
-          this.runningGames[data.gameId]['roomOpen'] = false
+          this.runningGames[data.gameId]['quiz'].roomOpen = false
           this.runningGames[data.gameId]['quiz'].startQuiz()
-          this.runningGames[data.gameId]['quiz'].broadCastToAllPlayer('game_is_ready')
-          this.runningGames[data.gameId]['quiz'].emitToHost('game_is_ready')
+
+          this.runningGames[data.gameId]['quiz'].broadcastToAll('game_is_ready')
         }
       }
     } else {
@@ -92,12 +93,15 @@ class GameManager {
     }
   }
 
+  /**
+   * Allow the host to start the game without all the player
+   * @param  {Object} data data form the host
+   */
   forceStartGame(data){
-    if(this.isGameIdExist(data.gameId)){
-      this.runningGames[data.gameId]['roomOpen'] = false
+    if(this.isGameIdExist(data.gameId) && this.runningGames[data.gameId]['quiz'].playerSockets !== 0){
+      this.runningGames[data.gameId]['quiz'].roomOpen = false
       this.runningGames[data.gameId]['quiz'].startQuiz()
-      this.runningGames[data.gameId]['quiz'].broadCastToAllPlayer('game_is_ready')
-      this.runningGames[data.gameId]['quiz'].emitToHost('game_is_ready')
+      this.runningGames[data.gameId]['quiz'].broadcastToAll('game_is_ready')
     } else {
       socket.emit('room_error')
     }
