@@ -29,7 +29,7 @@ class QuizStat {
     let playersScore = []
     for(let player in this.players) {
       let score = {}
-      score[player] = this.players[player][questionIdx] === this.correctAnswer[questionIdx]
+      score[player] = this.players[player][questionIdx] === this.correctAnswer[questionIdx].answer
       playersScore.push(score)
     }
     return playersScore

@@ -1,6 +1,7 @@
 <div id="endGame">
   <h1 class="uk-heading-line uk-text-center uk-text-2xlarge"><span>End of the Game</span></h1>
 
+  <% if (host) { %>
   <h3 class="uk-text-center">Here is the ranking</h3>
 
   <table class="uk-table uk-table-striped">
@@ -19,4 +20,7 @@
         <a class="uk-button uk-button-secondary uk-button-large" href="/quit_game">Quit game</a>
     </p>
   </div>
+  <% } else { %>
+  <p class="uk-text-lead">Thank you for participating</p>
+  <% } %>
 </div>

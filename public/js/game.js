@@ -70,11 +70,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   socket.on('game_is_over', (data) => {
     let stats = data.stats
-    if(stats === null) {
-      // TODO : end game screen for remote
-    } else {
-      inGameEl.style.display = 'none'
-      endGameEl.style.display = 'block'
+    inGameEl.style.display = 'none'
+    endGameEl.style.display = 'block'
+    if(stats !== null) {
       scoreDisplayer.displayStatTable(stats)
     }
   })
