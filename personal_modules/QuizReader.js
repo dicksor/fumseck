@@ -27,12 +27,15 @@ class QuizReader {
           reject(err)
         }
 
-        for(let i = 0; i < files.length; i++) {
-          if(files[i].substring(0,3) == 'fum') {
+        let i = files.length - 1;
+
+        while(i >= 0) {
+          if(files[i].substring(0,3) === 'fum') {
             files.splice(i, 1)
           }
+          i -= 1
         }
-        console.log(files)
+
         let names = this.cleanName(files)
 
         resolve({paths: files, names: names})
@@ -65,7 +68,6 @@ class QuizReader {
         if (err) {
           reject(err)
         }
-
         for(let i = 0; i < files.length; i++) {
           if(files[i].slice(-25, -5) == token) {
             resolve(files[i])
