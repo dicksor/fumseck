@@ -49,6 +49,6 @@ python download_oqdb_dataset.py --f oqdb_breaking_bad.json --u https://www.kiwim
 * [ ] Protéger les urls
 * [ ] Envoie du lien par node mailer
 * [ ] Améliorer design et ajouter animations
-* [ ] Ecran de fin sur la télécommande 
+* [X] Ecran de fin sur la télécommande 
 * [ ] Ajout des logs
 * [ ] Régler le bouton quit game
