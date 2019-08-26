@@ -1,4 +1,6 @@
 const fs = require('fs')
+const idgen = require('idgen')
+const Mail = require('./SendMail')
 
 class CreateQuizParsing {
   constructor(data) {
@@ -24,11 +26,17 @@ class CreateQuizParsing {
 
     jsonQuiz += ']}'
 
-    let title = this.dataQuiz.quizTitle.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^\w\s]/gi, '').replace(/ /g,"_")
+    let token = idgen(20)
+    let userMail = this.dataQuiz.userMail
 
-    fs.writeFile("app/model/fum_" + title + ".json", jsonQuiz, function(err) {
+    let title = this.dataQuiz.quizTitle.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\w\s]/gi, '').replace(/ /g,'_')
+    let filename = 'fum_' + title + '_' + token + '.json'
+
+    fs.writeFile('app/model/' + filename, jsonQuiz, function(err) {
         if(err) {
-            return console.log(err);
+          return console.log(err)
+        } else {
+          Mail.sendMail(userMail, 'http://localhost:34335/load_game/' + token)
         }
     });
   }

@@ -37,13 +37,23 @@ app.get('/', (req, res) =>{
 })
 .get('/load_game/:token', (req, res) => {
   let createdQuiz = new QuizReader()
-  let quizFilename = 'fum_quiz2.json'
-  createdQuiz.readQuiz(quizFilename).then((quizData) => {
-    res.render('createGame', { quizTitle: quizData.quizTitle, load_game: true, nbQuestions: quizData.nbQuestions, quizFilename: quizFilename })
+
+  //let quizFilename = 'fum_quiz_de_test_load_ZXtoTw17qzEYSirFE7B8.json'
+  //let quizFilename = ''
+
+  createdQuiz.findFileInsideDir(req.params.token).then((quizFilename) => {
+    createdQuiz.readQuiz(quizFilename).then((quizData) => {
+      res.render('createGame', { quizTitle: quizData.quizTitle, load_game: true, nbQuestions: quizData.nbQuestions, quizFilename: quizFilename })
+    })
+    .catch((err) => {
+      console.log(err)
+    })
   })
   .catch((err) => {
     console.log(err)
   })
+
+
 })
 .post('/create_game_processing', urlencodedParser, (req, res) => {
   let gameId = gameManager.generateGameId()
