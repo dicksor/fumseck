@@ -1,0 +1,16 @@
+#playerAnsweredContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.playerAnswered {
+  animation-name: playerAnsweredAnimation;
+  animation-duration: 2s;
+  width: 300px;
+}
+
+@keyframes displayPlayerAnimation {
+  0%   {top: 100px; opacity: 0;}
+  100% {top: 0px; opacity: 1;}
+}

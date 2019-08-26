@@ -12,6 +12,7 @@
 .displayPlayer {
   animation-name: displayPlayerAnimation;
   animation-duration: 2s;
+  width: 300px;
 }
 
 @keyframes displayPlayerAnimation {
