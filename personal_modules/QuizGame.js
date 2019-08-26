@@ -1,21 +1,23 @@
 const QuizTimer = require('./QuizTimer')
 const QuizReader = require('./QuizReader')
 const flatten = require('./util')
+const QuizStat = require('./QuizStat')
 
 class QuizGame {
   constructor(gameId, nbQuestion, theme) {
     this.gameId = gameId
+    this.roomOpen = true
     this.playerSockets = []
     this.hostSocket = new Object()
     this.nbQuestion = nbQuestion
     this.theme = theme
-    this.sockets = []
     this.quizTimer = new QuizTimer(10,
                                    () => this.onTimeOver(),
                                    (countdown) => this.onTick(countdown),
                                    (countdown) => this.onSync(countdown))
     this.count = 0
-
+    this.quizStat = new QuizStat()
+    this.playerAnsweredQuestion = []
   }
 
   addPlayer(socket) {
@@ -43,25 +45,33 @@ class QuizGame {
     }
   }
 
-  emitToHost(channel, data = null){
+  emitToHost(channel, data = null) {
     this.hostSocket.emit(channel, data)
+  }
+
+  broadcastToAll(channel, data = null){
+    this.broadCastToAllPlayer(channel, data)
+    this.emitToHost(channel, data)
   }
 
   renderNextQuestion() {
     let rndQuestionIdx = this.getRandomQuestionIdx(this.quizData)
-    console.log(rndQuestionIdx)
-    console.log(this.quizData[rndQuestionIdx])
     let question = this.quizData[rndQuestionIdx].question
     let propositions = this.quizData[rndQuestionIdx].propositions
+    let response = this.quizData[rndQuestionIdx].reponse
+    let responseIdx = propositions.indexOf(response)
     let data = { question: question, propositions: propositions}
+
+    this.quizStat.addQuestionAnswer(question, responseIdx)
 
     this.quizData.splice(rndQuestionIdx, 1)
 
     this.quizTimer.sync()
     this.sync(10)
 
-    this.broadCastToAllPlayer('next_question', { question: data, count: this.count })
-    this.emitToHost('next_question', { question: data, count: this.count })
+    this.playerAnsweredQuestion = []
+
+    this.broadcastToAll('next_question', { question: data, count: this.count })
     this.count++
 
     this.quizTimer.startTimer()
@@ -73,20 +83,22 @@ class QuizGame {
 
   onTimeOver() {
     if(this.count < this.nbQuestion) {
+      this.quizStat.nextQuestion()
       this.renderNextQuestion()
     } else {
-      this.broadCastToAllPlayer('game_is_over')
+      let stats = this.quizStat.getStatisitiques()
+      this.emitToHost('game_is_over', { stats: stats })
+      this.broadCastToAllPlayer('game_is_over', { stats: null })
+      this.quizTimer.stop()
     }
   }
 
   onTick(countdown) {
-    this.broadCastToAllPlayer('tick', {countdown: countdown})
-    this.emitToHost('tick', {countdown: countdown})
+    this.broadcastToAll('tick', {countdown: countdown})
   }
 
   sync(countdown) {
-    this.emitToHost('sync', {countdown: countdown})
-    this.broadCastToAllPlayer('sync', {countdown: countdown})
+    this.broadcastToAll('sync', {countdown: countdown})
   }
 }
 

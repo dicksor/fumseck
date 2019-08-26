@@ -40,4 +40,8 @@ class GameAnimation {
     this.countdownSvgCircleEl.style.stroke = "#333"
   }
 
+  handleResponse() {
+    
+  }
+
 }

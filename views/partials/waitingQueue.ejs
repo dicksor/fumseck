@@ -1,24 +1,22 @@
 <div id="waitingQueue">
-  <h1>Waiting Room</h1>
+  <div class="uk-flex uk-flex-center uk-margin-top uk-heading-line">
+    <h1 class="uk-heading-medium">Waiting Queue</h1>
+  </div>
+  <p class="uk-text-center uk-text-large">The game start in <strong id="tickTimerWaitingQueue">2 minutes and 30 seconds</strong></p>
   <% if(host) { %>
-    <p><strong>You are the Host</strong></p>
+    <p class="uk-text-center uk-text-large">Share the link to your friends : <a href="http://127.0.0.1:34335/join_game/<%= gameId %>" target="_blank">localhost:34335/join_game/<%= gameId %></a> !</p>
   <% } else { %>
     <input type="hidden" id="pseudo" value="<%= pseudo %>">
   <% } %>
-  <input type="hidden" id="gameId" value="<%= gameId %>">
-  <p>Game id : <%= gameId %></p>
+    <input type="hidden" id="gameId" value="<%= gameId %>">
 
-
-  <div id="newPlayer">
-
-  </div>
-
-  <div class="uk-margin">
-    <div class="uk-inline">
-        <span class="uk-form-icon" uk-icon="icon: link"></span>
-        <input class="uk-input uk-form-large" type="text" placeholder="Game ID : <%= gameId %>" name="gameId" disabled>
+    <!--<div class="example1"><h3>This is the scrolling text </h3></div>-->
+    <p class="uk-text-center">Player is the room : </p>
+    <div id="newPlayer" class="uk-text-center" style="display: table; margin: 0 auto;">
     </div>
-  </div>
+    <% if(host) { %>
+      <br>
+      <button id="startGame" class="uk-button uk-button-secondary uk-button-large">Start game</button>
+    <% } %>
 
-  <p>Share the link to your friends : <a href="http://127.0.0.1:34335/join_game/<%= gameId %>" target="_blank">localhost:34335/join_game/<%= gameId %></a> !</p>
 </div>

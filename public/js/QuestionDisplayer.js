@@ -1,4 +1,4 @@
-class QuestionManager {
+class QuestionDisplayer {
   constructor(questionEl, responseAEl, responseBEl, responseCEl, responseDEl) {
     this.questionEl = questionEl
     this.responseAEl = responseAEl

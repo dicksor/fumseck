@@ -14,13 +14,15 @@ const CreateQuizParsing = require('./personal_modules/CreateQuizParsing')
 
 const quizReader = new QuizReader()
 
+//global variable
 let gameManager = new GameManager()
 
+//config
 app.set('view engine', 'ejs')
 app.use('/favicon.ico', express.static('public/img/icon/favicon.ico'));
 app.use(express.static('public'))
 
-
+//router
 app.get('/', (req, res) =>{
   res.render('index')
 })
@@ -58,16 +60,22 @@ app.get('/', (req, res) =>{
 .post('/create_game_processing', urlencodedParser, (req, res) => {
   let gameId = gameManager.generateGameId()
   gameManager.createGame(gameId, req.body)
-  res.render('game', { host: true, gameId: gameId })
+  res.render('game', {host:true, gameId:gameId, nbPlayer:req.body.nbPlayer, theme:req.body.theme, nbQuestion:req.nbQuestion})
 })
 .get('/join_game/:game_id', (req, res) => {
-  res.render('joinGame', {gameId:req.params.game_id})
+  let gameId = req.params.game_id
+  if(gameManager.isGameIdInRunningGame(gameId)){
+    res.render('joinGame', {gameId:gameId})
+  } else {
+    res.redirect('/')
+  }
+
 })
 .get('/join_game', (req, res) => {
   res.render('joinGame', {gameId:''})
 })
-.post('/waiting_queue', urlencodedParser, (req, res) => {
-  res.render('game', { host: false, pseudo: req.body.pseudo, gameId: req.body.gameId })
+.post('/game', urlencodedParser, (req, res) => {
+  res.render('game', {host:false, pseudo:req.body.pseudo, gameId:req.body.gameId})
 })
 .post('/create_quiz_processing', urlencodedParser, (req, res) => {
   const createQuizParsing = new CreateQuizParsing(req.body)
@@ -78,7 +86,7 @@ app.get('/', (req, res) =>{
   res.status(404).send('Page introuvable !');
 })
 
-
+//socket.io
 io.on('connection', function(socket){
 
   socket.on('player_in_waiting_queue', (data) => {
@@ -87,6 +95,18 @@ io.on('connection', function(socket){
 
   socket.on('host_in_waiting_queue', (data) => {
     gameManager.addHost(data, socket)
+  })
+
+  socket.on('host_start_game', (data) => {
+    gameManager.forceStartGame(data)
+  })
+
+  socket.on('answer_question', (data) => {
+    gameManager.handleResponse(data)
+  })
+
+  socket.on('player_live_answered', (data) => {
+    // gameManager.displayPlayerAnswered(data)
   })
 })
 

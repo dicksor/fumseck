@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let responseCEl = document.getElementById("responseC")
   let responseDEl = document.getElementById("responseD")
 
-  let questionManager = new QuestionManager(questionEl,
+  let questionDisplayer = new QuestionDisplayer(questionEl,
                                             responseAEl,
                                             responseBEl,
                                             responseCEl,
@@ -24,26 +24,35 @@ document.addEventListener('DOMContentLoaded', () => {
                                         countdownEl)
 
   let endGameEl = document.getElementById('endGame')
-  let newPlayerEl = document.getElementById('newPlayer')
   let waitingQueueEl = document.getElementById('waitingQueue')
   let inGameEl = document.getElementById('inGame')
 
+  let pseudo = document.getElementById('pseudo')
+  let gameId = document.getElementById('gameId')
+
+  let scoreDisplayer = new ScoreDisplayer()
+  let quizResponse = new QuizResponse(socket, gameId.value)
+
+  //display player answered
+  // let quizLivePlayerAnswered = new QuizLivePlayerAnswered(pseudo, gameId, socket)
+  // quizLivePlayerAnswered.emiterPlayerAnswered()
+  // quizLivePlayerAnswered.listenPlayerAnswered()
+
+  //Waiting queue
+  let waitingQueueManager = new WaitingQueueManager(pseudo, gameId, socket)
+  waitingQueueManager.emitClientInfo()
+  waitingQueueManager.listenConnectedPlayer()
+  waitingQueueManager.listenWaitingQueueTimer()
+  waitingQueueManager.roomError()
+
+  if(pseudo){
+    quizResponse.setPseudo(pseudo.value)
+  }
+
   socket.on('next_question', (data) => {
-
-    if(data.count > 0) {
-        for(let i = 0; i < 4; i++) {
-            document.getElementById(i).classList.remove('uk-card-primary')
-            document.getElementById(i).classList.add('uk-card-hover')
-            document.getElementById("" + i + i).style.cursor = 'pointer';
-            document.getElementById("" + i + i).onclick = function() {
-                sendResponse(i)
-            };
-        }
-    }
-
-    questionManager.displayNext(data.question)
+    questionDisplayer.displayNext(data.question)
     gameAnimation.addQuestionAnimation()
-
+    quizResponse.resetCards()
   })
 
   socket.on('tick', (data) => {
@@ -53,49 +62,20 @@ document.addEventListener('DOMContentLoaded', () => {
   socket.on('sync', (data) => {
     gameAnimation.onSync(data.countdown)
   })
-  //Waiting queue
-  let pseudo = document.getElementById('pseudo')
-  let gameId = document.getElementById('gameId')
-
-  if(pseudo){
-    socket.emit('player_in_waiting_queue', {pseudo:pseudo.value,  gameId:gameId.value})
-  } else {
-    socket.emit('host_in_waiting_queue', {gameId:gameId.value})
-  }
-
-
-  socket.on('player_connected', (data) => {
-    newPlayerEl.innerHTML = ''
-    data.arrayPlayer.forEach((pseudo) => {
-      newPlayerEl.innerHTML += "<p>" + pseudo + "</p>"
-    })
 
   socket.on('game_is_ready', () => {
     waitingQueueEl .style.display = 'none'
     inGameEl.style.display = 'block'
   })
 
-  socket.on('game_is_over', () => {
-    inGameEl.style.display = 'none'
-    endGameEl.style.display = 'block'
-  })
-
-    //redirect user if a error with the room occur
-    socket.on('room_error', () => {
-      window.location.href = 'http://127.0.0.1/:34335'
-    })
+  socket.on('game_is_over', (data) => {
+    let stats = data.stats
+    if(stats === null) {
+      // TODO : end game screen for remote
+    } else {
+      inGameEl.style.display = 'none'
+      endGameEl.style.display = 'block'
+      scoreDisplayer.displayStatTable(stats)
+    }
   })
 })
-
-// Send rep from the user
-function sendResponse(rep) {
-  document.getElementById(rep).classList.add('uk-card-primary')
-
-  for(let i = 0; i < 4; i++) {
-    document.getElementById("" + i + i).onclick = null
-    document.getElementById(i).classList.remove('uk-card-hover')
-    document.getElementById("" + i + i).style.cursor = 'default'
-  }
-
-  //socket.emit('answer_question', { pseudo: pseudo.textContent, gameId: document.getElementById('gameId').textContent, response: rep })
-}

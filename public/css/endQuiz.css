@@ -1,0 +1,20 @@
+.correct {
+  color: #56C8AE;
+}
+
+.wrong {
+  color: #D84837;
+}
+
+.score {
+  font-size: large;
+  font-weight: bold;
+}
+
+.score-centered {
+  text-align: center !important;
+}
+
+.score-bold {
+  font-weight: bold;
+}
