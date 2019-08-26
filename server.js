@@ -9,6 +9,9 @@ let urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 //personal_modules
 const GameManager = require('./personal_modules/GameManager')
+const QuizReader = require('./personal_modules/QuizReader')
+
+const quizReader = new QuizReader()
 
 //global variable
 let gameManager = new GameManager()
@@ -23,7 +26,15 @@ app.get('/', (req, res) =>{
   res.render('index')
 })
 .get('/create_game', (req, res) => {
-  res.render('createGame')
+  quizReader.readTopics()
+  .then(topics => {
+    res.render('createGame', { topics: topics })
+  })
+  .catch(error => {
+    // TODO : tell user
+    console.log(error)
+  })
+
 })
 .post('/create_game_processing', urlencodedParser, (req, res) => {
   let gameId = gameManager.generateGameId()
@@ -32,7 +43,7 @@ app.get('/', (req, res) =>{
 })
 .get('/join_game/:game_id', (req, res) => {
   let gameId = req.params.game_id
-  if(gameManager.isGameIdExist(gameId)){
+  if(gameManager.isGameIdInRunningGame(gameId)){
     res.render('joinGame', {gameId:gameId})
   } else {
     res.redirect('/')
@@ -62,6 +73,14 @@ io.on('connection', function(socket){
 
   socket.on('host_start_game', (data) => {
     gameManager.forceStartGame(data)
+  })
+
+  socket.on('answer_question', (data) => {
+    gameManager.handleResponse(data)
+  })
+
+  socket.on('player_live_answered', (data) => {
+    gameManager.displayPlayerAnswered(data)
   })
 })
 

@@ -29,6 +29,7 @@ class WaitingQueueManager{
     this.socket.on('player_connected', (data) => {
       newPlayerEl.innerHTML = ''
       data.arrayPlayer.forEach((pseudo) => {
+        console.log(pseudo);
         newPlayerEl.innerHTML += '<div style="width: 300px;" class="uk-tile uk-tile-primary uk-padding-small displayPlayer"><p class="uk-h4">'+pseudo+'</p></div><br/>'
       })
     })
@@ -87,7 +88,7 @@ displayTimer(timerObject){
    */
   roomError(){
     this.socket.on('room_error', () => {
-      window.location.href = 'http://127.0.0.1/:34335'
+      window.location.href = 'http://127.0.0.1:34335'
     })
   }
 }

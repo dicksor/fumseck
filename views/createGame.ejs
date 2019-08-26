@@ -48,7 +48,11 @@
               <div uk-form-custom="target: > * > span:first-child">
                   <select name="theme">
                     <option value="">Select the game theme</option>
-                    <option value="BreakingBad">Breaking Bad</option>
+                    <%
+                        for (var j = 0; j < topics.names.length; j++){
+                            %><option value="<%= topics.paths[j] %>"><%= topics.names[j].toUpperCase() %><%
+                        }
+                    %>
                   </select>
                   <button class="uk-button uk-button-default uk-width-medium uk-form-large" type="button" tabindex="-1">
                       <span></span>

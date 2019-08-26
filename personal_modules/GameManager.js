@@ -30,7 +30,7 @@ class GameManager {
    * @return {Integer}        number of place available
    */
   getNbPlaceAvailable(gameId){
-    return this.runningGames[gameId]['nbPlayer'] - this.runningGames[gameId]['players'].length
+    return this.runningGames[gameId]['nbPlayer'] - this.runningGames[gameId]['quiz'].quizStat.getPlayers().length
   }
 
   /**
@@ -38,7 +38,7 @@ class GameManager {
    * @param  {String}  gameId game id
    * @return {Boolean}        true if game id exist, false otherwise
    */
-  isGameIdExist(gameId){
+  isGameIdInRunningGame(gameId){
     return gameId in this.runningGames
   }
 
@@ -49,7 +49,7 @@ class GameManager {
    */
   addHost(data, socket){
     //if the game id doesn't exist, the user is redirected to the website index
-    if(this.isGameIdExist(data.gameId)){
+    if(this.isGameIdInRunningGame(data.gameId)){
       if(this.runningGames[data.gameId]['quiz'].roomOpen){
           this.runningGames[data.gameId]['quiz'].addHost(socket)
 
@@ -67,7 +67,7 @@ class GameManager {
  */
   addPlayer(data, socket){
     //if the game id doesn't exist, the user is redirected to the website index
-    if(this.isGameIdExist(data.gameId)){
+    if(this.isGameIdInRunningGame(data.gameId)){
       //if the room is full, the user is redirected to the website index
       if(!this.runningGames[data.gameId]['quiz'].roomOpen){
         socket.emit('room_error')
@@ -75,7 +75,10 @@ class GameManager {
         //we add the user in the game, and send the user connection to all user and the host
         console.log('player added');
         this.runningGames[data.gameId]['quiz'].addPlayer(socket)
+        this.runningGames[data.gameId]['quiz'].quizStat.addPlayer(data.pseudo)
         this.runningGames[data.gameId]['players'].push(data.pseudo)
+
+        console.log('sended');
 
         this.runningGames[data.gameId]['quiz'].broadcastToAll('player_connected', {arrayPlayer: this.runningGames[data.gameId]['players']})
 
@@ -93,12 +96,17 @@ class GameManager {
     }
   }
 
+  displayPlayerAnswered(data){
+    this.runningGames[data.gameId]['quiz'].playerAnsweredQuestion.push(data.pseudo)
+    this.runningGames[data.gameId]['quiz'].emitToHost('display_player_answered', {arrayPlayer: this.runningGames[data.gameId]['quiz'].playerAnsweredQuestion})
+  }
+
   /**
    * Allow the host to start the game without all the player
    * @param  {Object} data data form the host
    */
   forceStartGame(data){
-    if(this.isGameIdExist(data.gameId) && this.runningGames[data.gameId]['quiz'].playerSockets !== 0){
+    if(this.isGameIdInRunningGame(data.gameId) && this.runningGames[data.gameId]['quiz'].playerSockets !== 0){
       this.runningGames[data.gameId]['quiz'].roomOpen = false
       this.runningGames[data.gameId]['quiz'].startQuiz()
       this.runningGames[data.gameId]['quiz'].broadcastToAll('game_is_ready')
@@ -116,9 +124,15 @@ class GameManager {
     let gameId = '';
     do {
        gameId = idgen(length)
-    } while(this.isGameIdExist(gameId))
+    } while(this.isGameIdInRunningGame(gameId))
 
     return gameId;
+  }
+
+  handleResponse(data) {
+    if (this.isGameIdInRunningGame(data.gameId)) {
+      this.runningGames[data.gameId]['quiz'].quizStat.addPlayersResponse(data.pseudo, data.response)
+    }
   }
 }
 
