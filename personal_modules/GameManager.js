@@ -14,14 +14,10 @@ class GameManager {
 
     this.runningGames[gameId] = []
 
-    this.runningGames[gameId]['quiz'] = new QuizGame(gameId, nbQuestion, theme) // TODO : passer le theme et le nombre de joueur en plus
+    this.runningGames[gameId]['quiz'] = new QuizGame(gameId, nbQuestion, theme)
     this.runningGames[gameId]['waitingQueueTimer'] = new WaitingQueueTimer(150, this.runningGames[gameId]['quiz'])
     this.runningGames[gameId]['nbPlayer'] = parseInt(nbPlayer)
     this.runningGames[gameId]['players'] = []
-  }
-
-  onGameOver() {
-    // TODO : remove from dictionary
   }
 
   /**

@@ -56,6 +56,15 @@
             <p class="uk-text-lead">About us...</p>
             <hr class="uk-divider-small">
             <p class="uk-text-meta">We are three beautiful students</p>
+            <p class="uk-text-lead">Copyrights</p>
+            <hr class="uk-divider-small">
+            <ul id="copyrights">
+              <%
+                  for(let copyright of copyrights) {
+                      %><li><%= copyright.theme %> : <%= copyright.redacteur %> , <%= copyright.fournisseur %></li><%
+                  }
+              %>
+            </ul>
           </li>
       </ul>
 

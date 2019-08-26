@@ -32,6 +32,24 @@ class QuizReader {
     })
   }
 
+  readCopyrights() {
+  return this.readTopics().then(topics => {
+    const oqdb_prefix = 'oqdb'
+    let copyrights = []
+    for(let path of topics.paths) {
+        if(path.startsWith(oqdb_prefix)) {
+          let promise = new Promise((resolve, reject) => {
+            this.readQuiz(path).then(quiz => {
+              resolve({ 'theme': quiz.theme, 'redacteur': quiz.redacteur, 'fournisseur': quiz.fournisseur })
+            })
+          })
+          copyrights.push(promise)
+        }
+      }
+      return Promise.all(copyrights)
+    })
+  }
+
   cleanName(files) {
     let names = []
     for(let file of files) {

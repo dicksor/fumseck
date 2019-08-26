@@ -90,6 +90,7 @@ class QuizGame {
       this.emitToHost('game_is_over', { stats: stats })
       this.broadCastToAllPlayer('game_is_over', { stats: null })
       this.quizTimer.stop()
+      setTimeout(() => { delete this }, 1000)
     }
   }
 

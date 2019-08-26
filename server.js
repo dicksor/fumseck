@@ -23,7 +23,14 @@ app.use(express.static('public'))
 
 //router
 app.get('/', (req, res) =>{
-  res.render('index')
+  quizReader.readCopyrights().then(copyrights => {
+    res.render('index', { copyrights: copyrights })
+  })
+  .catch(error => {
+    // TODO : tell user
+    console.log(error)
+  })
+
 })
 .get('/create_game', (req, res) => {
   quizReader.readTopics()
