@@ -52,3 +52,4 @@ python download_oqdb_dataset.py --f oqdb_breaking_bad.json --u https://www.kiwim
 * [X] Ecran de fin sur la télécommande 
 * [ ] Ajout des logs
 * [ ] Régler le bouton quit game
+* [ ] Ajouter des labels au select
