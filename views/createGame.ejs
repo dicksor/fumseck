@@ -74,8 +74,8 @@
                       <%
                           if(typeof load_game == 'undefined') {
                             %><option value="">Select number of questions</option><%
-                            for (var j = 0; j < topics.names.length; j++) {
-                                %><option value="<%= i %>"><%= i %><%
+                            for (var j = 1; j < 16; j++) {
+                                %><option value="<%= j %>"><%= j %><%
                             }
                           }
                           else {

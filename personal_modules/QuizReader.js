@@ -27,6 +27,13 @@ class QuizReader {
           reject(err)
         }
         let names = this.cleanName(files)
+
+        for(let i = 0; i < files.length; i++) {
+          if(files[i].substring(0,3) == 'fum') {
+            files.splice(i, 1)
+          }
+        }
+        console.log(files)
         resolve({paths: files, names: names})
       })
     })
@@ -51,8 +58,11 @@ class QuizReader {
   cleanName(files) {
     let names = []
     for(let file of files) {
-      let f = file.replace(/oqdb|_|\.json/gi, ' ').trim()
-      names.push(f)
+      if(file.substring(0,3) != 'fum')
+      {
+        let f = file.replace(/oqdb|_|\.json/gi, ' ').trim()
+        names.push(f)
+      }
     }
     return names
   }
