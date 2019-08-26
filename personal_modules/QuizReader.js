@@ -32,6 +32,22 @@ class QuizReader {
     })
   }
 
+  findFileInsideDir(token) {
+    return new Promise((resolve, reject) => {
+      fs.readdir(this.BASE_MODEL_PATH, (err, files) => {
+        if (err) {
+          reject(err)
+        }
+
+        for(let i = 0; i < files.length; i++) {
+          if(files[i].slice(-25, -5) == token) {
+            resolve(files[i])
+          }
+        }
+      })
+    })
+  }
+
   cleanName(files) {
     let names = []
     for(let file of files) {
