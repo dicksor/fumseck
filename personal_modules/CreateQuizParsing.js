@@ -24,14 +24,12 @@ class CreateQuizParsing {
 
     jsonQuiz += ']}'
 
-    console.log(jsonQuiz)
+    let title = this.dataQuiz.quizTitle.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^\w\s]/gi, '').replace(/ /g,"_")
 
-    fs.writeFile("app/model/oqdb_test.json", jsonQuiz, function(err) {
+    fs.writeFile("app/model/fum_" + title + ".json", jsonQuiz, function(err) {
         if(err) {
             return console.log(err);
         }
-
-        console.log("The file was saved!");
     });
   }
 }
