@@ -47,10 +47,15 @@
             <div class="uk-inline">
               <div uk-form-custom="target: > * > span:first-child">
                   <select name="theme">
-                    <option value="">Select the game theme</option>
                     <%
-                        for (var j = 0; j < topics.names.length; j++){
-                            %><option value="<%= topics.paths[j] %>"><%= topics.names[j].toUpperCase() %><%
+                        if(typeof load_game == 'undefined') {
+                          %><option value="">Select the game theme</option><%
+                          for (var j = 0; j < topics.names.length; j++) {
+                              %><option value="<%= topics.paths[j] %>"><%= topics.names[j].toUpperCase() %><%
+                          }
+                        }
+                        else {
+                          %><option value="<%= quizFilename %>"><%= quizTitle.toUpperCase() %><%
                         }
                     %>
                   </select>
@@ -66,22 +71,17 @@
             <div class="uk-inline">
               <div uk-form-custom="target: > * > span:first-child">
                   <select name="nbQuestion">
-                      <option value="">Select number of questions</option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                      <option value="6">6</option>
-                      <option value="7">7</option>
-                      <option value="8">8</option>
-                      <option value="9">9</option>
-                      <option value="10">10</option>
-                      <option value="11">11</option>
-                      <option value="12">12</option>
-                      <option value="13">13</option>
-                      <option value="14">14</option>
-                      <option value="15">15</option>
+                      <%
+                          if(typeof load_game == 'undefined') {
+                            %><option value="">Select number of questions</option><%
+                            for (var j = 0; j < topics.names.length; j++) {
+                                %><option value="<%= i %>"><%= i %><%
+                            }
+                          }
+                          else {
+                            %><option value="<%= nbQuestions %>"><%= nbQuestions %><%
+                          }
+                      %>
                   </select>
                   <button class="uk-button uk-button-default uk-width-medium uk-form-large" type="button" tabindex="-1">
                       <span></span>

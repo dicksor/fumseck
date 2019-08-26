@@ -35,6 +35,16 @@ app.get('/', (req, res) =>{
   })
 
 })
+.get('/load_game/:token', (req, res) => {
+  let createdQuiz = new QuizReader()
+  let quizFilename = 'fum_quiz2.json'
+  createdQuiz.readQuiz(quizFilename).then((quizData) => {
+    res.render('createGame', { quizTitle: quizData.quizTitle, load_game: true, nbQuestions: quizData.nbQuestions, quizFilename: quizFilename })
+  })
+  .catch((err) => {
+    console.log(err)
+  })
+})
 .post('/create_game_processing', urlencodedParser, (req, res) => {
   let gameId = gameManager.generateGameId()
   gameManager.createGame(gameId, req.body)
@@ -50,11 +60,9 @@ app.get('/', (req, res) =>{
   res.render('game', { host: false, pseudo: req.body.pseudo, gameId: req.body.gameId })
 })
 .post('/create_quiz_processing', urlencodedParser, (req, res) => {
-  //console.log(req.body)
-  //res.redirect('/')
   const createQuizParsing = new CreateQuizParsing(req.body)
   createQuizParsing.saveData()
-  res.render('index')
+  res.redirect('/')
 })
 .use((req, res, next) => {
   res.status(404).send('Page introuvable !');

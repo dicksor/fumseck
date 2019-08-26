@@ -10,7 +10,7 @@ class CreateQuizParsing {
     let repLetter = ''
     let jsonQuiz = ''
 
-    jsonQuiz += '{"quizTitle": "' + this.dataQuiz.quizTitle + '",'
+    jsonQuiz += '{"nbQuestions": "' + this.dataQuiz.numberOfQuestion + '", "quizTitle": "' + this.dataQuiz.quizTitle + '",'
     jsonQuiz += '"quizz": ['
 
     for(let i = 1; i <= this.dataQuiz.numberOfQuestion; i++) {
