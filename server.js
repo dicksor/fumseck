@@ -10,6 +10,7 @@ let urlencodedParser = bodyParser.urlencoded({ extended: false })
 //personal_modules
 const GameManager = require('./personal_modules/GameManager')
 const QuizReader = require('./personal_modules/QuizReader')
+const CreateQuizParsing = require('./personal_modules/CreateQuizParsing')
 
 const quizReader = new QuizReader()
 
@@ -43,6 +44,26 @@ app.get('/', (req, res) =>{
   })
 
 })
+.get('/load_game/:token', (req, res) => {
+  let createdQuiz = new QuizReader()
+
+  //let quizFilename = 'fum_quiz_de_test_load_ZXtoTw17qzEYSirFE7B8.json'
+  //let quizFilename = ''
+
+  createdQuiz.findFileInsideDir(req.params.token).then((quizFilename) => {
+    createdQuiz.readQuiz(quizFilename).then((quizData) => {
+      res.render('createGame', { quizTitle: quizData.quizTitle, load_game: true, nbQuestions: quizData.nbQuestions, quizFilename: quizFilename })
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  })
+  .catch((err) => {
+    console.log(err)
+  })
+
+
+})
 .post('/create_game_processing', urlencodedParser, (req, res) => {
   let gameId = gameManager.generateGameId()
   gameManager.createGame(gameId, req.body)
@@ -62,6 +83,11 @@ app.get('/', (req, res) =>{
 })
 .post('/game', urlencodedParser, (req, res) => {
   res.render('game', {host:false, pseudo:req.body.pseudo, gameId:req.body.gameId})
+})
+.post('/create_quiz_processing', urlencodedParser, (req, res) => {
+  const createQuizParsing = new CreateQuizParsing(req.body)
+  createQuizParsing.saveData()
+  res.redirect('/')
 })
 .use((req, res, next) => {
   res.status(404).send('Page introuvable !');

@@ -20,6 +20,7 @@
       <br>
       <ul class="uk-subnav uk-tab" uk-switcher="animation: uk-animation-slide-left">
           <li><a href="#">Home</a></li>
+          <li><a href="#">Create quiz</a></li>
           <li><a href="#">Help</a></li>
           <li><a href="#">About</a></li>
       </ul>
@@ -40,8 +41,11 @@
                   <a class="uk-button uk-button-secondary" href="join_game">Join a game</a>
               </p>
             </div>
+          </li>
 
-
+          <!-- Tab create form -->
+          <li>
+            <% include partials/createQuiz %>
           </li>
 
           <!-- Tab Help -->

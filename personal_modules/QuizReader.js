@@ -26,14 +26,23 @@ class QuizReader {
         if (err) {
           reject(err)
         }
+
+        for(let i = 0; i < files.length; i++) {
+          if(files[i].substring(0,3) == 'fum') {
+            files.splice(i, 1)
+          }
+        }
+        console.log(files)
         let names = this.cleanName(files)
+
         resolve({paths: files, names: names})
       })
     })
   }
 
+
   readCopyrights() {
-  return this.readTopics().then(topics => {
+    return this.readTopics().then(topics => {
     const oqdb_prefix = 'oqdb'
     let copyrights = []
     for(let path of topics.paths) {
@@ -47,6 +56,22 @@ class QuizReader {
         }
       }
       return Promise.all(copyrights)
+    })
+  }
+
+  findFileInsideDir(token) {
+    return new Promise((resolve, reject) => {
+      fs.readdir(this.BASE_MODEL_PATH, (err, files) => {
+        if (err) {
+          reject(err)
+        }
+
+        for(let i = 0; i < files.length; i++) {
+          if(files[i].slice(-25, -5) == token) {
+            resolve(files[i])
+          }
+        }
+      })
     })
   }
 

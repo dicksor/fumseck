@@ -33,3 +33,23 @@ npm install package-name --save
 ```
 python download_oqdb_dataset.py --f oqdb_breaking_bad.json --u https://www.kiwime.com/oqdb/files/1036987992/OpenQuizzDB_036/openquizzdb_36.json --d "../app/model"
 ```
+
+## TODO
+
+* [ ] Hébérgeur
+* [ ] Boutons responsive
+* [ ] Ajouter des sons
+* [ ] Transitions entre les questions
+* [ ] Page avec le classement
+* [X] Ajouter droits d'auteurs dans about
+* [ ] Ajouter image dans le formulaire
+* [ ] Sticky footer
+* [ ] Logo à la réponse d'une question
+* [ ] Editer un quiz
+* [ ] Protéger les urls
+* [ ] Envoie du lien par node mailer
+* [ ] Améliorer design et ajouter animations
+* [X] Ecran de fin sur la télécommande 
+* [ ] Ajout des logs
+* [ ] Régler le bouton quit game
+* [ ] Ajouter des labels au select
