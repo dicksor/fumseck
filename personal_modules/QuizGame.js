@@ -89,6 +89,7 @@ class QuizGame {
       let stats = this.quizStat.getStatisitiques()
       this.emitToHost('game_is_over', { stats: stats })
       this.broadCastToAllPlayer('game_is_over', { stats: null })
+      this.quizTimer.stop()
     }
   }
 

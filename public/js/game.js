@@ -33,6 +33,18 @@ document.addEventListener('DOMContentLoaded', () => {
   let scoreDisplayer = new ScoreDisplayer()
   let quizResponse = new QuizResponse(socket, gameId.value)
 
+  //display player answered
+  // let quizLivePlayerAnswered = new QuizLivePlayerAnswered(pseudo, gameId, socket)
+  // quizLivePlayerAnswered.emiterPlayerAnswered()
+  // quizLivePlayerAnswered.listenPlayerAnswered()
+
+  //Waiting queue
+  let waitingQueueManager = new WaitingQueueManager(pseudo, gameId, socket)
+  waitingQueueManager.emitClientInfo()
+  waitingQueueManager.listenConnectedPlayer()
+  waitingQueueManager.listenWaitingQueueTimer()
+  waitingQueueManager.roomError()
+
   if(pseudo){
     quizResponse.setPseudo(pseudo.value)
   }
@@ -50,18 +62,6 @@ document.addEventListener('DOMContentLoaded', () => {
   socket.on('sync', (data) => {
     gameAnimation.onSync(data.countdown)
   })
-
-  //display player answered
-  let quizLivePlayerAnswered = new QuizLivePlayerAnswered(pseudo, gameId, socket)
-  quizLivePlayerAnswered.emiterPlayerAnswered()
-  quizLivePlayerAnswered.listenPlayerAnswered()
-
-  //Waiting queue
-  let waitingQueueManager = new WaitingQueueManager(pseudo, gameId, socket)
-  waitingQueueManager.emitClientInfo()
-  waitingQueueManager.listenConnectedPlayer()
-  waitingQueueManager.listenWaitingQueueTimer()
-  waitingQueueManager.roomError()
 
   socket.on('game_is_ready', () => {
     waitingQueueEl .style.display = 'none'

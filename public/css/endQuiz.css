@@ -10,3 +10,11 @@
   font-size: large;
   font-weight: bold;
 }
+
+.score-centered {
+  text-align: center !important;
+}
+
+.score-bold {
+  font-weight: bold;
+}
