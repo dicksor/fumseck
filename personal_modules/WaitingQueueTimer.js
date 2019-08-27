@@ -6,7 +6,6 @@ class WaitingQueueTimer {
 
   tick(){
     this.timer = setInterval(() => {
-      console.log('in_timer');
       if(this.time == 0){
         if(this.quizGame.playerSockets.length === 0) {
           this.quizGame.emitToHost('room_error')

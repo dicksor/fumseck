@@ -1,6 +1,6 @@
 const QuizTimer = require('./QuizTimer')
 const QuizReader = require('./QuizReader')
-const flatten = require('./util')
+const util = require('./util')
 const QuizStat = require('./QuizStat')
 
 class QuizGame {
@@ -13,8 +13,7 @@ class QuizGame {
     this.theme = theme
     this.quizTimer = new QuizTimer(10,
                                    () => this.onTimeOver(),
-                                   (countdown) => this.onTick(countdown),
-                                   (countdown) => this.onSync(countdown))
+                                   (countdown) => this.onTick(countdown))
     this.count = 0
     this.quizStat = new QuizStat()
     this.playerAnsweredQuestion = []
@@ -31,7 +30,7 @@ class QuizGame {
   startQuiz() {
     let quiz = new QuizReader()
     quiz.readQuiz(this.theme).then((quizData) => {
-      this.quizData = flatten(Object.values(quizData.quizz))
+      this.quizData = util.flatten(Object.values(quizData.quizz))
       this.renderNextQuestion()
     })
     .catch((err) => {

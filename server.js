@@ -11,15 +11,15 @@ let urlencodedParser = bodyParser.urlencoded({ extended: false })
 const GameManager = require('./personal_modules/GameManager')
 const QuizReader = require('./personal_modules/QuizReader')
 const CreateQuizParsing = require('./personal_modules/CreateQuizParsing')
-
-const quizReader = new QuizReader()
+const util = require('./personal_modules/util')
 
 //global variable
 let gameManager = new GameManager()
+const quizReader = new QuizReader()
 
 //config
 app.set('view engine', 'ejs')
-app.use('/favicon.ico', express.static('public/img/icon/favicon.ico'));
+app.use('/favicon.ico', express.static('public/img/icon/favicon.ico'))
 app.use(express.static('public'))
 
 //router
@@ -47,9 +47,6 @@ app.get('/', (req, res) =>{
 .get('/load_game/:token', (req, res) => {
   let createdQuiz = new QuizReader()
 
-  //let quizFilename = 'fum_quiz_de_test_load_ZXtoTw17qzEYSirFE7B8.json'
-  //let quizFilename = ''
-
   createdQuiz.findFileInsideDir(req.params.token).then((quizFilename) => {
     createdQuiz.readQuiz(quizFilename).then((quizData) => {
       res.render('createGame', { quizTitle: quizData.quizTitle, load_game: true, nbQuestions: quizData.nbQuestions, quizFilename: quizFilename })
@@ -61,10 +58,8 @@ app.get('/', (req, res) =>{
   .catch((err) => {
     console.log(err)
   })
-
-
 })
-.post('/create_game_processing', urlencodedParser, (req, res) => {
+.post('/game_host', urlencodedParser, (req, res) => {
   let gameId = gameManager.generateGameId()
   gameManager.createGame(gameId, req.body)
   res.render('game', {host:true, gameId:gameId, nbPlayer:req.body.nbPlayer, theme:req.body.theme, nbQuestion:req.nbQuestion})
@@ -76,15 +71,14 @@ app.get('/', (req, res) =>{
   } else {
     res.redirect('/')
   }
-
 })
 .get('/join_game', (req, res) => {
   res.render('joinGame', {gameId:''})
 })
-.post('/game', urlencodedParser, (req, res) => {
+.post('/game', urlencodedParser, (req, res) => { // a proteger
   res.render('game', {host:false, pseudo:req.body.pseudo, gameId:req.body.gameId})
 })
-.post('/create_quiz_processing', urlencodedParser, (req, res) => {
+.post('/create_quiz_processing', urlencodedParser, (req, res) => { // a proteger
   const createQuizParsing = new CreateQuizParsing(req.body)
   createQuizParsing.saveData()
   res.redirect('/')
