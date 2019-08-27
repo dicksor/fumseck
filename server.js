@@ -60,9 +60,13 @@ app.get('/', (req, res) =>{
   })
 })
 .post('/game_host', urlencodedParser, (req, res) => {
-  let gameId = gameManager.generateGameId()
-  gameManager.createGame(gameId, req.body)
-  res.render('game', {host:true, gameId:gameId, nbPlayer:req.body.nbPlayer, theme:req.body.theme, nbQuestion:req.nbQuestion})
+  if(!util.isParamEmpty(req.body)){
+    let gameId = gameManager.generateGameId()
+    gameManager.createGame(gameId, req.body)
+    res.render('game', {host:true, gameId:gameId, nbPlayer:req.body.nbPlayer, theme:req.body.theme, nbQuestion:req.nbQuestion})
+  } else {
+    res.redirect('/')
+  }
 })
 .get('/join_game/:game_id', (req, res) => {
   let gameId = req.params.game_id
@@ -75,12 +79,19 @@ app.get('/', (req, res) =>{
 .get('/join_game', (req, res) => {
   res.render('joinGame', {gameId:''})
 })
-.post('/game', urlencodedParser, (req, res) => { // a proteger
-  res.render('game', {host:false, pseudo:req.body.pseudo, gameId:req.body.gameId})
+.post('/game', urlencodedParser, (req, res) => {
+  if(!util.isParamEmpty(req.body) && gameManager.isGameIdInRunningGame(req.body.gameId)){
+    res.render('game', {host:false, pseudo:req.body.pseudo, gameId:req.body.gameId})
+  } else {
+    res.redirect('/')
+  }
+
 })
 .post('/create_quiz_processing', urlencodedParser, (req, res) => { // a proteger
-  const createQuizParsing = new CreateQuizParsing(req.body)
-  createQuizParsing.saveData()
+  if(!util.isParamEmpty(req.body)) {
+    const createQuizParsing = new CreateQuizParsing(req.body)
+    createQuizParsing.saveData()
+  }
   res.redirect('/')
 })
 .use((req, res, next) => {
