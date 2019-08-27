@@ -13,11 +13,8 @@ class QuizLivePlayerAnswered {
       this.answeredPlayer.push(newPseudo)//add new player to the local array
 
       let div = document.createElement('div')
-      div.innerHTML = '<img href="/public/img/user.png" />'
+      div.innerHTML = '<img src="img/user.png" class="imgPlayerAnswered"/><h4 class="imgUserPseudo">'+ newPseudo +'</h4>'
       div.classList.add('playerAnswered')
-      div.classList.add('uk-tile')
-      div.classList.add('uk-tile-primary')
-      div.classList.add('uk-padding-small')
 
       this.divPlayerAnswered.appendChild(div)
     })
