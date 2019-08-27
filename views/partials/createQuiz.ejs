@@ -1,8 +1,9 @@
 <p class="uk-text-lead">Here you can create your own quiz !</p>
 <hr class="uk-divider-small">
 <p class="uk-text-meta">Just fill the required field and save it.</p>
+<p class="uk-text-meta">The link to access the quiz will be send you by email.</p>
 
-<form class="uk-form-horizontal uk-margin-large" action="create_quiz_processing" method="post" autocomplete="off">
+<form class="uk-form-horizontal uk-margin-large" action="create_quiz_processing" method="post" autocomplete="off" onsubmit="return validateEmail()">
 
     <div class="uk-margin">
         <label class="uk-form-label" for="form-horizontal-text"><strong>Title of the quiz</strong></label>
@@ -10,9 +11,9 @@
             <input class="uk-input" id="form-horizontal-text" type="text" placeholder="Your quiz title..." name="quizTitle" required>
         </div>
         <br>
-        <label class="uk-form-label" for="form-horizontal-text"><strong>Your mail</strong></label>
+        <label class="uk-form-label" for="email"><strong>Your mail</strong></label>
         <div class="uk-form-controls uk-width-medium">
-            <input class="uk-input" id="form-horizontal-text" type="mail" placeholder="Your mail..." name="userMail" required>
+            <input class="uk-input" id="email" type="mail" placeholder="Your mail..." name="userMail" required>
         </div>
     </div>
 
@@ -65,3 +66,19 @@
     <input type="hidden" value="1" name="numberOfQuestion" id="numberOfQuestion">
 
 </form>
+
+<script type="text/javascript">
+  function validateEmail() {
+    if(ve(document.getElementById('email').value)) {
+      return true
+    } else {
+      document.getElementById('email').classList.add('uk-form-danger')
+      return false
+    }
+  }
+
+  function ve(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  }
+</script>
