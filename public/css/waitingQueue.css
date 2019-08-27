@@ -12,9 +12,13 @@
 .displayPlayer {
   animation-name: displayPlayerAnimation;
   animation-duration: 2s;
+  width: 300px;
 }
 
 @keyframes displayPlayerAnimation {
   0%   {left: 100px; opacity: 0;}
-  100% {left:0px; opacity: 1;}
+  50%  {left: -4px; opacity: 0.5;}
+  65%  {left: 2px; opacity: 0.65;}
+  80%  {left: -1px; opacity: 0.8;}
+  100% {left: 0px; opacity: 1;}
 }

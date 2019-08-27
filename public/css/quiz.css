@@ -1,0 +1,28 @@
+#playerAnsweredContainer {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.imgPlayerAnswered {
+  height: 80px;
+  position: relative;
+  top: 35px;
+  left: 3px;
+}
+
+.imgUserPseudo {
+  text-align: center
+
+}
+
+.playerAnswered {
+  margin-right: 70px;
+  text-align: center;
+  animation-name: playerAnsweredAnimation;
+  animation-duration: 2s;
+}
+
+@keyframes playerAnsweredAnimation {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}

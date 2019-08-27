@@ -34,22 +34,17 @@ document.addEventListener('DOMContentLoaded', () => {
   let quizResponse = new QuizResponse(socket, gameId.value)
 
   //display player answered
-  // let quizLivePlayerAnswered = new QuizLivePlayerAnswered(pseudo, gameId, socket)
-  // quizLivePlayerAnswered.emiterPlayerAnswered()
-  // quizLivePlayerAnswered.listenPlayerAnswered()
-
-  //Waiting queue
-  let waitingQueueManager = new WaitingQueueManager(pseudo, gameId, socket)
-  waitingQueueManager.emitClientInfo()
-  waitingQueueManager.listenConnectedPlayer()
-  waitingQueueManager.listenWaitingQueueTimer()
-  waitingQueueManager.roomError()
+  let quizLivePlayerAnswered = new QuizLivePlayerAnswered(socket)
+  quizLivePlayerAnswered.listenPlayerAnswered()
 
   if(pseudo){
     quizResponse.setPseudo(pseudo.value)
   }
 
   socket.on('next_question', (data) => {
+    //clean player answered info
+    quizLivePlayerAnswered.cleanScreen()
+
     questionDisplayer.displayNext(data.question)
     gameAnimation.addQuestionAnimation()
     quizResponse.resetCards()
@@ -62,6 +57,14 @@ document.addEventListener('DOMContentLoaded', () => {
   socket.on('sync', (data) => {
     gameAnimation.onSync(data.countdown)
   })
+
+  //Waiting queue
+  let waitingQueueManager = new WaitingQueueManager(pseudo, gameId, socket)
+  waitingQueueManager.emitClientInfo()
+  waitingQueueManager.listenConnectedPlayer()
+  waitingQueueManager.listenWaitingQueueTimer()
+  waitingQueueManager.roomError()
+
 
   socket.on('game_is_ready', () => {
     waitingQueueEl .style.display = 'none'
