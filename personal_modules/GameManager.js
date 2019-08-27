@@ -46,7 +46,7 @@ class GameManager {
   addHost(data, socket){
     //if the game id doesn't exist, the user is redirected to the website index
     if(this.isGameIdInRunningGame(data.gameId)){
-      if(this.runningGames[data.gameId]['quiz'].roomOpen){
+      if(this.runningGames[data.gameId]['quiz'].isRoomOpen){
           this.runningGames[data.gameId]['quiz'].addHost(socket)
 
           this.runningGames[data.gameId]['waitingQueueTimer'].tick()
@@ -65,23 +65,19 @@ class GameManager {
     //if the game id doesn't exist, the user is redirected to the website index
     if(this.isGameIdInRunningGame(data.gameId)){
       //if the room is full, the user is redirected to the website index
-      if(!this.runningGames[data.gameId]['quiz'].roomOpen){
+      if(!this.runningGames[data.gameId]['quiz'].isRoomOpen){
         socket.emit('room_error')
       } else {
         //we add the user in the game, and send the user connection to all user and the host
-        console.log('player added');
         this.runningGames[data.gameId]['quiz'].addPlayer(socket)
         this.runningGames[data.gameId]['quiz'].quizStat.addPlayer(data.pseudo)
         this.runningGames[data.gameId]['players'].push(data.pseudo)
-
-        console.log('sended');
 
         this.runningGames[data.gameId]['quiz'].broadcastToAll('player_connected', {arrayPlayer: this.runningGames[data.gameId]['players']})
 
         //if after player adding, the room is full, the game is started
         if(this.getNbPlaceAvailable(data.gameId) == 0){
-          console.log('game_is_ready');
-          this.runningGames[data.gameId]['quiz'].roomOpen = false
+          this.runningGames[data.gameId]['quiz'].isRoomOpen = false
           this.runningGames[data.gameId]['quiz'].startQuiz()
 
           this.runningGames[data.gameId]['waitingQueueTimer'].stop()
@@ -102,9 +98,9 @@ class GameManager {
    * Allow the host to start the game without all the player
    * @param  {Object} data data form the host
    */
-  forceStartGame(data) {
-    if(this.isGameIdInRunningGame(data.gameId) && this.runningGames[data.gameId]['quiz'].playerSockets !== 0) {
-      this.runningGames[data.gameId]['quiz'].roomOpen = false
+  forceStartGame(data){
+    if(this.isGameIdInRunningGame(data.gameId) && this.runningGames[data.gameId]['quiz'].playerSockets !== 0){
+      this.runningGames[data.gameId]['quiz'].isRoomOpen = false
       this.runningGames[data.gameId]['quiz'].startQuiz()
       this.runningGames[data.gameId]['waitingQueueTimer'].stop()
       this.runningGames[data.gameId]['quiz'].broadcastToAll('game_is_ready')

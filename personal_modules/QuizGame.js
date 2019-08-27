@@ -6,7 +6,7 @@ const QuizStat = require('./QuizStat')
 class QuizGame {
   constructor(gameId, nbQuestion, theme) {
     this.gameId = gameId
-    this.roomOpen = true
+    this.isRoomOpen = true
     this.playerSockets = []
     this.hostSocket = new Object()
     this.nbQuestion = nbQuestion
@@ -89,7 +89,6 @@ class QuizGame {
       let stats = this.quizStat.getStatisitiques()
       this.emitToHost('game_is_over', { stats: stats })
       this.broadCastToAllPlayer('game_is_over', { stats: null })
-      this.quizTimer.stop()
       setTimeout(() => { delete this }, 1000)
     }
   }
