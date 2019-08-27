@@ -19,6 +19,7 @@ class PageToggler {
   togglePlay() {
     this.inGameEl.style.display = 'block'
     this.transitionEl.style.display = 'none'
+    this.startQuiz.style.display = 'none'
   }
 
   toggleStartGame() {
