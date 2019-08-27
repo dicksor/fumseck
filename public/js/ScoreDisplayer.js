@@ -36,7 +36,7 @@ class ScoreDisplayer {
   displayTotalScore(scores, nbParticipants) {
     let tr = document.createElement('tr')
     let td = document.createElement('td')
-    td.innerHTML = 'Total score : '
+    td.innerHTML = 'Score total : '
     td.classList.add('score-bold')
     tr.appendChild(td)
     for (let i = 0; i < nbParticipants; i++) {

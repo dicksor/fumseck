@@ -10,28 +10,28 @@ function addQuizForm() {
   div.innerHTML = `
   <hr>
   <div class="uk-margin">
-      <label class="uk-form-label" for="form-horizontal-text">Question ` + count + `</label>
+      <label class="uk-form-label" for="form-horizontal-text">Question n°` + count + `</label>
 
       <div class="uk-grid-small" uk-grid>
           <div class="uk-width-1-1">
-              <input class="uk-input" type="text" placeholder="Enter your question here..." name="question` + count + `" required>
+              <input class="uk-input" type="text" placeholder="Ecrivez votre question ici......" name="question` + count + `" required>
           </div>
           <div class="uk-width-1-2@s">
-              <input class="uk-input" type="text" placeholder="Choice A" name="rep` + count + `a" required>
+              <input class="uk-input" type="text" placeholder="Choix A" name="rep` + count + `a" required>
           </div>
           <div class="uk-width-1-2@s">
-              <input class="uk-input" type="text" placeholder="Choice B" name="rep` + count + `b" required>
+              <input class="uk-input" type="text" placeholder="Choix B" name="rep` + count + `b" required>
           </div>
           <div class="uk-width-1-2@s">
-              <input class="uk-input" type="text" placeholder="Choice C" name="rep` + count + `c" required>
+              <input class="uk-input" type="text" placeholder="Choix C" name="rep` + count + `c" required>
           </div>
           <div class="uk-width-1-2@s">
-              <input class="uk-input" type="text" placeholder="Choice D" name="rep` + count + `d" required>
+              <input class="uk-input" type="text" placeholder="Choix D" name="rep` + count + `d" required>
           </div>
           <div class="uk-width-1-1">
             <div class="uk-inline">
               <div uk-form-custom="target: > * > span:first-child">
-                  <span>The answer</span>
+                  <span>La réponse</span>
                   <select name="repQuiz` + count + `">
                       <option value="A">A</option>
                       <option value="B">B</option>

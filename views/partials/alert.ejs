@@ -1,0 +1,18 @@
+<%
+    if(typeof error != 'undefined') { %>
+
+      <div class="uk-alert-danger" uk-alert>
+        <p><%= error %></p>
+      </div>
+
+    <% }
+
+    if(typeof success != 'undefined') { %>
+
+      <div class="uk-alert-success" uk-alert>
+        <p><%= success %></p>
+      </div>
+
+    <% }
+
+%>

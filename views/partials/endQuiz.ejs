@@ -1,8 +1,8 @@
 <div id="endGame">
-  <h1 class="uk-heading-line uk-text-center uk-text-2xlarge"><span>End of the Game</span></h1>
+  <h1 class="uk-heading-line uk-text-center uk-text-2xlarge"><span>Fin de la partie</span></h1>
 
   <% if (host) { %>
-  <h3 class="uk-text-center">Here is the ranking</h3>
+  <h3 class="uk-text-center">Voici le classement final</h3>
 
   <table class="uk-table uk-table-striped">
     <thead>
@@ -16,11 +16,12 @@
 
   <div class="uk-flex uk-flex-center">
     <p uk-margin>
-        <a class="uk-button uk-button-primary uk-button-large" href="/play_again">Play again</a>
-        <a class="uk-button uk-button-secondary uk-button-large" href="/">Quit game</a>
+        <a class="uk-button uk-button-primary uk-button-large" href="/play_again">Rejouer</a>
+        <a class="uk-button uk-button-secondary uk-button-large" href="/">Quitter le jeu</a>
     </p>
   </div>
   <% } else { %>
-  <p class="uk-text-lead">Thank you for participating</p>
+  <h1>Merci pour votre participation</h1>
+  <p class="uk-text-lead">Le classement ainsi que votre score sont actuellement affichés sur l'écran principal</p>
   <% } %>
 </div>

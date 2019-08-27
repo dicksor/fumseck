@@ -23,7 +23,7 @@ app.use('/favicon.ico', express.static('public/img/icon/favicon.ico'));
 app.use(express.static('public'))
 
 //router
-app.get('/', (req, res) =>{
+app.get('/', (req, res) => {
   quizReader.readCopyrights().then(copyrights => {
     res.render('index', { copyrights: copyrights })
   })
@@ -47,9 +47,6 @@ app.get('/', (req, res) =>{
 .get('/load_game/:token', (req, res) => {
   let createdQuiz = new QuizReader()
 
-  //let quizFilename = 'fum_quiz_de_test_load_ZXtoTw17qzEYSirFE7B8.json'
-  //let quizFilename = ''
-
   createdQuiz.findFileInsideDir(req.params.token).then((quizFilename) => {
     createdQuiz.readQuiz(quizFilename).then((quizData) => {
       res.render('createGame', { quizTitle: quizData.quizTitle, load_game: true, nbQuestions: quizData.nbQuestions, quizFilename: quizFilename })
@@ -61,8 +58,6 @@ app.get('/', (req, res) =>{
   .catch((err) => {
     console.log(err)
   })
-
-
 })
 .post('/create_game_processing', urlencodedParser, (req, res) => {
   let gameId = gameManager.generateGameId()

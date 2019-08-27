@@ -38,19 +38,19 @@ python download_oqdb_dataset.py --f oqdb_breaking_bad.json --u https://www.kiwim
 
 * [ ] Hébérgeur
 * [ ] Boutons responsive
-* [ ] Ajouter des sons
+* [X] Ajouter des sons
 * [ ] Transitions entre les questions
 * [ ] Page avec le classement
 * [X] Ajouter droits d'auteurs dans about
 * [ ] Ajouter image dans le formulaire
 * [ ] Sticky footer
-* [ ] Logo à la réponse d'une question
+* [X] Logo à la réponse d'une question
 * [ ] Editer un quiz
-* [ ] Protéger les urls
+* [X] Protéger les urls
 * [X] Envoie du lien par node mailer
 * [ ] Améliorer design et ajouter animations
 * [X] Ecran de fin sur la télécommande 
 * [ ] Ajout des logs
 * [ ] Régler le bouton quit game
-* [ ] Ajouter des labels au select
+* [X] Ajouter des labels au select
 * [ ] Edit timer's timeout

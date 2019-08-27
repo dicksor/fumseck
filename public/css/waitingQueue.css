@@ -1,8 +1,16 @@
 #startGame{
   display: table;
   margin: 0 auto;
-  width: 500px;
+  width: 50%;
   }
+
+@media screen and (max-width: 700px) {
+  #startGame{
+    width: 80%;
+    }
+}
+
+
 
 #newPlayer {
   display: table;
