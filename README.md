@@ -46,7 +46,7 @@ python download_oqdb_dataset.py --f oqdb_breaking_bad.json --u https://www.kiwim
 * [ ] Sticky footer
 * [ ] Logo à la réponse d'une question
 * [ ] Editer un quiz
-* [ ] Protéger les urls
+* [X] Protéger les urls
 * [X] Envoie du lien par node mailer
 * [ ] Améliorer design et ajouter animations
 * [X] Ecran de fin sur la télécommande 
