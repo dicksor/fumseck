@@ -84,6 +84,7 @@ class GameManager {
           this.runningGames[data.gameId]['quiz'].roomOpen = false
           this.runningGames[data.gameId]['quiz'].startQuiz()
 
+          this.runningGames[data.gameId]['waitingQueueTimer'].stop()
           this.runningGames[data.gameId]['quiz'].broadcastToAll('game_is_ready')
         }
       }
@@ -101,10 +102,11 @@ class GameManager {
    * Allow the host to start the game without all the player
    * @param  {Object} data data form the host
    */
-  forceStartGame(data){
-    if(this.isGameIdInRunningGame(data.gameId) && this.runningGames[data.gameId]['quiz'].playerSockets !== 0){
+  forceStartGame(data) {
+    if(this.isGameIdInRunningGame(data.gameId) && this.runningGames[data.gameId]['quiz'].playerSockets !== 0) {
       this.runningGames[data.gameId]['quiz'].roomOpen = false
       this.runningGames[data.gameId]['quiz'].startQuiz()
+      this.runningGames[data.gameId]['waitingQueueTimer'].stop()
       this.runningGames[data.gameId]['quiz'].broadcastToAll('game_is_ready')
     } else {
       socket.emit('room_error')
