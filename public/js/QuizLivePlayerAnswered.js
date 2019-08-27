@@ -1,23 +1,27 @@
 class QuizLivePlayerAnswered {
-  constructor(pseudo, gameId, socket){
-    this.pseudo = pseudo
-    this.gameId = gameId
+  constructor(socket){
     this.socket = socket
-  }
-
-  emiterPlayerAnswered(){
-    if(this.pseudo){
-      this.socket.emit('player_live_answered', {pseudo:this.pseudo.value, gameId:this.gameId.value, socket:this.socket})
-    }
+    this.answeredPlayer = []
+    this.divPlayerAnswered = document.getElementById('playerAnsweredContainer')
   }
 
   listenPlayerAnswered(){
     this.socket.on('display_player_answered', (data) => {
-      let leftPlayerQuestionAnswered = document.getElementById('leftPlayerQuestionAnswered')
-      leftPlayerQuestionAnswered.innerHTML = ''
-      data.arrayPlayer.forEach((pseudo) => {
-        leftPlayerQuestionAnswered.innerHTML += '<div style="width: 300px;" class="uk-tile uk-tile-primary uk-padding-small displayPlayer"><p class="uk-h4">'+pseudo+'</p></div><br/>'
-      })
+
+      let newPseudo = data.arrayPlayer.filter(x => !this.answeredPlayer.includes(x))[0]//get the new connected player
+
+      this.answeredPlayer.push(newPseudo)//add new player to the local array
+
+      let div = document.createElement('div')
+      div.innerHTML = '<img src="img/user.png" class="imgPlayerAnswered"/><h4 class="imgUserPseudo">'+ newPseudo +'</h4>'
+      div.classList.add('playerAnswered')
+
+      this.divPlayerAnswered.appendChild(div)
     })
+  }
+
+  cleanScreen(){
+    this.answeredPlayer = []
+    this.divPlayerAnswered.innerHTML = ''
   }
 }

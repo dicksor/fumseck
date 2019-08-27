@@ -61,7 +61,7 @@ class GameManager {
  * @param {Object} data   data from the client
  * @param {Object} socket socket of the client
  */
-  addPlayer(data, socket){
+  addPlayer(data, socket) {
     //if the game id doesn't exist, the user is redirected to the website index
     if(this.isGameIdInRunningGame(data.gameId)){
       //if the room is full, the user is redirected to the website index
