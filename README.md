@@ -38,7 +38,7 @@ python download_oqdb_dataset.py --f oqdb_breaking_bad.json --u https://www.kiwim
 
 * [ ] Hébérgeur
 * [ ] Boutons responsive
-* [ ] Ajouter des sons
+* [X] Ajouter des sons
 * [ ] Transitions entre les questions
 * [ ] Page avec le classement
 * [X] Ajouter droits d'auteurs dans about
