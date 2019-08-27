@@ -6,7 +6,7 @@ const QuizStat = require('./QuizStat')
 class QuizGame {
   constructor(gameId, nbQuestion, theme) {
     this.gameId = gameId
-    this.roomOpen = true
+    this.isRoomOpen = true
     this.playerSockets = []
     this.hostSocket = new Object()
     this.nbQuestion = nbQuestion
@@ -16,6 +16,7 @@ class QuizGame {
                                    (countdown) => this.onTick(countdown),
                                    (countdown) => this.onSync(countdown))
     this.count = 0
+    this.breakTime = 5000
     this.quizStat = new QuizStat()
     this.playerAnsweredQuestion = []
   }
@@ -77,6 +78,11 @@ class QuizGame {
     this.quizTimer.startTimer()
   }
 
+  transitionToBreak() {
+    this.emitToHost('break_transition')
+    setTimeout(() => this.renderNextQuestion(), this.breakTime)
+  }
+
   getRandomQuestionIdx(allQuestions) {
     return Math.floor(Math.random() * allQuestions.length)
   }
@@ -84,12 +90,11 @@ class QuizGame {
   onTimeOver() {
     if(this.count < this.nbQuestion && this.quizData.length > 0) {
       this.quizStat.nextQuestion()
-      this.renderNextQuestion()
+      this.transitionToBreak()
     } else {
       let stats = this.quizStat.getStatisitiques()
       this.emitToHost('game_is_over', { stats: stats })
       this.broadCastToAllPlayer('game_is_over', { stats: null })
-      this.quizTimer.stop()
       setTimeout(() => { delete this }, 1000)
     }
   }

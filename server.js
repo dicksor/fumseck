@@ -107,10 +107,7 @@ io.on('connection', function(socket){
 
   socket.on('answer_question', (data) => {
     gameManager.handleResponse(data)
-  })
-
-  socket.on('player_live_answered', (data) => {
-    // gameManager.displayPlayerAnswered(data)
+    gameManager.displayPlayerAnswered(data)
   })
 })
 

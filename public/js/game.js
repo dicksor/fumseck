@@ -27,6 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let waitingQueueEl = document.getElementById('waitingQueue')
   let inGameEl = document.getElementById('inGame')
 
+  let transitionEl = document.getElementById('transition')
+
   let pseudo = document.getElementById('pseudo')
   let gameId = document.getElementById('gameId')
 
@@ -34,22 +36,17 @@ document.addEventListener('DOMContentLoaded', () => {
   let quizResponse = new QuizResponse(socket, gameId.value)
 
   //display player answered
-  // let quizLivePlayerAnswered = new QuizLivePlayerAnswered(pseudo, gameId, socket)
-  // quizLivePlayerAnswered.emiterPlayerAnswered()
-  // quizLivePlayerAnswered.listenPlayerAnswered()
-
-  //Waiting queue
-  let waitingQueueManager = new WaitingQueueManager(pseudo, gameId, socket)
-  waitingQueueManager.emitClientInfo()
-  waitingQueueManager.listenConnectedPlayer()
-  waitingQueueManager.listenWaitingQueueTimer()
-  waitingQueueManager.roomError()
+  let quizLivePlayerAnswered = new QuizLivePlayerAnswered(socket)
+  quizLivePlayerAnswered.listenPlayerAnswered()
 
   if(pseudo){
     quizResponse.setPseudo(pseudo.value)
   }
 
   socket.on('next_question', (data) => {
+    //clean player answered info
+    quizLivePlayerAnswered.cleanScreen()
+
     questionDisplayer.displayNext(data.question)
     gameAnimation.addQuestionAnimation()
     quizResponse.resetCards()
@@ -60,12 +57,27 @@ document.addEventListener('DOMContentLoaded', () => {
   })
 
   socket.on('sync', (data) => {
+    inGameEl.style.display = 'block'
+    transitionEl.style.display = 'none'
     gameAnimation.onSync(data.countdown)
   })
+
+  //Waiting queue
+  let waitingQueueManager = new WaitingQueueManager(pseudo, gameId, socket)
+  waitingQueueManager.emitClientInfo()
+  waitingQueueManager.listenConnectedPlayer()
+  waitingQueueManager.listenWaitingQueueTimer()
+  waitingQueueManager.roomError()
+
 
   socket.on('game_is_ready', () => {
     waitingQueueEl .style.display = 'none'
     inGameEl.style.display = 'block'
+  })
+
+  socket.on('break_transition', () => {
+    inGameEl.style.display = 'none'
+    transitionEl.style.display = 'block'
   })
 
   socket.on('game_is_over', (data) => {

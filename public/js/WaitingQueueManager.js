@@ -3,6 +3,7 @@ class WaitingQueueManager{
     this.pseudo = pseudo
     this.gameId = gameId
     this.socket = socket
+    this.playerInWaitingQueue = []
   }
 
   /**
@@ -26,11 +27,24 @@ class WaitingQueueManager{
    */
   listenConnectedPlayer(){
     let newPlayerEl = document.getElementById('newPlayer')
+
     this.socket.on('player_connected', (data) => {
-      newPlayerEl.innerHTML = ''
-      data.arrayPlayer.forEach((pseudo) => {
-        console.log(pseudo);
-        newPlayerEl.innerHTML += '<div style="width: 300px;" class="uk-tile uk-tile-primary uk-padding-small displayPlayer"><p class="uk-h4">'+pseudo+'</p></div><br/>'
+
+      let newPseudo = data.arrayPlayer.filter(x => !this.playerInWaitingQueue.includes(x))//get the new connected player
+
+      this.playerInWaitingQueue = this.playerInWaitingQueue.concat(newPseudo)//add new player to the local array
+
+      //display the new player
+      newPseudo.forEach((pseudo) => {
+        let div = document.createElement('div')
+        div.innerHTML = '<p class="uk-h4">' + pseudo + '</p>'
+        div.classList.add('displayPlayer')
+        div.classList.add('uk-tile')
+        div.classList.add('uk-tile-primary')
+        div.classList.add('uk-padding-small')
+
+        newPlayer.appendChild(div)
+        newPlayer.appendChild(document.createElement('br'))
       })
     })
   }
