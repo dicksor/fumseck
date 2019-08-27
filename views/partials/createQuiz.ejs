@@ -1,46 +1,46 @@
-<p class="uk-text-lead">Here you can create your own quiz !</p>
+<p class="uk-text-lead">Ici vous pouvez créer votre quiz personnalisé</p>
 <hr class="uk-divider-small">
-<p class="uk-text-meta">Just fill the required field and save it.</p>
-<p class="uk-text-meta">The link to access the quiz will be send you by email.</p>
+<p class="uk-text-meta">Remplissez simplement les divers champs du formulaire et cliquer sur "Sauvegarder".</p>
+<p class="uk-text-meta">Le lien d'accès au formulaire vous sera envoyé à l'adresse email renseignée dans le formulaire.</p>
 
 <form class="uk-form-horizontal uk-margin-large" action="create_quiz_processing" method="post" autocomplete="off" onsubmit="return validateEmail()">
 
     <div class="uk-margin">
-        <label class="uk-form-label" for="form-horizontal-text"><strong>Title of the quiz</strong></label>
+        <label class="uk-form-label" for="form-horizontal-text"><strong>Titre du quiz</strong></label>
         <div class="uk-form-controls uk-width-medium">
-            <input class="uk-input" id="form-horizontal-text" type="text" placeholder="Your quiz title..." name="quizTitle" required>
+            <input class="uk-input" id="form-horizontal-text" type="text" placeholder="Le titre du quiz..." name="quizTitle" required>
         </div>
         <br>
-        <label class="uk-form-label" for="email"><strong>Your mail</strong></label>
+        <label class="uk-form-label" for="email"><strong>Votre email</strong></label>
         <div class="uk-form-controls uk-width-medium">
-            <input class="uk-input" id="email" type="mail" placeholder="Your mail..." name="userMail" required>
+            <input class="uk-input" id="email" type="mail" placeholder="Votre email..." name="userMail" required>
         </div>
     </div>
 
     <hr>
     <div class="uk-margin">
-        <label class="uk-form-label" for="form-horizontal-text">Question 1</label>
+        <label class="uk-form-label" for="form-horizontal-text">Question n°1</label>
 
         <div class="uk-grid-small" uk-grid>
             <div class="uk-width-1-1">
-                <input class="uk-input" type="text" placeholder="Enter your question here..." name="question1" required>
+                <input class="uk-input" type="text" placeholder="Ecrivez votre question ici..." name="question1" required>
             </div>
             <div class="uk-width-1-2@s">
-                <input class="uk-input" type="text" placeholder="Choice A" name="rep1a" required>
+                <input class="uk-input" type="text" placeholder="Choix A" name="rep1a" required>
             </div>
             <div class="uk-width-1-2@s">
-                <input class="uk-input" type="text" placeholder="Choice B" name="rep1b" required>
+                <input class="uk-input" type="text" placeholder="Choix B" name="rep1b" required>
             </div>
             <div class="uk-width-1-2@s">
-                <input class="uk-input" type="text" placeholder="Choice C" name="rep1c" required>
+                <input class="uk-input" type="text" placeholder="Choix C" name="rep1c" required>
             </div>
             <div class="uk-width-1-2@s">
-                <input class="uk-input" type="text" placeholder="Choice D" name="rep1d" required>
+                <input class="uk-input" type="text" placeholder="Choix D" name="rep1d" required>
             </div>
             <div class="uk-width-1-1">
               <div class="uk-inline">
                 <div uk-form-custom="target: > * > span:first-child">
-                    <span>The answer</span>
+                    <span>La réponse</span>
                     <select name="repQuiz1">
                         <option value="A">A</option>
                         <option value="B">B</option>
@@ -61,8 +61,8 @@
 
     </div>
 
-    <div class="uk-button uk-button-secondary uk-width-1-1 uk-margin-small" onclick="addQuizForm()"><span uk-icon="plus"></span> Add a question</div>
-    <input class="uk-button uk-button-primary uk-width-1-1 uk-margin-small" type="submit" value="Save the quiz" name="create_quiz"></input>
+    <div class="uk-button uk-button-secondary uk-width-1-1 uk-margin-small" onclick="addQuizForm()"><span uk-icon="plus"></span> Ajouter une question</div>
+    <input class="uk-button uk-button-primary uk-width-1-1 uk-margin-small" type="submit" value="Sauvegarder" name="create_quiz"></input>
     <input type="hidden" value="1" name="numberOfQuestion" id="numberOfQuestion">
 
 </form>

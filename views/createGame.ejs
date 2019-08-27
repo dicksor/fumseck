@@ -20,7 +20,7 @@
     <div class="uk-container">
       <!-- TODO : add labels -->
       <br>
-      <a class="uk-link-muted" href="/"><span uk-icon="icon: chevron-left"></span>Back Home</a>
+      <a class="uk-link-muted" href="/"><span uk-icon="icon: chevron-left"></span>Retour à l'accueil</a>
 
       <form class="uk-form-horizontal uk-margin-large uk-text-center" method="post" action="/create_game_processing">
 
@@ -28,7 +28,7 @@
             <div class="uk-inline">
               <div uk-form-custom="target: > * > span:first-child">
                   <select name="nbPlayer">
-                      <option value="">Select number of player</option>
+                      <option value="">Nombre de joueur(s)</option>
                       <option value="1">1</option>
                       <option value="2">2</option>
                       <option value="3">3</option>
@@ -49,7 +49,7 @@
                   <select name="theme">
                     <%
                         if(typeof load_game == 'undefined') {
-                          %><option value="">Select the game theme</option><%
+                          %><option value="">Thème de la partie</option><%
                           for (var j = 0; j < topics.names.length; j++) {
                               %><option value="<%= topics.paths[j] %>"><%= topics.names[j].toUpperCase() %><%
                           }
@@ -73,7 +73,7 @@
                   <select name="nbQuestion">
                       <%
                           if(typeof load_game == 'undefined') {
-                            %><option value="">Select number of questions</option><%
+                            %><option value="">Nombre de question(s)</option><%
                             for (var j = 1; j < 16; j++) {
                                 %><option value="<%= j %>"><%= j %><%
                             }
