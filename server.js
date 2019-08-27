@@ -58,8 +58,6 @@ app.get('/', (req, res) => {
   .catch((err) => {
     console.log(err)
   })
-
-
 })
 .post('/create_game_processing', urlencodedParser, (req, res) => {
   let gameId = gameManager.generateGameId()

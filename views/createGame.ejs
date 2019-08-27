@@ -12,7 +12,7 @@
      data-sizes="(min-width: 650px) 650px, 100vw" uk-img>
 
       <div class="uk-flex uk-flex-center uk-margin-top">
-        <h1 class="uk-heading-medium">Create a game</h1>
+        <h1 class="uk-heading-medium">Créer une partie</h1>
       </div>
 
     </div>
@@ -22,12 +22,19 @@
       <br>
       <a class="uk-link-muted" href="/"><span uk-icon="icon: chevron-left"></span>Retour à l'accueil</a>
 
-      <form class="uk-form-horizontal uk-margin-large uk-text-center" method="post" action="/create_game_processing">
+      <div id="error" style="display:none">
+        <br>
+        <div class="uk-alert-danger uk-margin-small" uk-alert>
+            <p id="textError"></p>
+        </div>
+      </div>
+
+      <form class="uk-form-horizontal uk-margin-large uk-text-center" method="post" action="/create_game_processing" onsubmit="return validateFormCreate()">
 
           <div class="uk-margin">
             <div class="uk-inline">
               <div uk-form-custom="target: > * > span:first-child">
-                  <select name="nbPlayer">
+                  <select name="nbPlayer" id="nbPlayer">
                       <option value="">Nombre de joueur(s)</option>
                       <option value="1">1</option>
                       <option value="2">2</option>
@@ -46,7 +53,7 @@
           <div class="uk-margin">
             <div class="uk-inline">
               <div uk-form-custom="target: > * > span:first-child">
-                  <select name="theme">
+                  <select name="theme" id="theme">
                     <%
                         if(typeof load_game == 'undefined') {
                           %><option value="">Thème de la partie</option><%
@@ -70,7 +77,7 @@
           <div class="uk-margin">
             <div class="uk-inline">
               <div uk-form-custom="target: > * > span:first-child">
-                  <select name="nbQuestion">
+                  <select name="nbQuestion" id="nbQuestion">
                       <%
                           if(typeof load_game == 'undefined') {
                             %><option value="">Nombre de question(s)</option><%
@@ -97,6 +104,24 @@
       <% include partials/footer %>
 
     </div>
+
+    <script type="text/javascript">
+
+      function validateFormCreate() {
+        var nbPlayer = document.getElementById('nbPlayer');
+        var theme = document.getElementById('theme');
+        var nbQuestion = document.getElementById('nbQuestion');
+
+        if((nbPlayer.options[nbPlayer.selectedIndex].value == '') || (theme.options[theme.selectedIndex].value == '') || (nbQuestion.options[nbQuestion.selectedIndex].value == '')) {
+          document.getElementById('error').style.display = 'block'
+          document.getElementById('textError').innerHTML = 'Veuillez choisir toutes les options !'
+          return false
+        } else {
+          return true
+        }
+      }
+
+    </script>
 
   </body>
 </html>

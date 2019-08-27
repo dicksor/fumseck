@@ -28,6 +28,7 @@ class CreateQuizParsing {
 
     let token = idgen(20)
     let userMail = this.dataQuiz.userMail
+    let quizTitle = this.dataQuiz.quizTitle
 
     let title = this.dataQuiz.quizTitle.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\w\s]/gi, '').replace(/ /g,'_')
     let filename = 'fum_' + title + '_' + token + '.json'
@@ -36,7 +37,7 @@ class CreateQuizParsing {
         if(err) {
           return console.log(err)
         } else {
-          Mail.sendMail(userMail, 'http://localhost:34335/load_game/' + token)
+          Mail.sendMail(userMail, 'http://localhost:34335/load_game/' + token, quizTitle)
         }
     });
   }

@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer');
 
 class SendMail {
 
-  static sendMail(dest, link) {
+  static sendMail(dest, link, title) {
 
     let transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
@@ -15,10 +15,11 @@ class SendMail {
     });
 
     let info = transporter.sendMail({
-        from: '"Fumseck" <fumseck@corporation.com>', // sender address
+        from: '"Fumseck" <fumseck@corporation.com>',
         to: dest,
-        subject: 'Your quiz link', // Subject line
-        html: 'Your link : <a href="' + link + '">' + link + '</a>' // html body
+        subject: 'Your quiz link (' + title + ')',
+        text: 'Your link for ' + title + ' : ' + link,
+        html: 'Your link for ' + title + ' : <a href="' + link + '">' + link + '</a>'
     });
   }
 }
