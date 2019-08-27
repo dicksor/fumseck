@@ -33,7 +33,8 @@ class QuizGame {
     let quiz = new QuizReader()
     quiz.readQuiz(this.theme).then((quizData) => {
       this.quizData = flatten(Object.values(quizData.quizz))
-      this.renderNextQuestion()
+      this.emitToHost('start_game')
+      setTimeout(() => this.renderNextQuestion(), 7000)
     })
     .catch((err) => {
       console.log(err)

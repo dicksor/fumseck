@@ -7,6 +7,10 @@
   display: none;
 }
 
+#startQuiz {
+  display: none;
+}
+
 .imgPlayerAnswered {
   height: 80px;
   position: relative;

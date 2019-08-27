@@ -1,5 +1,6 @@
 class PageToggler {
   constructor() {
+    this.startQuiz = document.getElementById('startQuiz')
     this.transitionEl = document.getElementById('transition')
     this.inGameEl = document.getElementById('inGame')
     this.endGameEl = document.getElementById('endGame')
@@ -7,8 +8,7 @@ class PageToggler {
   }
 
   toggleQueue() {
-    this.waitingQueueEl .style.display = 'none'
-    this.inGameEl.style.display = 'block'
+    this.waitingQueueEl.style.display = 'none'
   }
 
   toggleBreak() {
@@ -19,6 +19,11 @@ class PageToggler {
   togglePlay() {
     this.inGameEl.style.display = 'block'
     this.transitionEl.style.display = 'none'
+  }
+
+  toggleStartGame() {
+    this.waitingQueueEl.style.display = 'none'
+    this.startQuiz.style.display = 'block'
   }
 
   toggleEndGame() {

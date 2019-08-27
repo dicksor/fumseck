@@ -38,6 +38,11 @@ document.addEventListener('DOMContentLoaded', () => {
     gameAnimation.onSync(data.countdown)
   })
 
+  socket.on('start_game', () => {
+    pageToggler.toggleStartGame()
+    gameAnimation.addStartMotion()
+  })
+
   //Waiting queue
   let waitingQueueManager = new WaitingQueueManager(pseudo, gameId, socket)
   waitingQueueManager.emitClientInfo()
