@@ -10,13 +10,13 @@ class WaitingQueueTimer {
         if(this.quizGame.playerSockets.length === 0) {
           this.quizGame.emitToHost('room_error')
         } else {
-          this.quizGame.roomOpen = false
+          this.quizGame.isRoomOpen = false
           this.quizGame.startQuiz()
           this.quizGame.broadcastToAll('game_is_ready')
         }
         this.stop()
       } else {
-          this.quizGame.emitToHost('timer_waiting_queue', {time:this.time})
+          this.quizGame.emitToHost('timer_waiting_queue', { time: this.time})
           this.time--
       }
     }, 1000)

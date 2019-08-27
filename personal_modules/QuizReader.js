@@ -28,11 +28,11 @@ class QuizReader {
         }
 
         for(let i = 0; i < files.length; i++) {
-          if(files[i].substring(0,3) == 'fum') {
+          if(files[i].startsWith('fum')) {
             files.splice(i, 1)
           }
         }
-        console.log(files)
+
         let names = this.cleanName(files)
 
         resolve({paths: files, names: names})

@@ -18,14 +18,9 @@ class QuizTimer {
     this.countdown--
     this.onTickCb(this.countdown)
     if(this.countdown <= 0) {
-      this.stop()
       this.onTimeOverCb()
+      this.stop()
     }
-  }
-
-  reset() {
-    this.countdown = this.maxTime
-    this.startTimer()
   }
 
   stop() {
