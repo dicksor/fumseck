@@ -1,33 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
   const socket = io()
 
-  let questionEl = document.getElementById("question")
-  let responseAEl = document.getElementById("responseA")
-  let responseBEl = document.getElementById("responseB")
-  let responseCEl = document.getElementById("responseC")
-  let responseDEl = document.getElementById("responseD")
+  let questionDisplayer = new QuestionDisplayer()
 
-  let questionDisplayer = new QuestionDisplayer(questionEl,
-                                            responseAEl,
-                                            responseBEl,
-                                            responseCEl,
-                                            responseDEl)
+  let gameAnimation = new GameAnimation()
 
-  let cardsEls = document.getElementsByClassName('uk-card')
-  let countdownNumberEl = document.getElementById('countdown-number')
-  let countdownSvgCircleEl = document.getElementById('timer-svg--circle')
-  let countdownEl = document.getElementById('countdown')
-
-  let gameAnimation = new GameAnimation(cardsEls,
-                                        countdownNumberEl,
-                                        countdownSvgCircleEl,
-                                        countdownEl)
-
-  let endGameEl = document.getElementById('endGame')
-  let waitingQueueEl = document.getElementById('waitingQueue')
-  let inGameEl = document.getElementById('inGame')
-
-  let transitionEl = document.getElementById('transition')
+  let pageToggler = new PageToggler()
 
   let pseudo = document.getElementById('pseudo')
   let gameId = document.getElementById('gameId')
@@ -46,7 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
   socket.on('next_question', (data) => {
     //clean player answered info
     quizLivePlayerAnswered.cleanScreen()
-
     questionDisplayer.displayNext(data.question)
     gameAnimation.addQuestionAnimation()
     quizResponse.resetCards()
@@ -57,8 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
   })
 
   socket.on('sync', (data) => {
-    inGameEl.style.display = 'block'
-    transitionEl.style.display = 'none'
+    pageToggler.togglePlay()
     gameAnimation.onSync(data.countdown)
   })
 
@@ -71,19 +47,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   socket.on('game_is_ready', () => {
-    waitingQueueEl .style.display = 'none'
-    inGameEl.style.display = 'block'
+    pageToggler.toggleQueue()
   })
 
   socket.on('break_transition', () => {
-    inGameEl.style.display = 'none'
-    transitionEl.style.display = 'block'
+    pageToggler.toggleBreak()
+    gameAnimation.addWaitMotion()
   })
 
   socket.on('game_is_over', (data) => {
     let stats = data.stats
-    inGameEl.style.display = 'none'
-    endGameEl.style.display = 'block'
+    pageToggler.toggleEndGame()
     if(stats !== null) {
       scoreDisplayer.displayStatTable(stats)
     }

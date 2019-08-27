@@ -1,10 +1,10 @@
 class QuestionDisplayer {
-  constructor(questionEl, responseAEl, responseBEl, responseCEl, responseDEl) {
-    this.questionEl = questionEl
-    this.responseAEl = responseAEl
-    this.responseBEl = responseBEl
-    this.responseCEl = responseCEl
-    this.responseDEl = responseDEl
+  constructor() {
+    this.questionEl = document.getElementById("question")
+    this.responseAEl = document.getElementById("responseA")
+    this.responseBEl = document.getElementById("responseB")
+    this.responseCEl = document.getElementById("responseC")
+    this.responseDEl = document.getElementById("responseD")
   }
 
   displayNext(question) {

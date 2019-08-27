@@ -3,6 +3,10 @@
   flex-wrap: wrap;
 }
 
+#transition {
+  display: none;
+}
+
 .imgPlayerAnswered {
   height: 80px;
   position: relative;
