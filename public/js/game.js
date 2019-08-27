@@ -27,6 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let waitingQueueEl = document.getElementById('waitingQueue')
   let inGameEl = document.getElementById('inGame')
 
+  let transitionEl = document.getElementById('transition')
+
   let pseudo = document.getElementById('pseudo')
   let gameId = document.getElementById('gameId')
 
@@ -55,6 +57,8 @@ document.addEventListener('DOMContentLoaded', () => {
   })
 
   socket.on('sync', (data) => {
+    inGameEl.style.display = 'block'
+    transitionEl.style.display = 'none'
     gameAnimation.onSync(data.countdown)
   })
 
@@ -69,6 +73,11 @@ document.addEventListener('DOMContentLoaded', () => {
   socket.on('game_is_ready', () => {
     waitingQueueEl .style.display = 'none'
     inGameEl.style.display = 'block'
+  })
+
+  socket.on('break_transition', () => {
+    inGameEl.style.display = 'none'
+    transitionEl.style.display = 'block'
   })
 
   socket.on('game_is_over', (data) => {
