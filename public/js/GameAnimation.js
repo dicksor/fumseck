@@ -1,9 +1,12 @@
 class GameAnimation {
-  constructor(cardsEls, countdownNumberEl, countdownSvgCircleEl, countdownEl) {
-    this.cardsEls = cardsEls
-    this.countdownNumberEl = countdownNumberEl
-    this.countdownSvgCircleEl = countdownSvgCircleEl
-    this.countdownEl = countdownEl
+  constructor() {
+    this.cardsEls = document.getElementsByClassName('uk-card')
+    this.countdownNumberEl = document.getElementById('countdown-number')
+    this.countdownSvgCircleEl = document.getElementById('timer-svg--circle')
+    this.countdownEl = document.getElementById('countdown')
+    this.transitionWaitEl = document.getElementById('transition-wait')
+    this.m16El = document.getElementById('m16')
+    this.waitText = "Préparez vous pour la prochaine question"
   }
 
   addQuestionAnimation() {
@@ -38,6 +41,45 @@ class GameAnimation {
     this.countdownSvgCircleEl.style.animation = 'animation: countdown' + countdown + 's linear infinite forwards'
     this.countdownNumberEl.style.color = "#333"
     this.countdownSvgCircleEl.style.stroke = "#333"
+  }
+
+  removeNodesChild(node) {
+    while(node.firstChild) {
+      node.removeChild(node.firstChild)
+    }
+  }
+
+  addWaitMotion() {
+    let spanTextWrapper = document.createElement('span')
+    spanTextWrapper.id = 'text-wrapper'
+    spanTextWrapper.classList.add('text-wrapper')
+    let span = document.createElement('span')
+    span.classList.add('letters')
+    span.textContent = this.waitText
+    spanTextWrapper.appendChild(span)
+    spanTextWrapper.innerHTML = spanTextWrapper.textContent.replace(/\S/g, "<span class='letter'>$&</span>")
+    this.m16El.appendChild(spanTextWrapper)
+
+    let waitAnimation = anime.timeline({loop: false, autoplay: false})
+
+    waitAnimation.add({
+      targets: '.ml6 .letter',
+      translateY: ["1.1em", 0],
+      translateZ: 0,
+      duration: 750,
+      delay: (el, i) => 50 * i
+    }).add({
+      targets: '.ml6',
+      opacity: [1, 0],
+      duration: 1000,
+      easing: "easeOutExpo",
+      delay: 1000
+    })
+
+    waitAnimation.play()
+
+    setTimeout(() => this.removeNodesChild(this.m16El), 5000)
+    this.m16El.style.opacity = 1
   }
 
 }
