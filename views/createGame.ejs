@@ -132,7 +132,7 @@
         var theme = document.getElementById('theme');
         var nbQuestion = document.getElementById('nbQuestion');
 
-        if((nbPlayer.options[nbPlayer.selectedIndex].value == '') || (theme.options[theme.selectedIndex].value == '') || (nbQuestion.options[nbQuestion.selectedIndex].value == '')) {
+        if((nbPlayer.options[nbPlayer.selectedIndex].value == '') || (theme.options[theme.selectedIndex].value == '') || (nbQuestion.options[nbQuestion.selectedIndex].value == '') || (responseTime.options[responseTime.selectedIndex].value == '')) {
           document.getElementById('error').style.display = 'block'
           document.getElementById('textError').innerHTML = 'Veuillez choisir toutes les options !'
           return false
