@@ -22,11 +22,11 @@
       <br>
       <a class="uk-link-muted" href="/"><span uk-icon="icon: chevron-left"></span>Retour à l'accueil</a>
 
-      <form class="uk-form-horizontal uk-margin-large uk-text-center" method="post" action="/game" autocomplete="off">
+      <form class="uk-form-horizontal uk-margin-large uk-text-center" method="post" action="/game" autocomplete="off" id="joinGameForm">
           <div class="uk-margin">
               <div class="uk-inline">
                   <span class="uk-form-icon" uk-icon="icon: user"></span>
-                  <input class="uk-input uk-form-large" type="text" placeholder="Votre pseudo" name="pseudo" autofocus required maxlength="15">
+                  <input class="uk-input uk-form-large" type="text" placeholder="Votre pseudo" name="pseudo" autofocus maxlength="15" required>
               </div>
           </div>
           <div class="uk-margin">
@@ -35,7 +35,9 @@
                   <input class="uk-input uk-form-large" type="text" placeholder="ID de la partie" value="<%= gameId %>" name="gameId" required>
               </div>
           </div>
-          <input class="uk-button uk-button-primary" type="submit" value="Rejoindre la partie" name="join_game"></input>
+
+          <input type="submit" style="display:none" name="submit" />
+          <a href="javascript:void()" class="uk-button uk-button-primary" onclick="document.getElementById('joinGameForm').submit.click()">Rejoindre la partie</a>
       </form>
 
       <% include partials/footer %>

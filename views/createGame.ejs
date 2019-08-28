@@ -29,7 +29,7 @@
         </div>
       </div>
 
-      <form class="uk-form-horizontal uk-margin-large uk-text-center" method="post" action="/game_host" onsubmit="return validateFormCreate()">
+      <form class="uk-form-horizontal uk-margin-large uk-text-center" method="post" action="/game_host" onsubmit="return validateFormCreate()" id="createGameForm">
 
           <div class="uk-margin">
             <div class="uk-inline">
@@ -102,7 +102,7 @@
             <div class="uk-inline">
               <div uk-form-custom="target: > * > span:first-child">
                   <select name="responseTime" id="responseTime">
-                    <option value="">Temps pour répondre (secondes)</option>
+                    <option value="">Temps pour répondre</option>
                     <option value="15">15 secondes</option>
                     <option value="30">30 secondes</option>
                     <option value="45">45 secondes</option>
@@ -116,7 +116,9 @@
             </div>
           </div>
 
-          <input class="uk-button uk-button-primary" type="submit" value="Create the game" name="create_game"></input>
+          <input type="submit" style="display:none" name="submit" />
+          <a href="javascript:void()" class="uk-button uk-button-primary" onclick="document.getElementById('createGameForm').submit.click();">Créer la partie</a>
+
       </form>
 
       <% include partials/footer %>
@@ -130,7 +132,7 @@
         var theme = document.getElementById('theme');
         var nbQuestion = document.getElementById('nbQuestion');
 
-        if((nbPlayer.options[nbPlayer.selectedIndex].value == '') || (theme.options[theme.selectedIndex].value == '') || (nbQuestion.options[nbQuestion.selectedIndex].value == '')) {
+        if((nbPlayer.options[nbPlayer.selectedIndex].value == '') || (theme.options[theme.selectedIndex].value == '') || (nbQuestion.options[nbQuestion.selectedIndex].value == '') || (responseTime.options[responseTime.selectedIndex].value == '')) {
           document.getElementById('error').style.display = 'block'
           document.getElementById('textError').innerHTML = 'Veuillez choisir toutes les options !'
           return false
