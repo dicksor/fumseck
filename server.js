@@ -62,7 +62,6 @@ app.get('/', (req, res) => {
 .post('/create_game_processing', urlencodedParser, (req, res) => {
   let gameId = gameManager.generateGameId()
   gameManager.createGame(gameId, req.body)
-  console.log(req)
   res.render('game',
              {host:true,
               location: req.headers.host,
