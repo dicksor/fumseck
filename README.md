@@ -54,3 +54,4 @@ python download_oqdb_dataset.py --f oqdb_breaking_bad.json --u https://www.kiwim
 * [X] Régler le bouton quit game
 * [X] Ajouter des labels au select
 * [ ] Edit timer's timeout
+* [ ] Aspect sécurité et triche
