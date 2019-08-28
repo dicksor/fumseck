@@ -1,8 +1,9 @@
 class QuizResponse {
 
-  constructor(socket, gameId) {
+  constructor(socket, gameId, gameSoundPlayer) {
     this.socket = socket
     this.gameId = gameId
+    this.gameSoundPlayer = gameSoundPlayer
   }
 
   setPseudo(pseudo) {
@@ -29,8 +30,7 @@ class QuizResponse {
       document.getElementById("" + i + i).style.cursor = 'default'
     }
 
-    let audio = document.getElementById('audMouseClick')
-    audio.play()
+    this.gameSoundPlayer.playReponseClicked()
 
     this.socket.emit('answer_question', { pseudo: this.pseudo, gameId: this.gameId, response: rep })
   }

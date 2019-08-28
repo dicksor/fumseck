@@ -10,10 +10,10 @@ document.addEventListener('DOMContentLoaded', () => {
   let pseudo = document.getElementById('pseudo')
   let gameId = document.getElementById('gameId')
 
-  let scoreDisplayer = new ScoreDisplayer()
-  let quizResponse = new QuizResponse(socket, gameId.value)
-
   let gameSoundPlayer = new GameSoundPlayer()
+
+  let scoreDisplayer = new ScoreDisplayer()
+  let quizResponse = new QuizResponse(socket, gameId.value, gameSoundPlayer)
 
   //display player answered
   let quizLivePlayerAnswered = new QuizLivePlayerAnswered(socket)
@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
     pageToggler.toggleStartGame()
     gameAnimation.addStartMotion()
     gameAnimation.addLoadMotion()
+    gameSoundPlayer.playJingle()
   })
 
   //Waiting queue
