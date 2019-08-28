@@ -23,9 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
                                         countdownSvgCircleEl,
                                         countdownEl)
 
-  let endGameEl = document.getElementById('endGame')
   let waitingQueueEl = document.getElementById('waitingQueue')
   let inGameEl = document.getElementById('inGame')
+  let rankingEl = document.getElementById('ranking')
 
   let pseudo = document.getElementById('pseudo')
   let gameId = document.getElementById('gameId')
@@ -65,6 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
   waitingQueueManager.listenWaitingQueueTimer()
   waitingQueueManager.roomError()
 
+  let rankingManager = new RankingManager(rankingEl)
 
   socket.on('game_is_ready', () => {
     waitingQueueEl .style.display = 'none'
@@ -74,9 +75,10 @@ document.addEventListener('DOMContentLoaded', () => {
   socket.on('game_is_over', (data) => {
     let stats = data.stats
     inGameEl.style.display = 'none'
-    endGameEl.style.display = 'block'
+    rankingEl.style.display = 'block'
     if(stats !== null) {
       scoreDisplayer.displayStatTable(stats)
+      rankingManager.displayRankingTimer(scoreDisplayer.getParticpants(stats[0].scores))
     }
   })
 })

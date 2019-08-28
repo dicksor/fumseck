@@ -23,7 +23,7 @@ app.use('/favicon.ico', express.static('public/img/icon/favicon.ico'))
 app.use(express.static('public'))
 
 //router
-app.get('/', (req, res) =>{
+app.get('/', (req, res) =>{ //home page
   quizReader.readCopyrights().then(copyrights => {
     res.render('index', { copyrights: copyrights })
   })
@@ -31,7 +31,6 @@ app.get('/', (req, res) =>{
     // TODO : tell user
     console.log(error)
   })
-
 })
 .get('/create_game', (req, res) => {
   quizReader.readTopics()

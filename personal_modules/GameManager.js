@@ -7,6 +7,11 @@ class GameManager {
     this.runningGames = [] //all game info are stored in this array
   }
 
+  /**
+   * init a game
+   * @param  {Integer} gameId  id of the game
+   * @param  {Object} reqBody data from the form
+   */
   createGame(gameId, reqBody) {
     let theme = reqBody.theme
     let nbPlayer = reqBody.nbPlayer
@@ -89,6 +94,10 @@ class GameManager {
     }
   }
 
+  /**
+   * send to the host when a user reponse to a question
+   * @param  {Object} data data from the client
+   */
   displayPlayerAnswered(data){
     this.runningGames[data.gameId]['quiz'].playerAnsweredQuestion.push(data.pseudo)
     this.runningGames[data.gameId]['quiz'].emitToHost('display_player_answered', {arrayPlayer: this.runningGames[data.gameId]['quiz'].playerAnsweredQuestion})
@@ -102,7 +111,7 @@ class GameManager {
     if(this.isGameIdInRunningGame(data.gameId) && this.runningGames[data.gameId]['quiz'].playerSockets !== 0){
       this.runningGames[data.gameId]['quiz'].isRoomOpen = false
       this.runningGames[data.gameId]['quiz'].startQuiz()
-      
+
       this.runningGames[data.gameId]['waitingQueueTimer'].stop()
       this.runningGames[data.gameId]['quiz'].broadcastToAll('game_is_ready')
     } else {

@@ -14,6 +14,7 @@ class ScoreDisplayer {
 
   displayStatTable(stats) {
     let participants = this.getParticpants(stats[0].scores)
+    this.nbParticipants = participants.length
     let totalScore = []
     this.displayParticipants(participants)
     for(let stat of stats) {
@@ -25,21 +26,21 @@ class ScoreDisplayer {
       totalScore.push(playersScore)
       this.scoreEl.appendChild(tr)
     }
-    let scores = this.addTotalScore(totalScore, participants.length)
-    this.displayTotalScore(scores, participants.length)
+    let score = this.addTotalScore(totalScore)
+    this.displayTotalScore(score)
   }
 
-  addTotalScore(totalScore, nbParticipants) {
+  addTotalScore(totalScore) {
     return totalScore.reduce(this.addScore)
   }
 
-  displayTotalScore(scores, nbParticipants) {
+  displayTotalScore(scores) {
     let tr = document.createElement('tr')
     let td = document.createElement('td')
     td.innerHTML = 'Total score : '
     td.classList.add('score-bold')
     tr.appendChild(td)
-    for (let i = 0; i < nbParticipants; i++) {
+    for (let i = 0; i < this.nbParticipants; i++) {
       let td = document.createElement('td')
       td.innerHTML = scores[i]
       td.classList.add('score-centered', 'score-bold')

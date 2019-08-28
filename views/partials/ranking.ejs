@@ -1,0 +1,11 @@
+<div id="ranking">
+  <div class="uk-flex uk-flex-center uk-margin-top uk-heading-line">
+    <h1 class="uk-heading-medium">Classement</h1>
+  </div>
+  <% if(host) { %>
+    <table id="rankedPlayer"></table>
+    <p class="uk-text-center uk-text-large">Le tableau des scores s'affichera dans <strong id="rankingTimer">10</strong> secondes !</p>
+    <% } else { %>
+    <p>Vous pouvez voir le classement sur l'écran principale !</p>
+  <% } %>
+</div>
