@@ -23,6 +23,25 @@ class GameSoundPlayer {
     this.audGangeJingle.play()
   }
 
+  decreaseJingleVolume() {
+    let vol = this.audGangeJingle.volume
+    let interval = 200
+
+    let fadeout = setInterval(() => {
+      if (vol > 0.2) {
+        vol -= 0.05
+        this.audGangeJingle.volume = vol
+      }
+      else {
+        clearInterval(fadeout)
+      }
+    }, interval)
+  }
+
+  increaseJingleVolume() {
+    this.audGangeJingle.volume = 1
+  }
+
   playReponseClicked() {
     this.audMouseClick
   }

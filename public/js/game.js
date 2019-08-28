@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
   socket.on('sync', (data) => {
     pageToggler.togglePlay()
     gameAnimation.onSync(data.countdown)
+    gameSoundPlayer.decreaseJingleVolume()
     gameSoundPlayer.playTick()
   })
 
@@ -65,9 +66,11 @@ document.addEventListener('DOMContentLoaded', () => {
     gameAnimation.addWaitMotion()
     gameAnimation.addLoadMotion()
     gameSoundPlayer.stopTick()
+    gameSoundPlayer.increaseJingleVolume()
   })
 
   socket.on('game_is_over', (data) => {
+    gameSoundPlayer.increaseJingleVolume()
     let stats = data.stats
     pageToggler.toggleEndGame()
     if(stats !== null) {
