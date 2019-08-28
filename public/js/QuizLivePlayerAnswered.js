@@ -5,6 +5,9 @@ class QuizLivePlayerAnswered {
     this.divPlayerAnswered = document.getElementById('playerAnsweredContainer')
   }
 
+  /**
+   * Display players who answered to the questionon]
+   */
   listenPlayerAnswered(){
     this.socket.on('display_player_answered', (data) => {
 
@@ -20,6 +23,9 @@ class QuizLivePlayerAnswered {
     })
   }
 
+  /**
+   * Clean the screen for a new question
+   */
   cleanScreen(){
     this.answeredPlayer = []
     this.divPlayerAnswered.innerHTML = ''

@@ -9,11 +9,19 @@
       #endGame{
         display: none;
       }
+      #ranking{
+        display: none;
+      }
 
       <% if(host) { %>
         #client{
           display: none;
         }
+
+        body {
+            overflow-y: hidden;
+        }
+
       <% } else { %>
         #host{
           display: none;
@@ -25,6 +33,7 @@
     <link rel="stylesheet" href="/css/waitingQueue.css">
     <link rel="stylesheet" href="/css/endQuiz.css">
     <link rel="stylesheet" href="/css/quiz.css">
+    <link rel="stylesheet" href="/css/ranking.css">
     <link rel="stylesheet" href="/css/textAnimation.css">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
@@ -37,7 +46,7 @@
     <script src="/js/QuizLivePlayerAnswered.js" charset="utf-8"></script>
     <script src="/js/PageToggler.js" charset="utf-8"></script>
     <script src="/js/GameSoundPlayer.js" charset="utf-8"></script>
-
+    <script src="/js/RankingManager.js" charset="utf-8"></script>
     <script src="/js/game.js" charset="utf-8"></script>
     <script src="/js/disablef5.js" charset="utf-8"></script>
   </head>
@@ -46,6 +55,7 @@
     <% include partials/waitingQueue %>
     <% include partials/startQuiz %>
     <% include partials/quiz %>
+    <% include partials/ranking %>
     <% include partials/endQuiz %>
     <% include partials/quizTransition %>
     </div>

@@ -1,0 +1,25 @@
+#goldCup {
+  height: 120px;
+}
+
+#silverCup {
+  height: 90px;
+}
+
+#bronzCup {
+  height: 70px;
+  margin-bottom: 40px;
+}
+
+#rankedPlayer td{
+  width: 200px;
+  height: 160px
+}
+
+#rankedPlayer {
+  margin-top: 10px;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}

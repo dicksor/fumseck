@@ -2,9 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const socket = io()
 
   let questionDisplayer = new QuestionDisplayer()
-
   let gameAnimation = new GameAnimation()
-
   let pageToggler = new PageToggler()
 
   let pseudo = document.getElementById('pseudo')
@@ -56,6 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
   waitingQueueManager.listenWaitingQueueTimer()
   waitingQueueManager.roomError()
 
+  let rankingManager = new RankingManager(pageToggler)
 
   socket.on('game_is_ready', () => {
     pageToggler.toggleQueue()
@@ -73,9 +72,10 @@ document.addEventListener('DOMContentLoaded', () => {
     gameSoundPlayer.increaseJingleVolume()
     gameSoundPlayer.stopTick()
     let stats = data.stats
-    pageToggler.toggleEndGame()
+    pageToggler.toggleRanking();
     if(stats !== null) {
       scoreDisplayer.displayStatTable(stats)
+      rankingManager.displayRankingTimer(scoreDisplayer.getParticpants(stats[0].scores))
     }
   })
 })

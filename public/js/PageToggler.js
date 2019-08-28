@@ -5,6 +5,7 @@ class PageToggler {
     this.inGameEl = document.getElementById('inGame')
     this.endGameEl = document.getElementById('endGame')
     this.waitingQueueEl = document.getElementById('waitingQueue')
+    this.rankingEl = document.getElementById('ranking')
   }
 
   toggleQueue() {
@@ -27,8 +28,13 @@ class PageToggler {
     this.startQuiz.style.display = 'block'
   }
 
-  toggleEndGame() {
+  toggleRanking(){
     this.inGameEl.style.display = 'none'
+    this.rankingEl.style.display = 'block'
+  }
+
+  toggleEndGame() {
+    this.rankingEl.style.display = 'none'
     this.endGameEl.style.display = 'block'
   }
 }
