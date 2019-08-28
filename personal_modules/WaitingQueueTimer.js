@@ -1,9 +1,17 @@
 class WaitingQueueTimer {
+  /**
+   *
+   * @param {Integer} time     delay before the game start
+   * @param {Object} quizGame quizGame object
+   */
   constructor(time, quizGame){
     this.time = time
     this.quizGame = quizGame
   }
 
+  /**
+   * send the timer time to the client and start the game if the timer equal 0
+   */
   tick(){
     this.timer = setInterval(() => {
       if(this.time == 0){
@@ -22,6 +30,9 @@ class WaitingQueueTimer {
     }, 1000)
   }
 
+  /**
+   * stop the timer
+   */
   stop(){
     clearInterval(this.timer)
   }

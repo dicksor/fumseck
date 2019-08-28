@@ -18,13 +18,9 @@ class QuizTimer {
     this.countdown--
     this.onTickCb(this.countdown)
     if(this.countdown <= 0) {
+      clearInterval(this.interval)
       this.onTimeOverCb()
-      this.stop()
     }
-  }
-
-  stop() {
-    clearInterval(this.interval)
   }
 }
 
