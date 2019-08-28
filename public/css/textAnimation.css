@@ -1,5 +1,6 @@
 .ml6 {
-  position: relative;
+  position: absolute;
+  top: 40%;
   font-weight: 900;
   font-size: 3.3em;
 }
@@ -27,6 +28,14 @@
   top: 40%;
   left: 10%;
 }
+
 .ml4 .letters {
   opacity: 0;
+}
+
+.dot {
+  background-color: #48dbfb;
+  width: 40px;
+  height: 40px;
+  margin-left: 20px;
 }

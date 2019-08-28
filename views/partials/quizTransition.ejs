@@ -1,4 +1,7 @@
 <div id="transition">
-  <h1 id="m16" class="ml6">
-  </h1>
+  <% if(host) { %>
+  <h1 id="m16" class="ml6"></h1>
+  <% } else { %>
+  <% include loading %>
+  <% } %>
 </div>
