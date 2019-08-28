@@ -2,6 +2,7 @@ class GameAnimation {
   constructor() {
     this.cardsEls = document.getElementsByClassName('uk-card')
     this.countdownNumberEl = document.getElementById('countdown-number')
+    this.timerSVGEl = document.getElementById('timer-svg')
     this.countdownSvgCircleEl = document.getElementById('timer-svg--circle')
     this.countdownEl = document.getElementById('countdown')
     this.transitionWaitEl = document.getElementById('transition-wait')
@@ -38,7 +39,7 @@ class GameAnimation {
 
   onSync(countdown) {
     this.countdownNumberEl.textContent = countdown
-    this.countdownSvgCircleEl.style.animation = 'animation: countdown' + countdown + 's linear infinite forwards'
+    this.timerSVGEl.style.animationDuration =  countdown + 's'
     this.countdownNumberEl.style.color = "#333"
     this.countdownSvgCircleEl.style.stroke = "#333"
   }

@@ -98,6 +98,24 @@
             </div>
           </div>
 
+          <div class="uk-margin">
+            <div class="uk-inline">
+              <div uk-form-custom="target: > * > span:first-child">
+                  <select name="responseTime" id="responseTime">
+                    <option value="">Temps pour répondre (secondes)</option>
+                    <option value="15">15 secondes</option>
+                    <option value="30">30 secondes</option>
+                    <option value="45">45 secondes</option>
+                    <option value="60">60 secondes</option>
+                  </select>
+                  <button class="uk-button uk-button-default uk-width-medium uk-form-large" type="button" tabindex="-1">
+                      <span></span>
+                      <span uk-icon="icon: chevron-down"></span>
+                  </button>
+              </div>
+            </div>
+          </div>
+
           <input class="uk-button uk-button-primary" type="submit" value="Create the game" name="create_game"></input>
       </form>
 

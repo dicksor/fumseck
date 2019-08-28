@@ -35,7 +35,7 @@ svg {
 
 @keyframes countdown {
   from {
-    stroke-dashoffset: 0px;
+    stroke-dashoffset: 150px;
   }
   to {
     stroke-dashoffset: 1040px;

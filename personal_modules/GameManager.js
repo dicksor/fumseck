@@ -11,10 +11,11 @@ class GameManager {
     let theme = reqBody.theme
     let nbPlayer = reqBody.nbPlayer
     let nbQuestion = reqBody.nbQuestion
+    let responseTime = reqBody.responseTime
 
     this.runningGames[gameId] = []
 
-    this.runningGames[gameId]['quiz'] = new QuizGame(gameId, nbQuestion, theme)
+    this.runningGames[gameId]['quiz'] = new QuizGame(gameId, nbQuestion, theme, responseTime)
     this.runningGames[gameId]['waitingQueueTimer'] = new WaitingQueueTimer(150, this.runningGames[gameId]['quiz'])
     this.runningGames[gameId]['nbPlayer'] = parseInt(nbPlayer)
     this.runningGames[gameId]['players'] = []

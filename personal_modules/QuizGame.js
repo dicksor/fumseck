@@ -4,14 +4,15 @@ const flatten = require('./util')
 const QuizStat = require('./QuizStat')
 
 class QuizGame {
-  constructor(gameId, nbQuestion, theme) {
+  constructor(gameId, nbQuestion, theme, responseTime) {
     this.gameId = gameId
     this.isRoomOpen = true
     this.playerSockets = []
+    this.responseTime = responseTime
     this.hostSocket = new Object()
     this.nbQuestion = nbQuestion
     this.theme = theme
-    this.quizTimer = new QuizTimer(10,
+    this.quizTimer = new QuizTimer(this.responseTime,
                                    () => this.onTimeOver(),
                                    (countdown) => this.onTick(countdown),
                                    (countdown) => this.onSync(countdown))
@@ -69,7 +70,7 @@ class QuizGame {
     this.quizData.splice(rndQuestionIdx, 1)
 
     this.quizTimer.sync()
-    this.sync(10)
+    this.sync(this.responseTime)
 
     this.playerAnsweredQuestion = []
 
