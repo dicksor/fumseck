@@ -62,7 +62,14 @@ app.get('/', (req, res) => {
 .post('/create_game_processing', urlencodedParser, (req, res) => {
   let gameId = gameManager.generateGameId()
   gameManager.createGame(gameId, req.body)
-  res.render('game', {host:true, gameId:gameId, nbPlayer:req.body.nbPlayer, theme:req.body.theme, nbQuestion:req.nbQuestion})
+  console.log(req)
+  res.render('game',
+             {host:true,
+              location: req.headers.host,
+              gameId: gameId,
+              nbPlayer: req.body.nbPlayer,
+              theme: req.body.theme,
+              nbQuestion: req.nbQuestion})
 })
 .get('/join_game/:game_id', (req, res) => {
   let gameId = req.params.game_id
@@ -109,6 +116,6 @@ io.on('connection', function(socket){
   })
 })
 
-http.listen(34335, function(){
+http.listen(34335, '0.0.0.0', function(){
   console.log('Starting server on port: 34335')
 })

@@ -4,7 +4,7 @@
   </div>
   <% if(host) { %>
     <p class="uk-text-center uk-text-large">La partie débute dans <strong id="tickTimerWaitingQueue">2 minutes et 30 secondes</strong></p>
-    <p class="uk-text-center uk-text-large">Partagez le lien à vos amis : <a href="http://127.0.0.1:34335/join_game/<%= gameId %>" target="_blank">localhost:34335/join_game/<%= gameId %></a> !</p>
+    <p class="uk-text-center uk-text-large">Partagez le lien à vos amis : <a href="/join_game/<%= gameId %>" target="_blank"><%= location %>/join_game/<%= gameId %></a> !</p>
   <% } else { %>
     <input type="hidden" id="pseudo" value="<%= pseudo %>">
   <% } %>
