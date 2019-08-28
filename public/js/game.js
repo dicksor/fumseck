@@ -71,6 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   socket.on('game_is_over', (data) => {
     gameSoundPlayer.increaseJingleVolume()
+    gameSoundPlayer.stopTick()
     let stats = data.stats
     pageToggler.toggleEndGame()
     if(stats !== null) {
