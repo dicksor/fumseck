@@ -62,7 +62,13 @@ app.get('/', (req, res) => {
 .post('/create_game_processing', urlencodedParser, (req, res) => {
   let gameId = gameManager.generateGameId()
   gameManager.createGame(gameId, req.body)
-  res.render('game', {host:true, gameId:gameId, nbPlayer:req.body.nbPlayer, theme:req.body.theme, nbQuestion:req.nbQuestion})
+  res.render('game',
+             {host:true,
+              location: req.headers.host,
+              gameId: gameId,
+              nbPlayer: req.body.nbPlayer,
+              theme: req.body.theme,
+              nbQuestion: req.nbQuestion})
 })
 .get('/join_game/:game_id', (req, res) => {
   let gameId = req.params.game_id

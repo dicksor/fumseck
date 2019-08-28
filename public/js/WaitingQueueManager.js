@@ -102,7 +102,7 @@ displayTimer(timerObject){
    */
   roomError(){
     this.socket.on('room_error', () => {
-      window.location.href = 'http://127.0.0.1:34335'
+      window.location.replace(window.location.origin)
     })
   }
 }
