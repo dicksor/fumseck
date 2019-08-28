@@ -13,6 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let scoreDisplayer = new ScoreDisplayer()
   let quizResponse = new QuizResponse(socket, gameId.value)
 
+  let gameSoundPlayer = new GameSoundPlayer()
+
   //display player answered
   let quizLivePlayerAnswered = new QuizLivePlayerAnswered(socket)
   quizLivePlayerAnswered.listenPlayerAnswered()
@@ -36,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
   socket.on('sync', (data) => {
     pageToggler.togglePlay()
     gameAnimation.onSync(data.countdown)
+    gameSoundPlayer.playTick()
   })
 
   socket.on('start_game', () => {
@@ -60,6 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
     pageToggler.toggleBreak()
     gameAnimation.addWaitMotion()
     gameAnimation.addLoadMotion()
+    gameSoundPlayer.stopTick()
   })
 
   socket.on('game_is_over', (data) => {

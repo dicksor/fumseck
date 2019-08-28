@@ -29,8 +29,8 @@ class QuizResponse {
       document.getElementById("" + i + i).style.cursor = 'default'
     }
 
-    let audio = document.getElementById('audio');
-    audio.play();
+    let audio = document.getElementById('audMouseClick')
+    audio.play()
 
     this.socket.emit('answer_question', { pseudo: this.pseudo, gameId: this.gameId, response: rep })
   }
