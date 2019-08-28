@@ -25,3 +25,7 @@ footer {
   background-color: #efefef;
   text-align: center;
 }
+
+#footer-margin {
+  margin-bottom: 0;
+}
