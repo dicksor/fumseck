@@ -41,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
   socket.on('start_game', () => {
     pageToggler.toggleStartGame()
     gameAnimation.addStartMotion()
+    gameAnimation.addLoadMotion()
   })
 
   //Waiting queue
@@ -58,6 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
   socket.on('break_transition', () => {
     pageToggler.toggleBreak()
     gameAnimation.addWaitMotion()
+    gameAnimation.addLoadMotion()
   })
 
   socket.on('game_is_over', (data) => {

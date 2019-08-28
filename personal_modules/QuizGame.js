@@ -33,7 +33,7 @@ class QuizGame {
     let quiz = new QuizReader()
     quiz.readQuiz(this.theme).then((quizData) => {
       this.quizData = flatten(Object.values(quizData.quizz))
-      this.emitToHost('start_game')
+      this.broadcastToAll('start_game')
       setTimeout(() => this.renderNextQuestion(), 7000)
     })
     .catch((err) => {
@@ -80,7 +80,7 @@ class QuizGame {
   }
 
   transitionToBreak() {
-    this.emitToHost('break_transition')
+    this.broadcastToAll('break_transition')
     setTimeout(() => this.renderNextQuestion(), this.breakTime)
   }
 

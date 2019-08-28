@@ -136,4 +136,16 @@ class GameAnimation {
     this.m16El.style.opacity = 1
   }
 
+  addLoadMotion() {
+    anime.timeline({loop: true})
+    .add({
+      targets: '.dots .dot',
+      translateY: [0, 20, 0],
+      backgroundColor: ['#48dbfb', '#0abde3'],
+      borderRadius: ['0%', '50%', '0%'],
+      duration: 1000,
+      delay: (el, i) => 333 * i
+    })
+  }
+
 }
