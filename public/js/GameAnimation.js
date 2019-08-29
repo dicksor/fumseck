@@ -10,6 +10,9 @@ class GameAnimation {
     this.waitText = "Préparez vous pour la prochaine question"
   }
 
+  /**
+   * [addQuestionAnimation Animates question cards]
+   */
   addQuestionAnimation() {
     for (let cardEl of this.cardsEls) {
       cardEl.classList.add('uk-animation-scale-up')
@@ -17,12 +20,20 @@ class GameAnimation {
     setTimeout(() => this.removeQuestionAnimation(), 500)
   }
 
+  /**
+   * [removeQuestionAnimation Removes question card's animation]
+   * @return {[type]} [description]
+   */
   removeQuestionAnimation() {
     for (let cardEl of this.cardsEls) {
       cardEl.classList.remove('uk-animation-scale-up')
     }
   }
 
+  /**
+   * [onTick Refreshes clock countdown, add a stressing motion at the 5 last seconds]
+   * @param  {[Integer]} count [The actual timer's countdown]
+   */
   onTick(count) {
     this.countdownNumberEl.textContent = count
     if(count <= 5) {
@@ -30,6 +41,9 @@ class GameAnimation {
     }
   }
 
+  /**
+   * [addStressMotion Set the timer red and adds a shaking motion]
+   */
   addStressMotion() {
     this.countdownEl.classList.add('uk-animation-shake')
     setTimeout(() => { this.countdownEl.classList.remove('uk-animation-shake') }, 100)
@@ -37,6 +51,10 @@ class GameAnimation {
     this.countdownSvgCircleEl.style.stroke = "#e74c3c"
   }
 
+  /**
+   * [onSync When timers are synchronized, resets the display]
+   * @param  {[Integer]} countdown [Start countdown]
+   */
   onSync(countdown) {
     this.countdownNumberEl.textContent = countdown
     this.timerSVGEl.style.animationDuration =  countdown + 's'
@@ -50,6 +68,9 @@ class GameAnimation {
     }
   }
 
+  /**
+   * [addStartMotion Animation when game is starting]
+   */
   addStartMotion() {
     let ml4 = {}
     ml4.opacityIn = [0,1]
@@ -104,6 +125,9 @@ class GameAnimation {
     })
   }
 
+  /**
+   * [addWaitMotion Animation between questions]
+   */
   addWaitMotion() {
     let spanTextWrapper = document.createElement('span')
     spanTextWrapper.id = 'text-wrapper'
@@ -137,6 +161,9 @@ class GameAnimation {
     this.m16El.style.opacity = 1
   }
 
+  /**
+   * [addLoadMotion Animation when client should wait]
+   */
   addLoadMotion() {
     anime.timeline({loop: true})
     .add({

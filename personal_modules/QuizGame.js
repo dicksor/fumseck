@@ -3,6 +3,9 @@ const QuizReader = require('./QuizReader')
 const util = require('./util')
 const QuizStat = require('./QuizStat')
 
+/**
+ * [QuizGame Class that coordinates one game]
+ */
 class QuizGame {
   constructor(gameId, nbQuestion, theme, responseTime) {
     this.gameId = gameId
@@ -21,14 +24,25 @@ class QuizGame {
     this.playerAnsweredQuestion = []
   }
 
+  /**
+   * [addPlayer Appends a socket to the list of all player's socket]
+   * @param {[type]} socket [socket.io : socket]
+   */
   addPlayer(socket) {
     this.playerSockets.push(socket)
   }
 
+  /**
+   * [addHost Set the host's socket]
+   * @param {[type]} socket [socket.io : socket]
+   */
   addHost(socket) {
     this.hostSocket = socket
   }
 
+  /**
+   * [startQuiz Reads the quiz file, signals game start, renders next question]
+   */
   startQuiz() {
     let quiz = new QuizReader()
     quiz.readQuiz(this.theme).then((quizData) => {
@@ -41,6 +55,12 @@ class QuizGame {
     })
   }
 
+  /**
+   * [broadCastToAllPlayer Send a message through socket to all players]
+   * @param  {[type]} channel     [description]
+   * @param  {[type]} [data=null] [description]
+   * @return {[type]}             [description]
+   */
   broadCastToAllPlayer(channel, data = null) {
     for (let socket of this.playerSockets) {
       socket.emit(channel, data)
@@ -56,6 +76,9 @@ class QuizGame {
     this.emitToHost(channel, data)
   }
 
+  /**
+   * [renderNextQuestion Parses a random question and sends it]
+   */
   renderNextQuestion() {
     let rndQuestionIdx = this.getRandomQuestionIdx(this.quizData)
     let question = this.quizData[rndQuestionIdx].question
@@ -79,6 +102,9 @@ class QuizGame {
     this.quizTimer.startTimer()
   }
 
+  /**
+   * [transitionToBreak Notify a transition between questions]
+   */
   transitionToBreak() {
     this.broadcastToAll('break_transition')
     setTimeout(() => this.renderNextQuestion(), this.breakTime)
@@ -88,6 +114,9 @@ class QuizGame {
     return Math.floor(Math.random() * allQuestions.length)
   }
 
+  /**
+   * [onTimeOver When a question's time is over]
+   */
   onTimeOver() {
     if(this.count < this.nbQuestion && this.quizData.length > 0) {
       this.quizStat.nextQuestion()
@@ -100,10 +129,19 @@ class QuizGame {
     }
   }
 
+  /**
+   * [onTick On timer's tick (each seconds)]
+   * @param  {[type]} countdown [The actual countdown value]
+   */
   onTick(countdown) {
     this.broadcastToAll('tick', {countdown: countdown})
   }
 
+  /**
+   * [sync Synchronize the clients and the server before a question]
+   * @param  {[type]} countdown [description]
+   * @return {[type]}           [description]
+   */
   sync(countdown) {
     this.broadcastToAll('sync', {countdown: countdown})
   }

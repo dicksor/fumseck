@@ -1,3 +1,6 @@
+/**
+ * [GameSoundPlayer Plays sounds effect in game]
+ */
 class GameSoundPlayer {
   constructor() {
     this.audClockTicking = document.getElementById('audClockTicking')
