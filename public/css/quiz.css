@@ -20,11 +20,30 @@
 
 .imgUserPseudo {
   text-align: center
-
 }
 
 .playerAnswered {
   margin-right: 70px;
+  text-align: center;
+  animation-name: playerAnsweredAnimation;
+  animation-duration: 2s;
+}
+
+.imgPlayerAnsweredSmall {
+  height: 60px;
+  position: relative;
+  top: 35px;
+  left: 0px;
+}
+
+.imgUserPseudoSmall {
+  text-align: center;
+  font-size: 0.7em;
+  margin-top: 40px;
+}
+
+.playerAnsweredSmall {
+  margin-right: 20px;
   text-align: center;
   animation-name: playerAnsweredAnimation;
   animation-duration: 2s;
