@@ -18,7 +18,7 @@ class QuizGame {
     this.quizTimer = new QuizTimer(this.responseTime,
                                    () => this.onTimeOver(),
                                    (countdown) => this.onTick(countdown))
-    this.count = 0
+    this.count = 1
     this.breakTime = 5000
     this.quizStat = new QuizStat()
     this.playerAnsweredQuestion = []
@@ -96,7 +96,7 @@ class QuizGame {
 
     this.playerAnsweredQuestion = []
 
-    this.broadcastToAll('next_question', { question: data, count: this.count })
+    this.broadcastToAll('next_question', { question: data, count: this.count, nbQuestion: this.nbQuestion })
     this.count++
 
     this.quizTimer.startTimer()
