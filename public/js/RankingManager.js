@@ -14,7 +14,7 @@ class RankingManager {
     for(let i = 0; i < participants.length; i++) {
       if(i < 3){
         this.rankedPlayer.innerHTML += '<tr><td valign="middle" align="center">'+ this.rankingImg[i] +'</td><td valign="middle"><h'+ (i+2) + '>' + participants[i] +'</h'+ (i+2) +'></td></tr>'
-      }else{
+      } else {
         break;
       }
     }

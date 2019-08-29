@@ -5,12 +5,12 @@
   <% if(host) { %>
     <p class="uk-text-center uk-text-large">La partie débute dans <strong id="tickTimerWaitingQueue">2 minutes et 30 secondes</strong></p>
     <p class="uk-text-center uk-text-large">Partagez le lien à vos amis : <a href="/join_game/<%= gameId %>" target="_blank"><%= location %>/join_game/<%= gameId %></a> !</p>
+    <input type="hidden" id="nbPlayer" value="<%= nbPlayer %>">
   <% } else { %>
     <input type="hidden" id="pseudo" value="<%= pseudo %>">
   <% } %>
     <input type="hidden" id="gameId" value="<%= gameId %>">
 
-    <!--<div class="example1"><h3>This is the scrolling text </h3></div>-->
     <p class="uk-text-center">Joueur(s) dans la salle d'attente : </p>
     <div id="newPlayer" class="uk-text-center">
     </div>

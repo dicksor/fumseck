@@ -55,3 +55,4 @@ python download_oqdb_dataset.py --f oqdb_breaking_bad.json --u https://www.kiwim
 * [X] Ajouter des labels au select
 * [X] Edit timer's timeout
 * [X] Aspect sécurité et triche
+* [ ] Faire des pages d'erreur 40*, 50*
