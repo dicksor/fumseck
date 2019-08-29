@@ -6,14 +6,14 @@ class ScoreDisplayer {
     this.addScore = (acc, sum) => this.addVector(acc, sum)
   }
 
-  getParticpants(scores) {
+  getParticipants(scores) {
     let participants = []
     scores.forEach((obj, idx) => participants.push(Object.keys(obj)[0]))
     return participants
   }
 
   displayStatTable(stats) {
-    let participants = this.getParticpants(stats[0].scores)
+    let participants = this.getParticipants(stats[0].scores)
     this.nbParticipants = participants.length
     let totalScore = []
     this.displayParticipants(participants)
@@ -26,8 +26,9 @@ class ScoreDisplayer {
       totalScore.push(playersScore)
       this.scoreEl.appendChild(tr)
     }
-    let score = this.addTotalScore(totalScore)
-    this.displayTotalScore(score)
+    let scores = this.addTotalScore(totalScore)
+    this.displayTotalScore(scores)
+    return scores
   }
 
   addTotalScore(totalScore) {

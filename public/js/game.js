@@ -51,6 +51,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let rankingManager = new RankingManager(pageToggler)
 
+
+  //test
+
+  //test
+
   socket.on('game_is_ready', () => {
     pageToggler.toggleQueue()
   })
@@ -65,8 +70,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let stats = data.stats
     pageToggler.toggleRanking();
     if(stats !== null) {
-      scoreDisplayer.displayStatTable(stats)
-      rankingManager.displayRankingTimer(scoreDisplayer.getParticpants(stats[0].scores))
+      let scores = scoreDisplayer.displayStatTable(stats)
+      rankingManager.displayRanking(scoreDisplayer.getParticipants(stats[0].scores), scores)
+      rankingManager.displayRankingTimer()
     }
   })
 })
