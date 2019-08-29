@@ -1,3 +1,6 @@
+/**
+ * [PageToggler Toggles page when in game (pseudo single page)]
+ */
 class PageToggler {
   constructor() {
     this.startQuiz = document.getElementById('startQuiz')

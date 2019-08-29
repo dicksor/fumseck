@@ -1,11 +1,19 @@
 const fs = require("fs")
 const path = require('path')
 
+/**
+ * [QuizReader Interacts with the quiz dataset files]
+ */
 class QuizReader {
   constructor() {
     this.BASE_MODEL_PATH = "app/model"
   }
 
+  /**
+   * [readQuiz Reads a json file]
+   * @param  {[String]} fileName [The file's name]
+   * @return {[JSON]}          [JSON containing a quiz]
+   */
   readQuiz(fileName) {
     return new Promise((resolve, reject) => {
       let filePath = path.join(this.BASE_MODEL_PATH, fileName)
@@ -20,6 +28,10 @@ class QuizReader {
     })
   }
 
+  /**
+   * [readTopics Gets all available quiz topics]
+   * @return {[Object]} [{Paths: the quizes path, names: printable name}]
+   */
   readTopics() {
     return new Promise((resolve, reject) => {
       fs.readdir(this.BASE_MODEL_PATH, (err, files) => {
@@ -43,7 +55,10 @@ class QuizReader {
     })
   }
 
-
+  /**
+   * [readCopyrights Get authors and publishers of all quizzes]
+   * @return {[Promise]}
+   */
   readCopyrights() {
     return this.readTopics().then(topics => {
     const oqdb_prefix = 'oqdb'
@@ -77,6 +92,11 @@ class QuizReader {
     })
   }
 
+  /**
+   * [cleanName Takes a file path and removes prefix as well as linking chars]
+   * @param  {[type]} files [description]
+   * @return {[type]}       [description]
+   */
   cleanName(files) {
     let names = []
     for(let file of files) {

@@ -1,48 +1,64 @@
+/**
+ * [GameSoundPlayer Plays sounds effect in game]
+ */
 class GameSoundPlayer {
-  constructor() {
+  constructor(isHost) {
     this.audClockTicking = document.getElementById('audClockTicking')
     this.audGangeJingle = document.getElementById('audGangeJingle')
     this.audMouseClick = document.getElementById('audMouseClick')
+    this.isHost = isHost
   }
 
   playTick() {
-    this.audClockTicking.addEventListener('ended', () => {
+    if(this.isHost) {
+      this.audClockTicking.addEventListener('ended', () => {
+        this.audClockTicking.play()
+      }, false)
       this.audClockTicking.play()
-    }, false)
-    this.audClockTicking.play()
+    }
   }
 
   stopTick() {
-    this.audClockTicking.pause()
+    if(this.isHost) {
+      this.audClockTicking.pause()
+    }
   }
 
   playJingle() {
-    this.audGangeJingle.addEventListener('ended', () => {
+    if(this.isHost) {
+      this.audGangeJingle.addEventListener('ended', () => {
+        this.audGangeJingle.play()
+      }, false)
       this.audGangeJingle.play()
-    }, false)
-    this.audGangeJingle.play()
+    }
   }
 
   decreaseJingleVolume() {
-    let vol = this.audGangeJingle.volume
-    let interval = 200
+    if(this.isHost) {
+      let vol = this.audGangeJingle.volume
+      let interval = 200
 
-    let fadeout = setInterval(() => {
-      if (vol > 0.2) {
-        vol -= 0.05
-        this.audGangeJingle.volume = vol
-      }
-      else {
-        clearInterval(fadeout)
-      }
-    }, interval)
+      let fadeout = setInterval(() => {
+        if (vol > 0.2) {
+          vol -= 0.05
+          this.audGangeJingle.volume = vol
+        }
+        else {
+          clearInterval(fadeout)
+        }
+      }, interval)
+    }
   }
 
   increaseJingleVolume() {
-    this.audGangeJingle.volume = 1
+    if(this.isHost) {
+      this.audGangeJingle.volume = 1
+    }
   }
 
   playReponseClicked() {
-    this.audMouseClick
+    if(!this.isHost) {
+      this.audMouseClick.play()
+    }
   }
 }

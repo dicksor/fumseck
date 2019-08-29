@@ -1,3 +1,6 @@
+/**
+ * [ScoreDisplayer Displays the final score table]
+ */
 class ScoreDisplayer {
   constructor() {
     this.participantsEl = document.getElementById('participants')
@@ -6,6 +9,11 @@ class ScoreDisplayer {
     this.addScore = (acc, sum) => this.addVector(acc, sum)
   }
 
+  /**
+   * [getParticpants Get all game participants]
+   * @param  {[Object]} scores [Object with all required informations]
+   * @return {[Array]}        [Participants]
+   */
   getParticpants(scores) {
     let participants = []
     scores.forEach((obj, idx) => participants.push(Object.keys(obj)[0]))
