@@ -17,10 +17,20 @@ class ScoreDisplayer {
     this.nbParticipants = participants.length
     let totalScore = []
     this.displayParticipants(participants)
+    let i = 1
+
     for(let stat of stats) {
       let tr = document.createElement('tr')
       let td = document.createElement('td')
-      td.innerHTML = stat.question
+
+      if(this.nbParticipants <= 5) {
+        td.innerHTML = stat.question
+      } else {
+        td.innerHTML = 'Question n°' + i
+      }
+
+      i++
+
       tr.appendChild(td)
       let playersScore = this.displayQuestionScore(stat.scores, tr)
       totalScore.push(playersScore)
@@ -50,9 +60,16 @@ class ScoreDisplayer {
   }
 
   displayParticipants(participants) {
+
     for (let participant of participants) {
       let th = document.createElement('th')
-      th.innerHTML = participant
+
+      if(participants.length <= 10) {
+        th.innerHTML = participant
+      } else {
+        th.innerHTML = participant.slice(0,4) + '...'
+      }
+
       th.classList.add('score-centered')
       this.participantsEl.appendChild(th)
     }
