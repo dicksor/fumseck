@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let pseudo = document.getElementById('pseudo')
   let gameId = document.getElementById('gameId')
 
-  let gameSoundPlayer = new GameSoundPlayer()
+  let gameSoundPlayer = new GameSoundPlayer(pseudo === null)
 
   let scoreDisplayer = new ScoreDisplayer()
   let quizResponse = new QuizResponse(socket, gameId.value, gameSoundPlayer)
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let quizLivePlayerAnswered = new QuizLivePlayerAnswered(socket)
   quizLivePlayerAnswered.listenPlayerAnswered()
 
-  if(pseudo){
+  if(pseudo) {
     quizResponse.setPseudo(pseudo.value)
   }
 

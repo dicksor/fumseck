@@ -118,6 +118,6 @@ io.on('connection', function(socket){
   })
 })
 
-http.listen(34335, function(){
+http.listen(34335, '0.0.0.0', function(){
   console.log('Starting server on port: 34335')
 })
