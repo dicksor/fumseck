@@ -118,7 +118,7 @@ class QuizGame {
    * [onTimeOver When a question's time is over]
    */
   onTimeOver() {
-    if(this.count < this.nbQuestion && this.quizData.length > 0) {
+    if(this.count <= this.nbQuestion && this.quizData.length > 0) {
       this.quizStat.nextQuestion()
       this.transitionToBreak()
     } else {
