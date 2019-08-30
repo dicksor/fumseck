@@ -19,6 +19,9 @@ class QuizGame {
     this.breakTime = 5000
     this.quizStat = new QuizStat()
     this.playerAnsweredQuestion = []
+
+    this.propositions = []
+    this.responseIdx = 0
   }
 
   addPlayer(socket) {
@@ -59,12 +62,12 @@ class QuizGame {
   renderNextQuestion() {
     let rndQuestionIdx = this.getRandomQuestionIdx(this.quizData)
     let question = this.quizData[rndQuestionIdx].question
-    let propositions = this.quizData[rndQuestionIdx].propositions
+    this.propositions = this.quizData[rndQuestionIdx].propositions
     let response = this.quizData[rndQuestionIdx].reponse
-    let responseIdx = propositions.indexOf(response)
-    let data = { question: question, propositions: propositions}
+    this.responseIdx = this.propositions.indexOf(response)
+    let data = { question: question, propositions: this.propositions}
 
-    this.quizStat.addQuestionAnswer(question, responseIdx)
+    this.quizStat.addQuestionAnswer(question, this.responseIdx)
 
     this.quizData.splice(rndQuestionIdx, 1)
 
@@ -79,6 +82,19 @@ class QuizGame {
     this.quizTimer.startTimer()
   }
 
+  getRandomNumber(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  getRemovedPropositions() {
+    let propositionsIndex = Object.keys(this.propositions)
+    propositionsIndex.splice(this.responseIdx, 1)//remove the reponse
+
+    propositionsIndex.splice(this.getRandomNumber(0,2), 1)
+
+    return propositionsIndex
+  }
+
   transitionToBreak() {
     this.broadcastToAll('break_transition')
     setTimeout(() => this.renderNextQuestion(), this.breakTime)
@@ -89,7 +105,7 @@ class QuizGame {
   }
 
   onTimeOver() {
-    if(this.count < this.nbQuestion && this.quizData.length > 0) {
+    if(this.count <= this.nbQuestion && this.quizData.length > 0) {
       this.quizStat.nextQuestion()
       this.transitionToBreak()
     } else {

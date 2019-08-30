@@ -116,8 +116,12 @@ io.on('connection', function(socket){
     gameManager.handleResponse(data)
     gameManager.displayPlayerAnswered(data)
   })
+
+  socket.on('use_joker', (data) => {
+    gameManager.useJoker(data, socket)
+  })
 })
 
-http.listen(34335, function(){
+http.listen(34335, '0.0.0.0', function(){
   console.log('Starting server on port: 34335')
 })

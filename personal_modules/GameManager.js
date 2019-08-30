@@ -24,6 +24,7 @@ class GameManager {
     this.runningGames[gameId]['waitingQueueTimer'] = new WaitingQueueTimer(150, this.runningGames[gameId]['quiz'])
     this.runningGames[gameId]['nbPlayer'] = parseInt(nbPlayer)
     this.runningGames[gameId]['players'] = []
+    this.runningGames[gameId]['playersUsedJoker'] = []
   }
 
   /**
@@ -125,7 +126,7 @@ class GameManager {
    * @param  {Integer} [length=6] length of the id generate
    * @return {Integer}            game id
    */
-  generateGameId(length = 6){
+  generateGameId(length = 4){
     let gameId = '';
     do {
        gameId = idgen(length)
@@ -137,6 +138,15 @@ class GameManager {
   handleResponse(data) {
     if (this.isGameIdInRunningGame(data.gameId)) {
       this.runningGames[data.gameId]['quiz'].quizStat.addPlayersResponse(data.pseudo, data.response)
+    }
+  }
+
+  useJoker(data, socket){
+    if(this.isGameIdInRunningGame(data.gameId) && !(data.pseudo in this.runningGames[data.gameId]['playersUsedJoker'])) {
+      let removedPropositions = this.runningGames[data.gameId]['quiz'].getRemovedPropositions()
+      socket.emit('remove_propositions', {removedPropositions:removedPropositions})
+    } else {
+      socket.emit('room_error')
     }
   }
 }

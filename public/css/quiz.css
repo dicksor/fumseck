@@ -11,6 +11,18 @@
   display: none;
 }
 
+#joker{
+  display: table;
+  margin: 0 auto;
+  width: 50%;
+}
+
+@media screen and (max-width: 700px) {
+  #joker{
+    width: 80%;
+    }
+}
+
 .imgPlayerAnswered {
   height: 80px;
   position: relative;

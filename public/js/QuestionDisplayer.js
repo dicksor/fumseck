@@ -8,6 +8,11 @@ class QuestionDisplayer {
   }
 
   displayNext(question) {
+    //display all the question after user use joker
+    for(let i = 0; i <= 3; i++){
+      document.getElementById(i).classList.remove('animated')
+    }
+
     this.questionEl.innerHTML = question.question
     this.responseAEl.innerHTML = question.propositions[0]
     this.responseBEl.innerHTML = question.propositions[1]

@@ -17,6 +17,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if(pseudo){
     quizResponse.setPseudo(pseudo.value)
+
+    let jokerManager = new JokerManager(socket, gameId.value, pseudo.value)
+    jokerManager.clickOnJokerButton()
+    jokerManager.listenRemovedPropositions();
   }
 
   socket.on('next_question', (data) => {
@@ -51,19 +55,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let rankingManager = new RankingManager(pageToggler)
 
-
-  //test
-
-  //test
-
   socket.on('game_is_ready', () => {
     pageToggler.toggleQueue()
   })
 
   socket.on('break_transition', () => {
     pageToggler.toggleBreak()
-    gameAnimation.addWaitMotion()
-    gameAnimation.addLoadMotion()
+    if(pseudo) {
+      gameAnimation.addLoadMotion()
+    } else {
+      gameAnimation.addWaitMotion()
+    }
   })
 
   socket.on('game_is_over', (data) => {
