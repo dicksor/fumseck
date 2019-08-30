@@ -1,8 +1,10 @@
 class QuizLivePlayerAnswered {
-  constructor(socket) {
+  constructor(socket, nbPlayer, pseudo) {
     this.socket = socket
     this.answeredPlayer = []
     this.divPlayerAnswered = document.getElementById('playerAnsweredContainer')
+    this.pseudo = pseudo
+    this.nbPlayer = nbPlayer
   }
 
   /**
@@ -20,10 +22,19 @@ class QuizLivePlayerAnswered {
         newPseudo = newPseudo.slice(0,5) + '...'
       }
 
-      let div = document.createElement('div')
-      div.innerHTML = '<img src="img/user.png" class="imgPlayerAnsweredSmall"/><p class="imgUserPseudoSmall">'+ newPseudo +'</p>'
-      div.classList.add('playerAnsweredSmall')
-      this.divPlayerAnswered.appendChild(div)
+      if(!this.pseudo) {
+          let div = document.createElement('div')
+
+          if(this.nbPlayer.value <= 5) {
+            div.innerHTML = '<img src="img/user.png" class="imgPlayerAnswered"/><p class="imgUserPseudo">'+ newPseudo +'</p>'
+            div.classList.add('playerAnswered')
+          } else {
+            div.innerHTML = '<img src="img/user.png" class="imgPlayerAnsweredSmall"/><p class="imgUserPseudoSmall">'+ newPseudo +'</p>'
+            div.classList.add('playerAnsweredSmall')
+          }
+
+          this.divPlayerAnswered.appendChild(div)
+      }
     })
   }
 

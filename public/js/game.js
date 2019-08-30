@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let pseudo = document.getElementById('pseudo')
   let gameId = document.getElementById('gameId')
+  let nbPlayer = document.getElementById('nbPlayer')
 
   let gameSoundPlayer = new GameSoundPlayer(pseudo === null)
 
@@ -14,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let quizResponse = new QuizResponse(socket, gameId.value, gameSoundPlayer)
 
   //display player answered
-  let quizLivePlayerAnswered = new QuizLivePlayerAnswered(socket)
+  let quizLivePlayerAnswered = new QuizLivePlayerAnswered(socket, nbPlayer, pseudo)
   quizLivePlayerAnswered.listenPlayerAnswered()
 
   if(pseudo) {
