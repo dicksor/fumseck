@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
   socket.on('next_question', (data) => {
     //clean player answered info
     quizLivePlayerAnswered.cleanScreen()
-    questionDisplayer.displayNext(data.question)
+    questionDisplayer.displayNext(data.question, data.count, data.nbQuestion)
     gameAnimation.addQuestionAnimation()
     quizResponse.resetCards()
   })

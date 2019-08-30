@@ -27,6 +27,7 @@ class ScoreDisplayer {
     this.displayParticipants(participants)
 
     let i = 1
+    let trArray = []
 
     for(let stat of stats) {
       let tr = document.createElement('tr')
@@ -43,11 +44,16 @@ class ScoreDisplayer {
       tr.appendChild(td)
       let playersScore = this.displayQuestionScore(stat.scores, tr)
       totalScore.push(playersScore)
-      this.scoreEl.appendChild(tr)
+
+      trArray.push(tr)
     }
 
     let score = this.addTotalScore(totalScore)
     this.displayTotalScore(score)
+
+    for(let i = 0; i < trArray.length; i++) {
+      this.scoreEl.appendChild(trArray[i])
+    }
 
   }
 
