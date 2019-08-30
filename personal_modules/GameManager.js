@@ -41,7 +41,7 @@ class GameManager {
    * @param  {String}  gameId game id
    * @return {Boolean}        true if game id exist, false otherwise
    */
-  isGameIdInRunningGame(gameId){
+  isGameIdInRunningGame(gameId) {
     return gameId in this.runningGames
   }
 
@@ -103,6 +103,12 @@ class GameManager {
   displayPlayerAnswered(data){
     this.runningGames[data.gameId]['quiz'].playerAnsweredQuestion.push(data.pseudo)
     this.runningGames[data.gameId]['quiz'].emitToHost('display_player_answered', {arrayPlayer: this.runningGames[data.gameId]['quiz'].playerAnsweredQuestion})
+
+    //if all the player answered to the question, skip to the next question with  
+    if(this.runningGames[data.gameId]['quiz'].playerAnsweredQuestion.length == this.runningGames[data.gameId]['nbPlayer']) {
+      clearInterval(this.runningGames[data.gameId]['quiz'].quizTimer.interval)
+      this.runningGames[data.gameId]['quiz'].onTimeOver()
+    }
   }
 
   /**
