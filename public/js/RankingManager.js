@@ -6,7 +6,7 @@ class RankingManager {
     this.rankingTimer = document.getElementById('rankingTimer')
 
     this.rankingImg = []
-    this.rankingImg[0] = '<img src="img/goldCup.png" id="goldCup">'
+    this.rankingImg[0] = '<img src="img/goldCup.png" id="goldCup" >'
     this.rankingImg[1] = '<img src="img/silverCup.png" id="silverCup">'
     this.rankingImg[2] = '<img src="img/bronzCup.png" id="bronzCup">'
   }
@@ -32,7 +32,7 @@ class RankingManager {
 
     for(let i = 0; i < sortedParticipantsWithScores.length; i++){
       if(i < 3) {
-        this.rankedPlayer.innerHTML += '<tr><td valign="middle" align="center">'+ this.rankingImg[i] +'</td><td valign="middle"><h'+ (i+2) + '>' + sortedParticipantsWithScores[i][0] +'</h'+ (i+2) +'></td></tr>'
+        this.rankedPlayer.innerHTML += '<tr class="animated jackInTheBox cup'+i+'"><td valign="middle" align="center">'+ this.rankingImg[i] +'</td><td valign="middle"><h'+ (i+2) + '>' + sortedParticipantsWithScores[i][0] +'</h'+ (i+2) +'></td></tr>'
       } else {
         break
       }

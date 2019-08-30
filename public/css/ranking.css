@@ -23,3 +23,15 @@
   align-items: center;
   justify-content: center;
 }
+
+.cup0 {
+  animation-delay: 2s;
+}
+
+.cup1 {
+  animation-delay: 1s;
+}
+
+.cup2 {
+  animation-delay: 0;
+}

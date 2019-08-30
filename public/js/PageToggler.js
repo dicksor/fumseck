@@ -35,6 +35,7 @@ class PageToggler {
 
   toggleEndGame() {
     this.rankingEl.style.display = 'none'
+    document.getElementsByTagName("body")[0].style.overflow = 'visible'
     this.endGameEl.style.display = 'block'
   }
 }

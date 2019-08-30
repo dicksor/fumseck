@@ -23,6 +23,16 @@
     }
 }
 
+.jokerAnimationElem {
+  animation-name: jokerAnimation;
+  animation-duration: 2s
+}
+
+@keyframes jokerAnimation {
+  from {left:0px; }
+  to {left: 4000px;}
+}
+
 .imgPlayerAnswered {
   height: 80px;
   position: relative;

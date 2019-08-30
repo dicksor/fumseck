@@ -10,7 +10,9 @@ class QuestionDisplayer {
   displayNext(question) {
     //display all the question after user use joker
     for(let i = 0; i <= 3; i++){
-      document.getElementById(i).classList.remove('animated')
+      let elem = document.getElementById(i)
+      elem.classList.remove('animated', 'bounceOutUp')
+      elem.style.display = 'block'
     }
 
     this.questionEl.innerHTML = question.question

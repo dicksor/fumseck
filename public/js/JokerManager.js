@@ -15,7 +15,11 @@ class JokerManager {
   listenRemovedPropositions(){
     this.socket.on('remove_propositions', (data) => {
       data.removedPropositions.forEach((id) => {
-        document.getElementById(id).classList.add('animated', 'flipOutY')
+        document.getElementById(id).classList.add('animated','bounceOutUp')
+
+        setTimeout(() => {
+          document.getElementById(id).style.display = 'none'
+        }, 500)
       })
     })
   }

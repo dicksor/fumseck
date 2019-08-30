@@ -29,6 +29,9 @@ class WaitingQueueManager{
     let newPlayerEl = document.getElementById('newPlayer')
 
     this.socket.on('player_connected', (data) => {
+      if(!this.pseudo){
+        document.getElementById('startGame').disabled = false
+      }
 
       let newPseudo = data.arrayPlayer.filter(x => !this.playerInWaitingQueue.includes(x))//get the new connected player
 
