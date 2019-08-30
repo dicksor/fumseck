@@ -2,6 +2,7 @@ const QuizTimer = require('./QuizTimer')
 const QuizReader = require('./QuizReader')
 const util = require('./util')
 const QuizStat = require('./QuizStat')
+const EnigmaManager = require('./EnigmaManager')
 
 class QuizGame {
   constructor(gameId, nbQuestion, theme, responseTime) {
@@ -22,6 +23,8 @@ class QuizGame {
 
     this.propositions = []
     this.responseIdx = 0
+
+    this.enigmaManager = new EnigmaManager()
   }
 
   addPlayer(socket) {
@@ -82,21 +85,28 @@ class QuizGame {
     this.quizTimer.startTimer()
   }
 
-  getRandomNumber(min, max) {
-    return Math.random() * (max - min) + min;
+  renderNextEnigma() {
+    let rndAnecdoteIdx = this.getRandomQuestionIdx(this.quizData)
+    let anecdote = this.quizData[rndAnecdoteIdx].anecdote
+    let cleanAnectdote = this.enigmaManager.cleanAnectdoteProcessing(anecdote)
+    console.log(cleanAnectdote);
+    console.log(this.enigmaManager.cutAnecdote(cleanAnectdote))
+
+    //this.propositions = methode de jonas
   }
 
   getRemovedPropositions() {
     let propositionsIndex = Object.keys(this.propositions)
     propositionsIndex.splice(this.responseIdx, 1)//remove the reponse
 
-    propositionsIndex.splice(this.getRandomNumber(0,2), 1)
+    propositionsIndex.splice(util.getRandomNumber(0,2), 1)
 
     return propositionsIndex
   }
 
   transitionToBreak() {
     this.broadcastToAll('break_transition')
+    this.renderNextEnigma()
     setTimeout(() => this.renderNextQuestion(), this.breakTime)
   }
 
