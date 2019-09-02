@@ -197,7 +197,7 @@ class QuizGame {
   /**
    * Draw a random question index
    * @param  {Array} allQuestions
-   * @return {Integer}             
+   * @return {Integer}
    */
   getRandomQuestionIdx(allQuestions) {
     return Math.floor(Math.random() * allQuestions.length)
