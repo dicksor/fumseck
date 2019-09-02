@@ -1,3 +1,11 @@
+/**
+ * Authors : Romain Capocasale, Vincent Moulin and Jonas Freiburghaus
+ * Date : August and September 2019
+ * Projet name : Fumseck
+ * Class : INF2dlm-A
+ * Course : Project P2, Summer HES
+ */
+
 document.addEventListener('DOMContentLoaded', () => {
   const socket = io()
 
@@ -20,6 +28,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if(pseudo) {
     quizResponse.setPseudo(pseudo.value)
+
+    let jokerManager = new JokerManager(socket, gameId.value, pseudo.value)
+    jokerManager.clickOnJokerButton()
+    jokerManager.listenRemovedPropositions();
   }
 
   socket.on('next_question', (data) => {
@@ -63,8 +75,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   socket.on('break_transition', () => {
     pageToggler.toggleBreak()
-    gameAnimation.addWaitMotion()
-    gameAnimation.addLoadMotion()
+    if(pseudo) {
+      gameAnimation.addLoadMotion()
+    } else {
+      gameAnimation.addWaitMotion()
+    }
     gameSoundPlayer.stopTick()
     gameSoundPlayer.increaseJingleVolume()
   })
@@ -75,8 +90,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let stats = data.stats
     pageToggler.toggleRanking();
     if(stats !== null) {
-      scoreDisplayer.displayStatTable(stats)
-      rankingManager.displayRankingTimer(scoreDisplayer.getParticpants(stats[0].scores))
+      let scores = scoreDisplayer.displayStatTable(stats)
+      rankingManager.displayRanking(scoreDisplayer.getParticipants(stats[0].scores), scores)
+      rankingManager.displayRankingTimer()
     }
   })
 })

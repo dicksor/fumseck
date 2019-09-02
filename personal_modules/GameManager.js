@@ -1,3 +1,11 @@
+/**
+ * Authors : Romain Capocasale, Vincent Moulin and Jonas Freiburghaus
+ * Date : August and September 2019
+ * Projet name : Fumseck
+ * Class : INF2dlm-A
+ * Course : Project P2, Summer HES
+ */
+
 const QuizGame = require('./QuizGame')
 const WaitingQueueTimer = require('./WaitingQueueTimer')
 const idgen = require('idgen')
@@ -20,10 +28,11 @@ class GameManager {
 
     this.runningGames[gameId] = []
 
-    this.runningGames[gameId]['quiz'] = new QuizGame(gameId, nbQuestion, theme, responseTime)
+    this.runningGames[gameId]['quiz'] = new QuizGame(gameId, nbQuestion, theme, responseTime) // quiz object for a game
     this.runningGames[gameId]['waitingQueueTimer'] = new WaitingQueueTimer(150, this.runningGames[gameId]['quiz'])
-    this.runningGames[gameId]['nbPlayer'] = parseInt(nbPlayer)
-    this.runningGames[gameId]['players'] = []
+    this.runningGames[gameId]['nbPlayer'] = parseInt(nbPlayer) // number of player for a game
+    this.runningGames[gameId]['players'] = [] // name of the player of the game
+    this.runningGames[gameId]['playersUsedJoker'] = [] // name of the players woho used joker
   }
 
   /**
@@ -40,7 +49,7 @@ class GameManager {
    * @param  {String}  gameId game id
    * @return {Boolean}        true if game id exist, false otherwise
    */
-  isGameIdInRunningGame(gameId){
+  isGameIdInRunningGame(gameId) {
     return gameId in this.runningGames
   }
 
@@ -102,6 +111,12 @@ class GameManager {
   displayPlayerAnswered(data){
     this.runningGames[data.gameId]['quiz'].playerAnsweredQuestion.push(data.pseudo)
     this.runningGames[data.gameId]['quiz'].emitToHost('display_player_answered', {arrayPlayer: this.runningGames[data.gameId]['quiz'].playerAnsweredQuestion})
+
+    //if all the player answered to the question, skip to the next question with
+    if(this.runningGames[data.gameId]['quiz'].playerAnsweredQuestion.length == this.runningGames[data.gameId]['nbPlayer']) {
+      clearInterval(this.runningGames[data.gameId]['quiz'].quizTimer.interval)
+      this.runningGames[data.gameId]['quiz'].onTimeOver()
+    }
   }
 
   /**
@@ -125,7 +140,7 @@ class GameManager {
    * @param  {Integer} [length=6] length of the id generate
    * @return {Integer}            game id
    */
-  generateGameId(length = 6){
+  generateGameId(length = 4){
     let gameId = '';
     do {
        gameId = idgen(length)
@@ -134,9 +149,30 @@ class GameManager {
     return gameId;
   }
 
+  /**
+   * Add player reponse to the stat object
+   * @param  {Object} data data from the client
+   */
   handleResponse(data) {
     if (this.isGameIdInRunningGame(data.gameId)) {
       this.runningGames[data.gameId]['quiz'].quizStat.addPlayersResponse(data.pseudo, data.response)
+    }
+  }
+
+  /**
+   * Use when a player use his joker
+   * @param  {Object} data   data from the client
+   * @param  {Object} socket socket of the player
+   */
+  useJoker(data, socket){
+    //if the player doesn't already use his joker and the game id exist
+    if(this.isGameIdInRunningGame(data.gameId) && !(data.pseudo in this.runningGames[data.gameId]['playersUsedJoker'])) {
+
+      //remove 2 wrong proposition and send index to the user
+      let removedPropositions = this.runningGames[data.gameId]['quiz'].getRemovedPropositions()
+      socket.emit('remove_propositions', {removedPropositions:removedPropositions})
+    } else {
+      socket.emit('room_error')
     }
   }
 }

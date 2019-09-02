@@ -1,3 +1,11 @@
+/**
+ * Authors : Romain Capocasale, Vincent Moulin and Jonas Freiburghaus
+ * Date : August and September 2019
+ * Projet name : Fumseck
+ * Class : INF2dlm-A
+ * Course : Project P2, Summer HES
+ */
+
 class WaitingQueueManager{
   constructor(pseudo, gameId, socket){
     this.pseudo = pseudo
@@ -29,6 +37,9 @@ class WaitingQueueManager{
     let newPlayerEl = document.getElementById('newPlayer')
 
     this.socket.on('player_connected', (data) => {
+      if(!this.pseudo){
+        document.getElementById('startGame').disabled = false
+      }
 
       let newPseudo = data.arrayPlayer.filter(x => !this.playerInWaitingQueue.includes(x))//get the new connected player
 
@@ -79,11 +90,11 @@ secondsToTime(secs){
 displayTimer(timerObject){
   let result = ''
   if(timerObject.m === 0){
-    result = timerObject.s + " seconds"
+    result = timerObject.s + " secondes"
   } else if (timerObject.m === 1) {
-    result = timerObject.m + " minute and " + timerObject.s + " seconds"
+    result = timerObject.m + " minute et " + timerObject.s + " secondes"
   } else {
-    result = timerObject.m + " minutes and " + timerObject.s + " seconds"
+    result = timerObject.m + " minutes et " + timerObject.s + " secondes"
   }
   return result
 }

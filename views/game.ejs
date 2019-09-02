@@ -1,3 +1,11 @@
+<!--
+ * Authors : Romain Capocasale, Vincent Moulin and Jonas Freiburghaus
+ * Date : August and September 2019
+ * Projet name : Fumseck
+ * Class : INF2dlm-A
+ * Course : Project P2, Summer HES
+-->
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
@@ -32,6 +40,7 @@
     <link rel="stylesheet" href="/css/textAnimation.css">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
 
     <script src="/js/GameAnimation.js" charset="utf-8"></script>
     <script src="/js/QuestionDisplayer.js" charset="utf-8"></script>
@@ -42,10 +51,12 @@
     <script src="/js/PageToggler.js" charset="utf-8"></script>
     <script src="/js/GameSoundPlayer.js" charset="utf-8"></script>
     <script src="/js/RankingManager.js" charset="utf-8"></script>
+    <script src="/js/JokerManager.js" charset="utf-8"></script>
+
     <script src="/js/game.js" charset="utf-8"></script>
     <script src="/js/disablef5.js" charset="utf-8"></script>
   </head>
-  <body>
+  <body scroll="no" style="overflow: hidden">
     <div class="uk-container">
     <% include partials/waitingQueue %>
     <% include partials/startQuiz %>

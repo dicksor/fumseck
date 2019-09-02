@@ -1,3 +1,11 @@
+/**
+ * Authors : Romain Capocasale, Vincent Moulin and Jonas Freiburghaus
+ * Date : August and September 2019
+ * Projet name : Fumseck
+ * Class : INF2dlm-A
+ * Course : Project P2, Summer HES
+ */
+
 //npm modules
 const express = require('express')
 const app = express()
@@ -28,22 +36,20 @@ app.get('/', (req, res) => { //home page
     res.render('index', { copyrights: copyrights })
   })
   .catch(error => {
-    // TODO : tell user
     console.log(error)
   })
 })
-.get('/create_game', (req, res) => {
+.get('/create_game', (req, res) => { //create game page
   quizReader.readTopics()
   .then(topics => {
     res.render('createGame', { topics: topics })
   })
   .catch(error => {
-    // TODO : tell user
     console.log(error)
   })
 
 })
-.get('/load_game/:token', (req, res) => {
+.get('/load_game/:token', (req, res) => { //load game page
   let createdQuiz = new QuizReader()
 
   createdQuiz.findFileInsideDir(req.params.token).then((quizFilename) => {
@@ -86,35 +92,39 @@ app.get('/', (req, res) => { //home page
   }
 
 })
-.post('/create_quiz_processing', urlencodedParser, (req, res) => { // a proteger
+.post('/create_quiz_processing', urlencodedParser, (req, res) => {
   if(!util.isParamEmpty(req.body)) {
     const createQuizParsing = new CreateQuizParsing(req.body)
     createQuizParsing.saveData()
   }
   res.redirect('/')
 })
-.use((req, res, next) => {
+.use((req, res, next) => {// 404 page
   res.status(404).render('error', { errorCode: 404 , message: 'Page non trouvée'})
 })
 
 //socket.io
 io.on('connection', function(socket){
 
-  socket.on('player_in_waiting_queue', (data) => {
+  socket.on('player_in_waiting_queue', (data) => { //waiting queue socket
   	gameManager.addPlayer(data, socket)
   })
 
-  socket.on('host_in_waiting_queue', (data) => {
+  socket.on('host_in_waiting_queue', (data) => { //waiting queue socket
     gameManager.addHost(data, socket)
   })
 
-  socket.on('host_start_game', (data) => {
+  socket.on('host_start_game', (data) => { //force start game socket
     gameManager.forceStartGame(data)
   })
 
-  socket.on('answer_question', (data) => {
+  socket.on('answer_question', (data) => { //live player answered question socket
     gameManager.handleResponse(data)
     gameManager.displayPlayerAnswered(data)
+  })
+
+  socket.on('use_joker', (data) => { // joker socket
+    gameManager.useJoker(data, socket)
   })
 })
 

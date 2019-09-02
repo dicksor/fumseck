@@ -1,4 +1,12 @@
 /**
+ * Authors : Romain Capocasale, Vincent Moulin and Jonas Freiburghaus
+ * Date : August and September 2019
+ * Projet name : Fumseck
+ * Class : INF2dlm-A
+ * Course : Project P2, Summer HES
+ */
+
+/**
  * [PageToggler Toggles page when in game (pseudo single page)]
  */
 class PageToggler {
@@ -38,6 +46,7 @@ class PageToggler {
 
   toggleEndGame() {
     this.rankingEl.style.display = 'none'
+    document.getElementsByTagName("body")[0].style.overflow = 'visible'
     this.endGameEl.style.display = 'block'
   }
 }
