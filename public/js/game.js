@@ -7,15 +7,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let pseudo = document.getElementById('pseudo')
   let gameId = document.getElementById('gameId')
+  let nbPlayer = document.getElementById('nbPlayer')
+
+  let gameSoundPlayer = new GameSoundPlayer(pseudo === null)
 
   let scoreDisplayer = new ScoreDisplayer()
-  let quizResponse = new QuizResponse(socket, gameId.value)
+  let quizResponse = new QuizResponse(socket, gameId.value, gameSoundPlayer)
 
   //display player answered
-  let quizLivePlayerAnswered = new QuizLivePlayerAnswered(socket)
+  let quizLivePlayerAnswered = new QuizLivePlayerAnswered(socket, nbPlayer, pseudo)
   quizLivePlayerAnswered.listenPlayerAnswered()
 
-  if(pseudo){
+  if(pseudo) {
     quizResponse.setPseudo(pseudo.value)
 
     let jokerManager = new JokerManager(socket, gameId.value, pseudo.value)
@@ -26,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
   socket.on('next_question', (data) => {
     //clean player answered info
     quizLivePlayerAnswered.cleanScreen()
-    questionDisplayer.displayNext(data.question)
+    questionDisplayer.displayNext(data.question, data.count, data.nbQuestion)
     gameAnimation.addQuestionAnimation()
     quizResponse.resetCards()
   })
@@ -38,12 +41,15 @@ document.addEventListener('DOMContentLoaded', () => {
   socket.on('sync', (data) => {
     pageToggler.togglePlay()
     gameAnimation.onSync(data.countdown)
+    gameSoundPlayer.decreaseJingleVolume()
+    gameSoundPlayer.playTick()
   })
 
   socket.on('start_game', () => {
     pageToggler.toggleStartGame()
     gameAnimation.addStartMotion()
     gameAnimation.addLoadMotion()
+    gameSoundPlayer.playJingle()
   })
 
   //Waiting queue
@@ -66,9 +72,13 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       gameAnimation.addWaitMotion()
     }
+    gameSoundPlayer.stopTick()
+    gameSoundPlayer.increaseJingleVolume()
   })
 
   socket.on('game_is_over', (data) => {
+    gameSoundPlayer.increaseJingleVolume()
+    gameSoundPlayer.stopTick()
     let stats = data.stats
     pageToggler.toggleRanking();
     if(stats !== null) {

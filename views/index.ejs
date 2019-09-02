@@ -50,9 +50,7 @@
 
           <!-- Tab Help -->
           <li>
-            <p class="uk-text-lead">Vous avez besoin d'aide ? Aucun problème, vous êtes à la bonne place !</p>
-            <hr class="uk-divider-small">
-            <p class="uk-text-meta">Vous avez deux options. Tout d'abord, vous pouvez créer votre propre partie et inviter vos amis à vous rejoindre en utilisant le lien unique. Ou alors, vous pouvez rejoindre une partie en cliquant sur nu lien d'invitation ou en rentrant l'ID de la partie dans le formulaire "Joindre une partie".</p>
+            <% include partials/help %>
           </li>
 
           <!-- Tab About -->
@@ -69,6 +67,10 @@
                       %><li><%= copyright.theme %> : <%= copyright.redacteur %> , <%= copyright.fournisseur %></li><%
                   }
               %>
+            </ul>
+            <p class="uk-text-meta">Logos et images : </p>
+            <ul>
+              <li>Icons made by <a href="https://www.flaticon.com/authors/gregor-cresnar" title="Gregor Cresnar">Gregor Cresnar</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></li>
             </ul>
           </li>
       </ul>

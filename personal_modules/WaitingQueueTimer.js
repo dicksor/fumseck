@@ -38,6 +38,4 @@ class WaitingQueueTimer {
   }
 }
 
-
-
 module.exports = WaitingQueueTimer

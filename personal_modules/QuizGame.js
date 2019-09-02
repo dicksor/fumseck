@@ -4,6 +4,9 @@ const util = require('./util')
 const QuizStat = require('./QuizStat')
 const EnigmaManager = require('./EnigmaManager')
 
+/**
+ * [QuizGame Class that coordinates one game]
+ */
 class QuizGame {
   constructor(gameId, nbQuestion, theme, responseTime) {
     this.gameId = gameId
@@ -16,7 +19,7 @@ class QuizGame {
     this.quizTimer = new QuizTimer(this.responseTime,
                                    () => this.onTimeOver(),
                                    (countdown) => this.onTick(countdown))
-    this.count = 0
+    this.count = 1
     this.breakTime = 5000
     this.quizStat = new QuizStat()
     this.playerAnsweredQuestion = []
@@ -27,14 +30,25 @@ class QuizGame {
     this.enigmaManager = new EnigmaManager()
   }
 
+  /**
+   * [addPlayer Appends a socket to the list of all player's socket]
+   * @param {[type]} socket [socket.io : socket]
+   */
   addPlayer(socket) {
     this.playerSockets.push(socket)
   }
 
+  /**
+   * [addHost Set the host's socket]
+   * @param {[type]} socket [socket.io : socket]
+   */
   addHost(socket) {
     this.hostSocket = socket
   }
 
+  /**
+   * [startQuiz Reads the quiz file, signals game start, renders next question]
+   */
   startQuiz() {
     let quiz = new QuizReader()
     quiz.readQuiz(this.theme).then((quizData) => {
@@ -47,6 +61,12 @@ class QuizGame {
     })
   }
 
+  /**
+   * [broadCastToAllPlayer Send a message through socket to all players]
+   * @param  {[type]} channel     [description]
+   * @param  {[type]} [data=null] [description]
+   * @return {[type]}             [description]
+   */
   broadCastToAllPlayer(channel, data = null) {
     for (let socket of this.playerSockets) {
       socket.emit(channel, data)
@@ -62,6 +82,9 @@ class QuizGame {
     this.emitToHost(channel, data)
   }
 
+  /**
+   * [renderNextQuestion Parses a random question and sends it]
+   */
   renderNextQuestion() {
     let rndQuestionIdx = this.getRandomQuestionIdx(this.quizData)
     let question = this.quizData[rndQuestionIdx].question
@@ -79,7 +102,7 @@ class QuizGame {
 
     this.playerAnsweredQuestion = []
 
-    this.broadcastToAll('next_question', { question: data, count: this.count })
+    this.broadcastToAll('next_question', { question: data, count: this.count, nbQuestion: this.nbQuestion })
     this.count++
 
     this.quizTimer.startTimer()
@@ -123,6 +146,9 @@ class QuizGame {
     return propositionsIndex
   }
 
+/**
+ * [transitionToBreak Notify a transition between questions]
+ */
   transitionToBreak() {
     this.broadcastToAll('break_transition')
 
@@ -143,8 +169,11 @@ class QuizGame {
     return Math.floor(Math.random() * allQuestions.length)
   }
 
+  /**
+   * [onTimeOver When a question's time is over]
+   */
   onTimeOver() {
-    if(this.count < this.nbQuestion && this.quizData.length > 0) {
+    if(this.count <= this.nbQuestion && this.quizData.length > 0) {
       this.quizStat.nextQuestion()
       this.transitionToBreak()
     } else {
@@ -155,10 +184,19 @@ class QuizGame {
     }
   }
 
+  /**
+   * [onTick On timer's tick (each seconds)]
+   * @param  {[type]} countdown [The actual countdown value]
+   */
   onTick(countdown) {
     this.broadcastToAll('tick', {countdown: countdown})
   }
 
+  /**
+   * [sync Synchronize the clients and the server before a question]
+   * @param  {[type]} countdown [description]
+   * @return {[type]}           [description]
+   */
   sync(countdown) {
     this.broadcastToAll('sync', {countdown: countdown})
   }

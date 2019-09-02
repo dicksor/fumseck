@@ -1,3 +1,8 @@
+/**
+ * [Flattens a two dimensional array]
+ * @param  {[Array]} arr [Two dimensional array]
+ * @return {[Array]}     [One dimensional array]
+ */
 module.exports.flatten = function (arr) {
     return Array.prototype.concat(...arr)
 }

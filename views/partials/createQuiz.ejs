@@ -3,17 +3,17 @@
 <p class="uk-text-meta">Remplissez simplement les divers champs du formulaire et cliquer sur "Sauvegarder".</p>
 <p class="uk-text-meta">Le lien d'accès au formulaire vous sera envoyé à l'adresse email renseignée dans le formulaire.</p>
 
-<form class="uk-form-horizontal uk-margin-large" action="create_quiz_processing" method="post" autocomplete="off" onsubmit="return validateEmail()">
+<form class="uk-form-horizontal uk-margin-large" action="create_quiz_processing" method="post" autocomplete="off" onsubmit="return validateEmail()" id="createQuizForm">
 
     <div class="uk-margin">
         <label class="uk-form-label" for="form-horizontal-text"><strong>Titre du quiz</strong></label>
         <div class="uk-form-controls uk-width-medium">
-            <input class="uk-input" id="form-horizontal-text" type="text" placeholder="Le titre du quiz..." name="quizTitle" required>
+            <input class="uk-input" id="form-horizontal-text" type="text" placeholder="Le titre du quiz..." name="quizTitle" autocomplete="on" required>
         </div>
         <br>
         <label class="uk-form-label" for="email"><strong>Votre email</strong></label>
         <div class="uk-form-controls uk-width-medium">
-            <input class="uk-input" id="email" type="mail" placeholder="Votre email..." name="userMail" required>
+            <input class="uk-input" id="email" type="mail" placeholder="Votre email..." name="userMail" autocomplete="on" required>
         </div>
     </div>
 
@@ -23,19 +23,19 @@
 
         <div class="uk-grid-small" uk-grid>
             <div class="uk-width-1-1">
-                <input class="uk-input" type="text" placeholder="Ecrivez votre question ici..." name="question1" required>
+                <input class="uk-input" type="text" placeholder="Ecrivez votre question ici..." name="question1" autocomplete="on" required>
             </div>
             <div class="uk-width-1-2@s">
-                <input class="uk-input" type="text" placeholder="Choix A" name="rep1a" required>
+                <input class="uk-input" type="text" placeholder="Choix A" name="rep1a" autocomplete="on" required>
             </div>
             <div class="uk-width-1-2@s">
-                <input class="uk-input" type="text" placeholder="Choix B" name="rep1b" required>
+                <input class="uk-input" type="text" placeholder="Choix B" name="rep1b" autocomplete="on" required>
             </div>
             <div class="uk-width-1-2@s">
-                <input class="uk-input" type="text" placeholder="Choix C" name="rep1c" required>
+                <input class="uk-input" type="text" placeholder="Choix C" name="rep1c" autocomplete="on" required>
             </div>
             <div class="uk-width-1-2@s">
-                <input class="uk-input" type="text" placeholder="Choix D" name="rep1d" required>
+                <input class="uk-input" type="text" placeholder="Choix D" name="rep1d" autocomplete="on" required>
             </div>
             <div class="uk-width-1-1">
               <div class="uk-inline">
@@ -62,7 +62,10 @@
     </div>
 
     <div class="uk-button uk-button-secondary uk-width-1-1 uk-margin-small" onclick="addQuizForm()"><span uk-icon="plus"></span> Ajouter une question</div>
-    <input class="uk-button uk-button-primary uk-width-1-1 uk-margin-small" type="submit" value="Sauvegarder" name="create_quiz">
+
+    <input type="submit" style="display:none" name="submit" />
+    <a href="javascript:void()" class="uk-button uk-button-primary uk-width-1-1 uk-margin-small" onclick="document.getElementById('createQuizForm').submit.click();">Sauvegarder</a>
+
     <input type="hidden" value="1" name="numberOfQuestion" id="numberOfQuestion">
 
 </form>

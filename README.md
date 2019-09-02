@@ -36,7 +36,7 @@ python download_oqdb_dataset.py --f oqdb_breaking_bad.json --u https://www.kiwim
 
 ## TODO
 
-* [ ] Hébérgeur
+* [X] Hébérgeur
 * [X] Boutons responsive
 * [X] Ajouter des sons
 * [X] Transitions entre les questions
@@ -48,10 +48,11 @@ python download_oqdb_dataset.py --f oqdb_breaking_bad.json --u https://www.kiwim
 * [ ] Editer un quiz
 * [X] Protéger les urls
 * [X] Envoie du lien par node mailer
-* [ ] Améliorer design et ajouter animations
+* [X] Améliorer design et ajouter animations
 * [X] Ecran de fin sur la télécommande 
 * [ ] Ajout des logs
 * [X] Régler le bouton quit game
 * [X] Ajouter des labels au select
 * [X] Edit timer's timeout
-* [ ] Aspect sécurité et triche
+* [X] Aspect sécurité et triche
+* [ ] Faire des pages d'erreur 40*, 50*

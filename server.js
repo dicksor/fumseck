@@ -94,7 +94,7 @@ app.get('/', (req, res) => { //home page
   res.redirect('/')
 })
 .use((req, res, next) => {
-  res.status(404).send('Page introuvable !');
+  res.status(404).render('error', { errorCode: 404 , message: 'Page non trouvée'})
 })
 
 //socket.io

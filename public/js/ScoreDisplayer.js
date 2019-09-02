@@ -1,3 +1,6 @@
+/**
+ * [ScoreDisplayer Displays the final score table]
+ */
 class ScoreDisplayer {
   constructor() {
     this.participantsEl = document.getElementById('participants')
@@ -6,7 +9,12 @@ class ScoreDisplayer {
     this.addScore = (acc, sum) => this.addVector(acc, sum)
   }
 
-  getParticipants(scores) {
+  /**
+   * [getParticpants Get all game participants]
+   * @param  {[Object]} scores [Object with all required informations]
+   * @return {[Array]}        [Participants]
+   */
+  getParticpants(scores) {
     let participants = []
     scores.forEach((obj, idx) => participants.push(Object.keys(obj)[0]))
     return participants
@@ -17,17 +25,35 @@ class ScoreDisplayer {
     this.nbParticipants = participants.length
     let totalScore = []
     this.displayParticipants(participants)
+
+    let i = 1
+    let trArray = []
+
     for(let stat of stats) {
       let tr = document.createElement('tr')
       let td = document.createElement('td')
-      td.innerHTML = stat.question
+
+      if(this.nbParticipants <= 5) {
+        td.innerHTML = stat.question
+      } else {
+        td.innerHTML = 'N°' + i
+      }
+
+      i++
+
       tr.appendChild(td)
       let playersScore = this.displayQuestionScore(stat.scores, tr)
       totalScore.push(playersScore)
-      this.scoreEl.appendChild(tr)
+
+      trArray.push(tr)
     }
     let scores = this.addTotalScore(totalScore)
     this.displayTotalScore(scores)
+
+    for(let i = 0; i < trArray.length; i++) {
+      this.scoreEl.appendChild(trArray[i])
+    }
+
     return scores
   }
 
@@ -38,7 +64,7 @@ class ScoreDisplayer {
   displayTotalScore(scores) {
     let tr = document.createElement('tr')
     let td = document.createElement('td')
-    td.innerHTML = 'Score total : '
+    td.innerHTML = 'Score total'
     td.classList.add('score-bold')
     tr.appendChild(td)
     for (let i = 0; i < this.nbParticipants; i++) {
@@ -51,9 +77,19 @@ class ScoreDisplayer {
   }
 
   displayParticipants(participants) {
+
     for (let participant of participants) {
       let th = document.createElement('th')
-      th.innerHTML = participant
+
+      if(participants.length <= 7) {
+        th.innerHTML = participant
+      } else {
+        if(participant.length > 7) {
+          participant = participant.slice(0,5) + '...'
+        }
+        th.innerHTML = participant
+      }
+
       th.classList.add('score-centered')
       this.participantsEl.appendChild(th)
     }
