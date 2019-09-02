@@ -1,3 +1,6 @@
+/**
+ * Manage the displaying of questions
+ */
 class QuestionDisplayer {
   constructor() {
     this.questionEl = document.getElementById('question')
@@ -8,6 +11,12 @@ class QuestionDisplayer {
     this.questionsInfos = document.getElementById('questionsInfos')
   }
 
+  /**
+   * Display the next question
+   * @param  {String} question
+   * @param  {Integer} count    number of the question
+   * @param  {Integer} nb       number of total question
+   */
   displayNext(question, count, nb) {
     //display all the question after user use joker
     for(let i = 0; i <= 3; i++){
@@ -15,7 +24,7 @@ class QuestionDisplayer {
       elem.classList.remove('animated', 'bounceOutUp')
       elem.style.display = 'block'
     }
-    
+
     this.questionEl.innerHTML = question.question
     this.responseAEl.innerHTML = question.propositions[0]
     this.responseBEl.innerHTML = question.propositions[1]

@@ -1,3 +1,6 @@
+/**
+ * Manage the display of the final ranking
+ */
 class RankingManager {
   constructor(pageToggler) {
     this.pageToggler = pageToggler
@@ -5,12 +8,19 @@ class RankingManager {
     this.rankedPlayer = document.getElementById('rankedPlayer')
     this.rankingTimer = document.getElementById('rankingTimer')
 
+    //image of cups
     this.rankingImg = []
     this.rankingImg[0] = '<img src="img/goldCup.png" id="goldCup" >'
     this.rankingImg[1] = '<img src="img/silverCup.png" id="silverCup">'
     this.rankingImg[2] = '<img src="img/bronzCup.png" id="bronzCup">'
   }
 
+  /**
+   * get the participants sorted with their score in a array
+   * @param  {Array} participants Array of all participants
+   * @param  {Array} scores       Array of all user scores
+   * @return {Array}              Sorted array with the user and his scores
+   */
   getSortedParticipantsWithScores(participants, scores) {
     let array = []
 
@@ -27,6 +37,11 @@ class RankingManager {
     return Object.values(array)
   }
 
+  /**
+   * Display the ranking
+   * @param  {Array} participants Array of all participants
+   * @param  {Array} scores       Array of all user scores
+   */
   displayRanking(participants, scores){
     let sortedParticipantsWithScores = this.getSortedParticipantsWithScores(participants, scores)
 
@@ -39,20 +54,20 @@ class RankingManager {
     }
   }
 
+  /**
+   * Display the ranking timer
+   */
   displayRankingTimer(){
     let time = 10
     let rankingTimer = setInterval(() =>{
       time--
       if(time == 0) {
+        //switch page and delete timer
         this.pageToggler.toggleEndGame()
         clearInterval(rankingTimer)
       } else {
         this.rankingTimer.innerHTML = time
       }
     }, 1000)
-  }
-
-  test(){
-
   }
 }

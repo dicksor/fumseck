@@ -10,29 +10,29 @@ const EnigmaManager = require('./EnigmaManager')
 class QuizGame {
   constructor(gameId, nbQuestion, theme, responseTime) {
     this.gameId = gameId
-    this.isRoomOpen = true
+    this.isRoomOpen = true //indicated if player can join the game or note
     this.playerSockets = []
-    this.responseTime = responseTime
+    this.responseTime = responseTime //max time to reponde to a question
     this.hostSocket = new Object()
-    this.nbQuestion = nbQuestion
-    this.theme = theme
+    this.nbQuestion = nbQuestion // number question of the quiz
+    this.theme = theme // theme of the quiz
     this.quizTimer = new QuizTimer(this.responseTime,
                                    () => this.onTimeOver(),
                                    (countdown) => this.onTick(countdown))
-    this.count = 1
-    this.breakTime = 5000
-    this.quizStat = new QuizStat()
-    this.playerAnsweredQuestion = []
+    this.count = 1 // index of actual question
+    this.breakTime = 5000 // time between transition
+    this.quizStat = new QuizStat() // stat for the quiz
+    this.playerAnsweredQuestion = [] // player who answered to a question, re-initialized before each questions
 
-    this.propositions = []
-    this.responseIdx = 0
+    this.propositions = [] // propositions for the questions re-initialized before each question
+    this.responseIdx = 0 // index of the correct proposition re-initialized before each question
 
-    this.enigmaManager = new EnigmaManager()
+    this.enigmaManager = new EnigmaManager()// object to manage the enigma of a quiz
   }
 
   /**
    * [addPlayer Appends a socket to the list of all player's socket]
-   * @param {[type]} socket [socket.io : socket]
+   * @param {Object} socket [socket.io : socket]
    */
   addPlayer(socket) {
     this.playerSockets.push(socket)
@@ -40,7 +40,7 @@ class QuizGame {
 
   /**
    * [addHost Set the host's socket]
-   * @param {[type]} socket [socket.io : socket]
+   * @param {Object} socket [socket.io : socket]
    */
   addHost(socket) {
     this.hostSocket = socket
@@ -63,9 +63,8 @@ class QuizGame {
 
   /**
    * [broadCastToAllPlayer Send a message through socket to all players]
-   * @param  {[type]} channel     [description]
-   * @param  {[type]} [data=null] [description]
-   * @return {[type]}             [description]
+   * @param  {String} channel     name of the channel
+   * @param  {String} [data=null] message
    */
   broadCastToAllPlayer(channel, data = null) {
     for (let socket of this.playerSockets) {
@@ -73,10 +72,20 @@ class QuizGame {
     }
   }
 
+  /**
+   * Send a message to the host of a game
+   * @param  {String} channel     name of the channel
+   * @param  {String} [data=null] message
+   */
   emitToHost(channel, data = null) {
     this.hostSocket.emit(channel, data)
   }
 
+  /**
+   * Send a message to all players and the host
+   * @param  {String} channel     name of the channel
+   * @param  {String} [data=null] message
+   */
   broadcastToAll(channel, data = null){
     this.broadCastToAllPlayer(channel, data)
     this.emitToHost(channel, data)
@@ -86,60 +95,71 @@ class QuizGame {
    * [renderNextQuestion Parses a random question and sends it]
    */
   renderNextQuestion() {
+    //Get a random question in the quiz, get the proposition ans the reponse and keep the index of the correct answer
     let rndQuestionIdx = this.getRandomQuestionIdx(this.quizData)
     let question = this.quizData[rndQuestionIdx].question
     this.propositions = this.quizData[rndQuestionIdx].propositions
+
     let response = this.quizData[rndQuestionIdx].reponse
     this.responseIdx = this.propositions.indexOf(response)
     let data = { question: question, propositions: this.propositions}
 
-    this.quizStat.addQuestionAnswer(question, this.responseIdx)
+    this.quizStat.addQuestionAnswer(question, this.responseIdx)//add the quetion to the stat
 
     this.quizData.splice(rndQuestionIdx, 1)
 
     this.quizTimer.sync()
     this.sync(this.responseTime)
 
-    this.playerAnsweredQuestion = []
+    this.playerAnsweredQuestion = []//re-initialized the answered player
 
-    this.broadcastToAll('next_question', { question: data, count: this.count, nbQuestion: this.nbQuestion })
+    this.broadcastToAll('next_question', { question: data, count: this.count, nbQuestion: this.nbQuestion })// send the question and propositions
     this.count++
 
     this.quizTimer.startTimer()
   }
 
   renderNextEnigma() {
+    //Get a random anecdote in the quiz
     let rndAnecdoteIdx = this.getRandomQuestionIdx(this.quizData)
     let anecdote = this.quizData[rndAnecdoteIdx].anecdote
+
+    //process the anecdote to send it to the host ans players
     let cleanAnectdote = this.enigmaManager.cleanAnectdoteProcessing(anecdote)
     let cutAnecdote = this.enigmaManager.cutAnecdoteProcessing(cleanAnectdote)
 
     this.propositions = ['test1', 'test2', 'test3']//méthode de jonas
 
+    //insert the correct word randomly in the array
     this.responseIdx = util.getRandomNumber(0,4)
     this.propositions.splice(this.responseIdx, 0, cutAnecdote['correctWord'])
 
+    //replace the remove word with special character
     let question = anecdote.replace(cutAnecdote['correctWord'], '_______')
     let data = { question: question, propositions: this.propositions}
 
-    this.quizStat.addQuestionAnswer(question, this.responseIdx)
+    this.quizStat.addQuestionAnswer(question, this.responseIdx)//add the quetion to the stat
 
     this.quizData.splice(rndAnecdoteIdx, 1)
 
     this.quizTimer.sync()
     this.sync(this.responseTime)
 
-    this.playerAnsweredQuestion = []
+    this.playerAnsweredQuestion = []//re-initialized the answered player
 
-    this.broadcastToAll('next_question', { question: data, count: this.count })
+    this.broadcastToAll('next_question', { question: data, count: this.count, nbQuestion: this.nbQuestion })// send the question and propositions
     this.count++
 
     this.quizTimer.startTimer()
   }
 
+  /**
+   * return an array of index, only 2 wrong proposition are removed
+   * @return {Array}
+   */
   getRemovedPropositions() {
     let propositionsIndex = Object.keys(this.propositions)
-    propositionsIndex.splice(this.responseIdx, 1)//remove the reponse
+    propositionsIndex.splice(this.responseIdx, 1)//remove the correct proposition
 
     propositionsIndex.splice(util.getRandomNumber(0,2), 1)
 
@@ -152,8 +172,9 @@ class QuizGame {
   transitionToBreak() {
     this.broadcastToAll('break_transition')
 
-    let isPersonalQuiz = this.theme.includes('fum')
+    let isPersonalQuiz = this.theme.includes('fum')// identify if it's a personal quiz or not
     setTimeout(() => {
+      //draw randomly an enigma 1/3 time
       let rdnNumber = util.getRandomNumber(0,3)
 
       if(!isPersonalQuiz && rdnNumber == 3){
@@ -165,6 +186,11 @@ class QuizGame {
     }, this.breakTime)
   }
 
+  /**
+   * Draw a random question index
+   * @param  {Array} allQuestions
+   * @return {Integer}             
+   */
   getRandomQuestionIdx(allQuestions) {
     return Math.floor(Math.random() * allQuestions.length)
   }

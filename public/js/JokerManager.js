@@ -1,3 +1,6 @@
+/**
+ * Manage the joker system for the player
+ */
 class JokerManager {
   constructor(socket, gameId, pseudo) {
     this.socket = socket
@@ -5,6 +8,9 @@ class JokerManager {
     this.pseudo = pseudo
   }
 
+  /**
+   * Send confirmation of use of joker to the server, and disabled the button
+   */
   clickOnJokerButton() {
     document.getElementById('joker').addEventListener('click', (event) =>{
       event.target.disabled = true
@@ -12,6 +18,9 @@ class JokerManager {
     })
   }
 
+  /**
+   * Get the index of removed propositions, run an animation to fade out the card
+   */
   listenRemovedPropositions(){
     this.socket.on('remove_propositions', (data) => {
       data.removedPropositions.forEach((id) => {

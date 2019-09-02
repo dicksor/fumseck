@@ -20,11 +20,11 @@ class GameManager {
 
     this.runningGames[gameId] = []
 
-    this.runningGames[gameId]['quiz'] = new QuizGame(gameId, nbQuestion, theme, responseTime)
+    this.runningGames[gameId]['quiz'] = new QuizGame(gameId, nbQuestion, theme, responseTime) // quiz object for a game
     this.runningGames[gameId]['waitingQueueTimer'] = new WaitingQueueTimer(150, this.runningGames[gameId]['quiz'])
-    this.runningGames[gameId]['nbPlayer'] = parseInt(nbPlayer)
-    this.runningGames[gameId]['players'] = []
-    this.runningGames[gameId]['playersUsedJoker'] = []
+    this.runningGames[gameId]['nbPlayer'] = parseInt(nbPlayer) // number of player for a game
+    this.runningGames[gameId]['players'] = [] // name of the player of the game
+    this.runningGames[gameId]['playersUsedJoker'] = [] // name of the players woho used joker
   }
 
   /**
@@ -141,14 +141,26 @@ class GameManager {
     return gameId;
   }
 
+  /**
+   * Add player reponse to the stat object
+   * @param  {Object} data data from the client
+   */
   handleResponse(data) {
     if (this.isGameIdInRunningGame(data.gameId)) {
       this.runningGames[data.gameId]['quiz'].quizStat.addPlayersResponse(data.pseudo, data.response)
     }
   }
 
+  /**
+   * Use when a player use his joker
+   * @param  {Object} data   data from the client
+   * @param  {Object} socket socket of the player
+   */
   useJoker(data, socket){
+    //if the player doesn't already use his joker and the game id exist
     if(this.isGameIdInRunningGame(data.gameId) && !(data.pseudo in this.runningGames[data.gameId]['playersUsedJoker'])) {
+
+      //remove 2 wrong proposition and send index to the user
       let removedPropositions = this.runningGames[data.gameId]['quiz'].getRemovedPropositions()
       socket.emit('remove_propositions', {removedPropositions:removedPropositions})
     } else {

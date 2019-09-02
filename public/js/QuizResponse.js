@@ -1,3 +1,6 @@
+/**
+ * Manage the user reponse to the quiz
+ */
 class QuizResponse {
 
   constructor(socket, gameId, gameSoundPlayer) {
@@ -7,10 +10,17 @@ class QuizResponse {
     this.gameSoundPlayer = gameSoundPlayer
   }
 
+  /**
+   * Set the pseudo only for the player
+   * @param {String} pseudo player pseudo
+   */
   setPseudo(pseudo) {
     this.pseudo = pseudo
   }
 
+  /**
+   * Reset the card for the next question
+   */
   resetCards() {
     this.jokerButton.style.display = 'block'
 
@@ -24,6 +34,10 @@ class QuizResponse {
     }
   }
 
+  /**
+   * Send the user reponse to the server, and color the proposition card
+   * @param  {Integer} rep index of the proposition
+   */
   sendResponse(rep) {
     document.getElementById(rep).classList.add('uk-card-primary')
 
