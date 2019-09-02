@@ -1,3 +1,11 @@
+/**
+ * Authors : Romain Capocasale, Vincent Moulin and Jonas Freiburghaus
+ * Date : August and September 2019
+ * Projet name : Fumseck
+ * Class : INF2dlm-A
+ * Course : Project P2, Summer HES
+ */
+
 const QuizGame = require('./QuizGame')
 const WaitingQueueTimer = require('./WaitingQueueTimer')
 const idgen = require('idgen')
