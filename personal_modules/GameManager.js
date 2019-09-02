@@ -128,6 +128,8 @@ class GameManager {
       this.runningGames[data.gameId]['quiz'].isRoomOpen = false
       this.runningGames[data.gameId]['quiz'].startQuiz()
 
+      this.runningGames[data.gameId]['nbPlayer'] = this.runningGames[data.gameId]['players'].length
+
       this.runningGames[data.gameId]['waitingQueueTimer'].stop()
       this.runningGames[data.gameId]['quiz'].broadcastToAll('game_is_ready')
     } else {
