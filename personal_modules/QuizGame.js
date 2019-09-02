@@ -89,10 +89,29 @@ class QuizGame {
     let rndAnecdoteIdx = this.getRandomQuestionIdx(this.quizData)
     let anecdote = this.quizData[rndAnecdoteIdx].anecdote
     let cleanAnectdote = this.enigmaManager.cleanAnectdoteProcessing(anecdote)
-    console.log(cleanAnectdote);
-    console.log(this.enigmaManager.cutAnecdote(cleanAnectdote))
+    let cutAnecdote = this.enigmaManager.cutAnecdoteProcessing(cleanAnectdote)
 
-    //this.propositions = methode de jonas
+    this.propositions = ['test1', 'test2', 'test3']//méthode de jonas
+
+    this.responseIdx = util.getRandomNumber(0,4)
+    this.propositions.splice(this.responseIdx, 0, cutAnecdote['correctWord'])
+
+    let question = anecdote.replace(cutAnecdote['correctWord'], '_______')
+    let data = { question: question, propositions: this.propositions}
+
+    this.quizStat.addQuestionAnswer(question, this.responseIdx)
+
+    this.quizData.splice(rndAnecdoteIdx, 1)
+
+    this.quizTimer.sync()
+    this.sync(this.responseTime)
+
+    this.playerAnsweredQuestion = []
+
+    this.broadcastToAll('next_question', { question: data, count: this.count })
+    this.count++
+
+    this.quizTimer.startTimer()
   }
 
   getRemovedPropositions() {
@@ -106,8 +125,18 @@ class QuizGame {
 
   transitionToBreak() {
     this.broadcastToAll('break_transition')
-    this.renderNextEnigma()
-    setTimeout(() => this.renderNextQuestion(), this.breakTime)
+
+    let isPersonalQuiz = this.theme.includes('fum')
+    setTimeout(() => {
+      let rdnNumber = util.getRandomNumber(0,3)
+
+      if(!isPersonalQuiz && rdnNumber == 3){
+        this.renderNextEnigma()
+      } else {
+        this.renderNextQuestion()
+      }
+
+    }, this.breakTime)
   }
 
   getRandomQuestionIdx(allQuestions) {

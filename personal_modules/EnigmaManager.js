@@ -18,7 +18,7 @@ class EnigmaManager {
   }
 
 
-cutAnecdote(arrayWord) {
+cutAnecdoteProcessing(arrayWord) {
   const offsetMin = 3
   const offsetMax = 3
 
