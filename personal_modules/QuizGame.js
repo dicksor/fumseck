@@ -2,6 +2,7 @@ const QuizTimer = require('./QuizTimer')
 const QuizReader = require('./QuizReader')
 const util = require('./util')
 const QuizStat = require('./QuizStat')
+const axios = require('axios')
 
 /**
  * [QuizGame Class that coordinates one game]
@@ -38,6 +39,13 @@ class QuizGame {
    */
   addHost(socket) {
     this.hostSocket = socket
+  }
+
+  request(sentence, k = 3) {
+    return axios.get('http://localhost:34334/getWordSuggestion/' + sentence + '/' + k)
+      .then(response => {
+        return response.data
+      })
   }
 
   /**
