@@ -1,13 +1,31 @@
+/**
+ * Authors : Romain Capocasale, Vincent Moulin and Jonas Freiburghaus
+ * Date : August and September 2019
+ * Projet name : Fumseck
+ * Class : INF2dlm-A
+ * Course : Project P2, Summer HES
+ */
+
 const fs = require('fs')
 const idgen = require('idgen')
 const Mail = require('./SendMail')
 
+/**
+ * [CreateQuizParsing is using to save a quiz in a json file]
+ */
 class CreateQuizParsing {
   constructor(data) {
     this.dataQuiz = data
   }
 
+  /**
+   * [method for save quiz]
+   */
   saveData() {
+
+    /**
+     * generation of the json
+     */
 
     let repLetter = ''
     let jsonQuiz = ''
@@ -33,10 +51,16 @@ class CreateQuizParsing {
     let title = this.dataQuiz.quizTitle.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\w\s]/gi, '').replace(/ /g,'_')
     let filename = 'fum_' + title + '_' + token + '.json'
 
+    /**
+     * save the quiz inside a json file
+     */
     fs.writeFile('app/model/' + filename, jsonQuiz, function(err) {
         if(err) {
           return console.log(err)
         } else {
+          /**
+           * send the mail
+           */
           Mail.sendMail(userMail, 'http://localhost:34335/load_game/' + token, quizTitle)
         }
     });

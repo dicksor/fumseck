@@ -1,3 +1,11 @@
+/**
+ * Authors : Romain Capocasale, Vincent Moulin and Jonas Freiburghaus
+ * Date : August and September 2019
+ * Projet name : Fumseck
+ * Class : INF2dlm-A
+ * Course : Project P2, Summer HES
+ */
+
 class QuestionDisplayer {
   constructor() {
     this.questionEl = document.getElementById('question')
@@ -15,7 +23,7 @@ class QuestionDisplayer {
       elem.classList.remove('animated', 'bounceOutUp')
       elem.style.display = 'block'
     }
-    
+
     this.questionEl.innerHTML = question.question
     this.responseAEl.innerHTML = question.propositions[0]
     this.responseBEl.innerHTML = question.propositions[1]

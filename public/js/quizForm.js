@@ -1,5 +1,16 @@
+/**
+ * Authors : Romain Capocasale, Vincent Moulin and Jonas Freiburghaus
+ * Date : August and September 2019
+ * Projet name : Fumseck
+ * Class : INF2dlm-A
+ * Course : Project P2, Summer HES
+ */
+
 let count = 1
 
+/**
+ * [addQuizForm , add the fileds to the form when user clicks on "add question"]
+ */
 function addQuizForm() {
   count++
   document.getElementById('numberOfQuestion').value = count
