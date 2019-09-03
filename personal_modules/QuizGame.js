@@ -55,7 +55,7 @@ class QuizGame {
     this.hostSocket = socket
   }
 
-  requestEnigmaSuggestions(sentence, k = 3) {
+  requestEnigmaSuggestions(sentence, k = 4) {
     return axios.get('http://localhost:34334/getWordSuggestion/' + sentence + '/' + k)
   }
 
@@ -142,7 +142,14 @@ class QuizGame {
     let cutAnecdote = this.enigmaManager.cutAnecdoteProcessing(cleanAnectdote)
 
     this.requestEnigmaSuggestions(cutAnecdote['arrayBeginAnecdote'].join(" ")).then((propositions => {
-      this.propositions = propositions.data
+      //this.propositions = propositions.data
+      this.propositions = []
+      propositions.data.forEach((proposedWord) => {
+        if(cutAnecdote['correctWord'].toLowerCase() != proposedWord){
+          this.propositions.push(proposedWord)
+        }
+      })
+      this.propositions = this.propositions.splice(0,4)
 
       //insert the correct word randomly in the array
       this.responseIdx = util.getRandomNumber(0,4)
@@ -190,9 +197,9 @@ class QuizGame {
     let isPersonalQuiz = this.theme.includes('fum')// identify if it's a personal quiz or not
     setTimeout(() => {
       //draw randomly an enigma 1/3 time
-      let rdnNumber = util.getRandomNumber(0,3)
+      let rdnNumber = util.getRandomNumber(0,1)
 
-      if(!isPersonalQuiz && rdnNumber == 3){
+      if(!isPersonalQuiz && rdnNumber == 1){
         this.renderNextEnigma()
       } else {
         this.renderNextQuestion()

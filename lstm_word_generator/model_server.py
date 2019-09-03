@@ -47,5 +47,5 @@ def get_word_chart(sentence, k):
 	
 
 if __name__ == '__main__':
-	app.run(host = '0.0.0.0', port = "34334")
+	app.run(host = '0.0.0.0', port = 34334)
 	print("Running on localhost")
