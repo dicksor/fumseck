@@ -1,6 +1,6 @@
 {
   "name": "fumseck",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Jeu de quizz en ligne et en temps réel",
   "main": "server.js",
   "scripts": {
