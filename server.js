@@ -94,7 +94,7 @@ app.get('/', (req, res) => { //home page
 })
 .post('/create_quiz_processing', urlencodedParser, (req, res) => {
   if(!util.isParamEmpty(req.body)) {
-    const createQuizParsing = new CreateQuizParsing(req.body)
+    const createQuizParsing = new CreateQuizParsing(req.body, req.headers)
     createQuizParsing.saveData()
   }
   res.redirect('/')

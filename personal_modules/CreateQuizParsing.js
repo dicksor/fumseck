@@ -14,8 +14,9 @@ const Mail = require('./SendMail')
  * [CreateQuizParsing is using to save a quiz in a json file]
  */
 class CreateQuizParsing {
-  constructor(data) {
+  constructor(data, headers) {
     this.dataQuiz = data
+    this.headers = headers
   }
 
   /**
@@ -54,6 +55,8 @@ class CreateQuizParsing {
     /**
      * save the quiz inside a json file
      */
+     let link = this.headers.origin
+
     fs.writeFile('app/model/' + filename, jsonQuiz, function(err) {
         if(err) {
           return console.log(err)
@@ -61,7 +64,8 @@ class CreateQuizParsing {
           /**
            * send the mail
            */
-          Mail.sendMail(userMail, 'http://localhost:34335/load_game/' + token, quizTitle)
+          console.log();
+          Mail.sendMail(userMail, link  + '/load_game/' + token, quizTitle)
         }
     });
   }
