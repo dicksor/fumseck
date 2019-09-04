@@ -127,8 +127,8 @@ class QuizGame {
     this.playerAnsweredQuestion = []//re-initialized the answered player
 
     this.broadcastToAll('next_question', { question: data, count: this.count, nbQuestion: this.nbQuestion })// send the question and propositions
-    this.count++
 
+    this.count++
     this.quizTimer.startTimer()
   }
 
