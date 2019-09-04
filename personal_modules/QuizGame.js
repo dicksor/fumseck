@@ -142,7 +142,6 @@ class QuizGame {
     let cutAnecdote = this.enigmaManager.cutAnecdoteProcessing(cleanAnectdote)
 
     this.requestEnigmaSuggestions(cutAnecdote['arrayBeginAnecdote'].join(" ")).then((propositions => {
-      //this.propositions = propositions.data
       this.propositions = []
       propositions.data.forEach((proposedWord) => {
         if(cutAnecdote['correctWord'].toLowerCase() != proposedWord){

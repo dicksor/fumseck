@@ -28,17 +28,17 @@ model = load_model("text_gen_model.h5")
 with open('second_tokenizer.pickle', 'rb') as handle:
     tokenizer = pickle.load(handle)
 
-def generate_text(seed_text, k = 3, max_sequence_len = 18):
-    token_list = tokenizer.texts_to_sequences([seed_text])[0]
-    token_list = pad_sequences([token_list], maxlen = max_sequence_len - 1, padding = 'pre')
-    predicted = model.predict(token_list, verbose = 0)
-    predicted = predicted.flatten()
-    predicted = np.random.choice(len(predicted), k, p = predicted)
-    output_words = []
-    for word, index in tokenizer.word_index.items():
-        if index in predicted:
-            output_words.append(word)
-    return output_words
+def generate_text(seed_text, k = 4, max_sequence_len = 18):
+	token_list = tokenizer.texts_to_sequences([seed_text])[0]
+	token_list = pad_sequences([token_list], maxlen = max_sequence_len - 1, padding = 'pre')
+	predicted = model.predict(token_list, verbose = 0)
+	predicted = predicted.flatten()
+	predicted = np.random.choice(len(predicted), k, p = predicted, replace = False)
+	output_words = []
+	for word, index in tokenizer.word_index.items():
+		if index in predicted:
+			output_words.append(word)
+	return output_words
 
 @app.route('/getWordSuggestion/<sentence>/<k>', methods=['GET'])
 def get_word_chart(sentence, k):
