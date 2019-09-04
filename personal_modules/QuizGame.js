@@ -196,9 +196,9 @@ class QuizGame {
     let isPersonalQuiz = this.theme.includes('fum')// identify if it's a personal quiz or not
     setTimeout(() => {
       //draw randomly an enigma 1/3 time
-      let rdnNumber = util.getRandomNumber(0,1)
+      let rdnNumber = util.getRandomNumber(0,3)
 
-      if(!isPersonalQuiz && rdnNumber == 1){
+      if(!isPersonalQuiz && rdnNumber == 3){
         this.renderNextEnigma()
       } else {
         this.renderNextQuestion()
