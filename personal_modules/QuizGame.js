@@ -55,7 +55,7 @@ class QuizGame {
     this.hostSocket = socket
   }
 
-  requestEnigmaSuggestions(sentence, k = 3) {
+  requestEnigmaSuggestions(sentence, k = 4) {
     return axios.get('http://localhost:34334/getWordSuggestion/' + sentence + '/' + k)
   }
 
@@ -142,6 +142,7 @@ class QuizGame {
     let cutAnecdote = this.enigmaManager.cutAnecdoteProcessing(cleanAnectdote)
 
     this.requestEnigmaSuggestions(cutAnecdote['arrayBeginAnecdote'].join(" ")).then((propositions => {
+      console.log(propositions)
       this.propositions = propositions.data
 
       //insert the correct word randomly in the array
